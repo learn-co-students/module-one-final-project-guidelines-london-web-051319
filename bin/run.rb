@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../config/environment.rb'
-require "pry"
+require "open-uri"
+require "json"
  #
  #        puts "Welcome SpaceTraveller! Please enter your username:"
  #        user = gets.chomp
@@ -72,4 +73,5 @@ require "pry"
 # list_curated_articles
 # print_curated_article_overview
 #longest
-most_liked
+# most_liked
+#aiod
