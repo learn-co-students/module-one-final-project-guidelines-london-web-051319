@@ -1,5 +1,7 @@
 require_relative '../config/environment'
 
+#greeting
 
+#options
 
-puts "HELLO WORLD"
+#exit
