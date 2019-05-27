@@ -1,3 +1,4 @@
+require_relative '../app/functions.rb'
 require 'bundler'
 Bundler.require
 
