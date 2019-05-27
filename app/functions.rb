@@ -1,4 +1,24 @@
-def add(user_id, article_id)
+#require "pry"
+
+def search
+    puts "Please enter an object's name:"
+    searched_name = gets.chomp
+    searched_name.downcase
+    # searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}
+    # searched_article.map {|article| article.overview}
+    searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}.map {|article| article.overview}
+    puts "How many articles would you like to read for the #{searched_name}?"
+    number_of_articles = gets.chomp.to_i - 1
+    searched_article[0..number_of_articles].each_with_index do |article, index| 
+        puts "#{index + 1}. #{article}"
+        puts "\n"
+    end
+end
+
+def add
+    puts "Please enter an object's name:"
+    searched_name = gets.chomp
+    searched_name.downcase
     if user_id = nil && article_id = nil
         puts "There is no article selected. Please first select an article and then try to add it to your Favourites list."
     else
@@ -12,7 +32,7 @@ def remove(favourite_id)
     DELETE FROM favourites 
     WHERE id = ?; 
     SQL
-    DB[:conn].execute(sql, favourites_id)
+    db.execute(sql, favourites_id)
 end
 
 def favourites
@@ -20,7 +40,7 @@ def favourites
     SELECT * 
     FROM favourites;
     SQL
-    DB[:conn].execute(sql)
+    db.execute(sql)
 end
 
 def total
@@ -28,7 +48,7 @@ def total
     SELECT COUNT(*) 
     FROM articles;
     SQL
-    DB[:conn].execute(sql)
+    db.execute(sql)
 end
 
 def help
