@@ -1,9 +1,8 @@
 ## Description
 
- Welcome to SolarTravel!
+ Welcome to SpaceTravel!
 
- SolarTravel is a command line interface app that gives you an in-depth control over a large database of astronomical objects. You could check what's visible from your location and create favourites list, add and edit entries, learn interesting facts about theses abjects as well as see photos of them taken provided by NASA, ESA and various other sources.
-
+ SpaceTravel is a command line interface app that gives you an in-depth control over a large database of astronomical objects in our Solar system. You could check what's visible from your location and create favourites list, add and edit entries, learn interesting facts about theses abjects as well as see photos of them provided by NASA, ESA and various other sources.
 
 
 ## Install Instructions
@@ -23,9 +22,11 @@
 1. Moniet Sawhney - https://github.com/Moniet
 2. Vlad Georgiev - https://github.com/VladTGeorgiev
 
+
+!!!DELETE BEFORE PUBLICATION!!!
 ## Instructions
 
-1. Fork and clone this repository.
+1. Fork and clone this repository. DONE
 2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
 3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
 4. Make sure your project checks off each of the above requirements.
