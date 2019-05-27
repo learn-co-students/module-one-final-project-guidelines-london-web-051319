@@ -16,4 +16,4 @@ json.each do |key, data|
   end
 end
 # Create 10 Users
-10.times { User.create(username: Faker::Name.name, password: Faker::Alphanumeric.alpha(10)) }
+10.times { User.create(username: Faker::Name.name) }
