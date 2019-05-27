@@ -1,38 +1,40 @@
- require_relative '../config/environment'
+#!/usr/bin/env ruby
+require_relative '../config/environment.rb'
+require "pry"
+ #
+ #        puts "Welcome SpaceTraveller! Please enter your username:"
+ #        user = gets.chomp
+ #        if User.all_users.include? user
+ #            user = User.find_by(name: user)
+ #        else
+ #            user = User.create(name: user)
+ #            user.downcase
+ #        end
+ #        puts "Hello, #{user.name}! What's your current location?"
+ #        location = gets.chomp
+ #            #if provided then use
+ #            #else obtain location from the browser
+ #
+ #        puts "Here are some objects you can observe from #{location}. For the full list of available objects in our database type 'list' and hit enter. Or alternatively use the 'help' command for all options."
+ #        sql = <<-SQL
+ #
+ #            SQL
+ #        puts "#{sql}."
+ #        loop do
+ #        input = gets.chomp
+ #        input.downcase
+ #        input(input)
+ #
+ #
+ #
+ #
+ #            puts "Please enter a valid command"
+ #        end
 
-        puts "Welcome SpaceTraveller! Please enter your username:"
-        user = gets.chomp
-        if User.all_users.include? user
-            user = User.find_by(name: user)
-        else
-            user = User.create(name: user)
-            user.downcase
-        end
-        puts "Hello, #{user.name}! What's your current location?"
-        location = gets.chomp
-            #if provided then use 
-            #else obtain location from the browser
-
-        puts "Here are some objects you can observe from #{location}. For the full list of available objects in our database type 'list' and hit enter. Or alternatively use the 'help' command for all options."
-        sql = <<-SQL
-            
-            SQL
-        puts "#{sql}."
-        loop do
-        input = gets.chomp
-        input.downcase
-        input(input)
-        
-
-
-
-            puts "Please enter a valid command"
-        end
 
 
 
 
- 
 #3. Here are some objects you can observe from {#location}. For the full list of available objects in our database type ??? and hit enter. Or alternatively use the "help" command for all options.
     #prints 5 objects based on location
 
@@ -66,3 +68,8 @@
     #list {#specific category} - lists all objects from the desired category
     #search - brings question number 4
     #exit - terminates the app
+
+# list_curated_articles
+# print_curated_article_overview
+#longest
+most_liked
