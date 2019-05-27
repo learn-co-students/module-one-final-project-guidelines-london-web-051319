@@ -1,23 +1,25 @@
  require_relative '../config/environment'
 
-def welcome
-    #1. Welcome SpaceTraveller! Pleae enter your name:
-    puts "Welcome SpaceTraveller! Pleae enter your name:"
-    username = gets.chomp
-    #2. Hello, #{name}! What's your current location?
-    puts "Hello, #{username}! What's your current location?"
-    location = gets.chomp
-        #if provided then use 
-        #else obtain location from the browser
-    #3. Here are some objects you can observe from #{location}. For the full list of available objects in our database type ??? and hit enter. Or alternatively use the "help" command for all options.
-    puts "Here are some objects you can observe from #{location}. For the full list of available objects in our database type "list" and hit enter. Or alternatively use the "help" command for all options."
-    sql = <<-SQL
-        
-        SQL
-    puts "#{sql}"
+ class ClassName
 
+    def welcome
+        #1. Welcome SpaceTraveller! Pleae enter your name:
+        puts "Welcome SpaceTraveller! Pleae enter your name:"
+        username = gets.chomp
+        #2. Hello, #{name}! What's your current location?
+        puts "Hello, #{username}! What's your current location?"
+        location = gets.chomp
+            #if provided then use 
+            #else obtain location from the browser
+        #3. Here are some objects you can observe from #{location}. For the full list of available objects in our database type ??? and hit enter. Or alternatively use the "help" command for all options.
+        puts "Here are some objects you can observe from #{location}. For the full list of available objects in our database type 'list' and hit enter. Or alternatively use the 'help' command for all options."
+        sql = <<-SQL
+            
+            SQL
+        puts "#{sql}."
+
+    end
 end
-
 
 
  
