@@ -1,10 +1,25 @@
  require_relative '../config/environment'
 
-#1. Welcome SpaceTraveller! Pleae enter your name:
+def welcome
+    #1. Welcome SpaceTraveller! Pleae enter your name:
+    puts "Welcome SpaceTraveller! Pleae enter your name:"
+    username = gets.chomp
+    #2. Hello, #{name}! What's your current location?
+    puts "Hello, #{username}! What's your current location?"
+    location = gets.chomp
+        #if provided then use 
+        #else obtain location from the browser
+    #3. Here are some objects you can observe from #{location}. For the full list of available objects in our database type ??? and hit enter. Or alternatively use the "help" command for all options.
+    puts "Here are some objects you can observe from #{location}. For the full list of available objects in our database type "list" and hit enter. Or alternatively use the "help" command for all options."
+    sql = <<-SQL
+        
+        SQL
+    puts "#{sql}"
 
-#2. Hello, {#name}! What's your current location?
-    #if provided then use 
-    #else obtain location from the browser
+end
+
+
+
  
 #3. Here are some objects you can observe from {#location}. For the full list of available objects in our database type ??? and hit enter. Or alternatively use the "help" command for all options.
     #prints 5 objects based on location
@@ -30,11 +45,12 @@
     #add - adds the object to the user's favourites list
     #remove - removes the object from the user's favourites list
     #favourites - user's current list of favourites
-    #most liked object - prints out the object with the most entries in all users' favourites lists
-    #best known object - prints out the object with the longest description
+    #most liked- prints out the object with the most entries in all users' favourites lists
+    #best known- prints out the object with the longest description
     #my location is ... - uses the location name provided
     #from my location - prints the top 5 objects visible from the choosen location
     #categories - lists all categiries of objects
+    #list - a full list of object in the database
     #list {#specific category} - lists all objects from the desired category
     #search - brings question number 4
     #exit - terminates the app
