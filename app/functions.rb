@@ -112,6 +112,7 @@ def add_to_fav(user)
 
   user_liked = Favourite.all.find {|fav| fav.article_id == article_id && fav.user_id == user_id}
 
+  #binding.pry
   if !user_liked
     Favourite.create(article_id: user.article_id, user_id: user.user_id)
     puts "Added to your favourites"
@@ -123,7 +124,7 @@ end
 def remove_fav(user)
   article_id = user.article_id
   user_id = user.user_id
-  
+
   puts "Are you sure you want to remove this article from your favourites? (y/n)"
   input = gets.chomp
 
@@ -145,33 +146,57 @@ def remove_fav(user)
   end
 end
 
-def search_article
-  puts "Please enter an object's name:"
+def search(user)
+  puts "Please enter a search term:"
   searched_name = gets.chomp
   searched_name.downcase
-  num1 = rand(1..10)
-  num2 = rand(1..10)
-  articles = Article.all.select {|article| article.title.include?(searched_name) }.slice(0,9)
+  num1 = rand(1..10) * rand(10)
+  num2 = rand(1..10) * rand(10)
 
+  articles = Article.all.select {|article| article.title.downcase.include?(searched_name) }
+  articles = articles[num1..num2]
+
+  #binding.pry
   articles.each_with_index do |article, index|
-    puts "#{index+1}. #{article.title.upcase}\n #{article.overview}"
+    puts "#{index+1}. #{article.title.upcase}\n #{article.overview}\n\n"
   end
 
   puts "Choose the article that you would like to read by typing its number"
     article_number = gets.chomp.to_i - 1
-    puts articles[article_number]
+    article = articles[article_number]
+
+    puts "\n\n"
+    puts article.overview
+    
+    user.article_id = article.id
 end
+
+# def search
+#   puts "Please enter an object's name:"
+#   searched_name = gets.chomp
+#   searched_name.downcase
+#   # searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}
+#   # searched_article.map {|article| article.overview}
+#   searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}.map {|article| article.overview}
+#   puts "How many articles would you like to read for the #{searched_name}?"
+#   number_of_articles = gets.chomp.to_i - 1
+#   searched_article[0..number_of_articles].each_with_index do |article, index|
+#       puts "#{index + 1}. #{article}"
+#       puts "\n"
+#   end
+# end
 
 def favourites(user)
   user_id = user.user_id
   list = Favourite.all.select {|fav| fav.user_id == user_id}
-
+  #binding.pry
   puts "F A V O U R I T E  A R T I C L E S"
   puts "==============================\n\n"
 
   article_arr = list.map {|fav| Article.find_by(id: fav.article_id)}
 
-  article_arr.each_with_index {|article, index| puts "#{index +1}. #{article.title}"}
+  article_arr.each_with_index {|article, index| puts "#{index+1}. #{article.title}"}
+
     puts "Choose the article that you would like to read by typing its number"
     article_number = gets.chomp.to_i - 1
     article = article_arr[article_number]
