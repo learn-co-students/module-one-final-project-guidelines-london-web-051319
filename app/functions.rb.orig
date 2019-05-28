@@ -123,14 +123,12 @@ end
 def remove_fav(user)
   article_id = user.article_id
   user_id = user.user_id
-  
   puts "Are you sure you want to remove this article from your favourites? (y/n)"
   input = gets.chomp
 
   loop do
     if input == "y"
-      fav = Favourite.find_by(article_id: article_id, user_id: user_id)
-      fav.destroy
+      fav = Favourite.find_by(article_id: article_id, user_id: user_id)fav.destroy
       exit
       puts "Article removed from favourites"
     elsif input == "n"
@@ -170,13 +168,13 @@ def favourites(user)
   puts "==============================\n\n"
 
   article_arr = list.map {|fav| Article.find_by(id: fav.article_id)}
-
+  
   article_arr.each_with_index {|article, index| puts "#{index +1}. #{article.title}"}
     puts "Choose the article that you would like to read by typing its number"
-    article_number = gets.chomp.to_i - 1
-    article = article_arr[article_number]
-    user.article_id = article.id
-    puts article.overview
+
+      article_number = gets.chomp.to_i - 1
+      article = article_arr[article_number]
+      puts article.overview
 end
 
 def help
