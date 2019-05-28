@@ -86,6 +86,7 @@ def most_liked(most_liked_id)
   article = Article.find_by(id: most_liked_id)
   print_most_liked_overview(article)
 end
+
 # Astronomy Info of the Day
 def aiod
   url = "https://api.nasa.gov/planetary/apod?api_key=giSxdlW48Uaffgw7kHUbUnUOkmwUpZijYQhGe5ep"
@@ -131,3 +132,76 @@ def remove_fav(article_id, user_id)
     end
   end
 end
+
+def search
+    puts "Please enter an object's name:"
+    searched_name = gets.chomp
+    searched_name.downcase
+    # searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}
+    # searched_article.map {|article| article.overview}
+    searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}.map {|article| article.overview}
+    puts "How many articles would you like to read for the #{searched_name}?"
+    number_of_articles = gets.chomp.to_i - 1
+    searched_article[0..number_of_articles].each_with_index do |article, index|
+        puts "#{index + 1}. #{article}"
+        puts "\n"
+    end
+end
+
+def favourites
+    sql = <<-SQL
+    SELECT *
+    FROM favourites;
+    SQL
+    db.execute(sql)
+end
+
+def total
+    sql = <<-SQL
+    SELECT COUNT(*)
+    FROM articles;
+    SQL
+    db.execute(sql)
+end
+
+def help
+    puts "'search' - give the option to search"
+    puts "'add' - adds the object to the user's favourites list"
+    puts "'remove' - removes the object from the user's favourites list"
+    puts "'favourites' - user's current list of favourites"
+    puts "'curated_articles' - lists a number of curated articles"
+    puts "'total' - a full list of objects in the database"
+    puts "'most liked' - prints out the object with the most entries in all users' favourites lists"
+    puts "'best known' - prints out the object with the longest description"
+    puts "'exit' - terminates the app"
+end
+
+def input
+    loop do
+        user_input = gets.chomp
+        case user_input.downcase
+        when 'add'
+            add_fav
+        when 'remove'
+            remove_fav
+        when 'favourites'
+            favourites
+        when 'categories'
+            categories
+        when 'search'
+            search
+        when 'most liked'
+            most_liked
+        when 'longest'
+            longest
+        when 'help'
+            help
+        when 'exit'
+            exit
+        else
+            puts "Please enter a valid command"
+    end
+end
+
+# TODO"'my location is ...' - changes your curent location to a new entry"\n
+# TODO"'from my location' - prints the top 5 objects visible from the choosen location"n
