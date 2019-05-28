@@ -17,19 +17,13 @@ def input(userid)
         list_curated_articles
         print_curated_article_overview(user)
       when 'search'
-        search_article
+        search_article(user)
       when 'most liked'
         most_liked_article
       when 'aiod'
         aiod
       when 'longest'
-<<<<<<< HEAD
-        longest
-      when 'remove'
-        remove_fav(user)
-=======
         longest_article
->>>>>>> b7be1e40a2ba36226c6a5aecf24460ea97fa16fa
       when 'help'
         help
       when 'exit'

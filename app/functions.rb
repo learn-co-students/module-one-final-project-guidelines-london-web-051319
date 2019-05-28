@@ -131,13 +131,13 @@ def remove_fav(user)
     if input == "y"
       fav = Favourite.find_by(article_id: article_id, user_id: user_id)
       fav.destroy
-      exit
       puts "Article removed from favourites"
+      input(user_id)
     elsif input == "n"
       puts "Article not removed from favourites"
-      exit
+      input(user_id)
     elsif input == "exit"
-      exit
+      input(user_id)
     else
       puts "Puts valid command or type exit to close"
       input = gets.chomp
@@ -145,22 +145,37 @@ def remove_fav(user)
   end
 end
 
-def search_article
+def search_article(user)
   puts "Please enter an object's name:"
   searched_name = gets.chomp
   searched_name.downcase
-  num1 = rand(1..10)
-  num2 = rand(1..10)
-  articles = Article.all.select {|article| article.title.include?(searched_name) }.slice(0,9)
-
-  articles.each_with_index do |article, index|
-    puts "#{index+1}. #{article.title.upcase}\n #{article.overview}"
+  # searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}
+  # searched_article.map {|article| article.overview}
+  searched_article = Article.all.select {|article| article.title.downcase.include?(searched_name)}.map {|article| article.overview}
+  puts "How many articles would you like to read for #{searched_name}?"
+  number_of_articles = gets.chomp.to_i - 1
+  searched_article[0..number_of_articles].each_with_index do |article, index|
+      puts "#{index + 1}. #{article}"
+      puts "\n"
   end
-
-  puts "Choose the article that you would like to read by typing its number"
-    article_number = gets.chomp.to_i - 1
-    puts articles[article_number]
+  puts user.article_id
 end
+# def search_article
+#   puts "Please enter an object's name:"
+#   searched_name = gets.chomp
+#   searched_name.downcase
+#   num1 = rand(1..10)
+#   num2 = rand(1..10)
+#   articles = Article.all.select {|article| article.title.include?(searched_name) }.slice(0,9)
+
+#   articles.each_with_index do |article, index|
+#     puts "#{index+1}. #{article.title.upcase}\n #{article.overview}"
+#   end
+
+#   puts "Choose the article that you would like to read by typing its number"
+#     article_number = gets.chomp.to_i - 1
+#     puts articles[article_number]
+# end
 
 def favourites(user)
   user_id = user.user_id
