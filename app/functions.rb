@@ -54,7 +54,7 @@ end
 
 
 # MOST LIKED
-def most_liked
+def most_liked_num
   nums = []
 
   Article.all.each do |article|
@@ -62,17 +62,19 @@ def most_liked
     nums << len
   end
 
-  largest = nums.sort.last
-  most_liked_id = []
+  nums.sort.last
+end
 
+def most_liked_id(most_liked_num)
   Article.all.each do |article|
     len = Favourite.where(article_id: article.id).size
-    if len == largest
-      most_liked_id << article.id
+    if len == most_liked_num
+      return article.id
     end
   end
+end
 
-  article = Article.find_by(id: most_liked_id[0])
+def print_most_liked_overview(article)
   puts "\n\n"
   puts article.title.upcase
   puts "\n"
@@ -80,11 +82,10 @@ def most_liked
   puts "\n"
 end
 
-# "'add' - adds the object to the user's favourites list"\n
-# "'remove' - removes the object from the user's favourites list"\n
-# 'favourites' - user's current list of favourites"\n
-
-
+def most_liked(most_liked_id)
+  article = Article.find_by(id: most_liked_id)
+  print_most_liked_overview(article)
+end
 # Astronomy Info of the Day
 def aiod
   url = "https://api.nasa.gov/planetary/apod?api_key=giSxdlW48Uaffgw7kHUbUnUOkmwUpZijYQhGe5ep"
@@ -94,30 +95,39 @@ def aiod
   json = JSON.parse(data)
 
   puts "
-    #{json["title"].upcase!}'\n
-    #{json["date"]}'\n
-    #{json["explanation"]}
+    TITLE: #{json["title"].upcase!}'\n
+    DATE: #{json["date"]}'\n
+    OVERVIEW\n#{json["explanation"]}
   "
 end
 
-def add(article_id, user_id)
-  user_liked = Favourite.where(article_id: article_id, user_id: user_id)
+def add_fav(article_id, user_id)
+  user_liked = Favourite.all.select {|fav| fav.article_id == article_id && fav.user_id == user_id}
 
-  if user_liked
-    puts "This is already in your collections of favourites"
-  else
+  if user_liked.empty?
     Favourite.create(article_id: article_id, user_id: user_id)
     puts "Added to your favourites"
+  else
+    puts "This is already in your collections of favourites"
   end
 end
 
-def remove(article_id, user_id)
+def remove_fav(article_id, user_id)
   puts "Are you sure you want to remove this article from your favourites? (y/n)"
   input = gets.chomp
 
-  if input == "y"
-    Favourite.find_by(article_id: article_id, user_id: user_id).destroy_all
-  else
-    puts "Article not removed from favourites"
+  loop do
+    if input == "y"
+      Favourite.find_by(article_id: article_id, user_id: user_id).destroy
+      puts "Article removed from favourites"
+    elsif input == "n"
+      puts "Article not removed from favourites"
+      exit
+    elsif input == "exit"
+      exit
+    else
+      puts "Puts valid command or type exit to close"
+      input = gets.chomp
+    end
   end
 end
