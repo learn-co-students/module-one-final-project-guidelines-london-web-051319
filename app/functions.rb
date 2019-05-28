@@ -87,13 +87,13 @@ end
 def print_most_liked_overview(article)
   puts "\n"
   puts article.title.upcase
-  # puts "\n"
-  # puts article.overview.gsub("\n", "")
-  # puts "\n"
+  puts "\n"
+  puts article.overview.gsub("\n", "")
+  puts "\n"
 end
 
 # Astronomy Info of the Day
-def aiod
+def aiod(user)
   url = "https://api.nasa.gov/planetary/apod?api_key=giSxdlW48Uaffgw7kHUbUnUOkmwUpZijYQhGe5ep"
   uri = URI.parse(url)
   data = Net::HTTP.get(uri)
@@ -105,6 +105,9 @@ def aiod
     DATE: #{json["date"]}'\n
     OVERVIEW\n#{json["explanation"]}
   "
+  new_article = Article.create(title: json["title"], date: json["date"], overview: json["explanation"], curated: false)
+
+  user.article_id = new_article.id
 end
 
 def add_to_fav(user)
@@ -167,6 +170,8 @@ def search(user)
     article = articles[article_number]
 
     puts "\n\n"
+    puts article.title
+    puts "\n"
     puts article.overview
     
     user.article_id = article.id

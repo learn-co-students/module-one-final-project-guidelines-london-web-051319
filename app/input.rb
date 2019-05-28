@@ -19,9 +19,10 @@ def input(userid)
       when 'search'
         search(user)
       when 'most liked'
-        most_liked_article
+        id = most_liked_id(most_liked_num)
+        most_liked_article(id)
       when 'aiod'
-        aiod
+        aiod(user)
       when 'longest'
         longest_article
       when 'help'
