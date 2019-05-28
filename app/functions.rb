@@ -1,3 +1,6 @@
+
+require "pry"
+=======
 # CURATED
 def print_curated_article_overview
   puts "\n\n"
