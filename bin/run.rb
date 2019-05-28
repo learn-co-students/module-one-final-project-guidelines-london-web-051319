@@ -10,15 +10,16 @@ require_relative '../config/environment.rb'
 # id = most_liked_id(largest)
 # most_liked(id)
 # aiod
- require_relative '../config/environment'
 
         puts "Welcome SpaceTraveller! Please enter your username:"
-        user = gets.chomp
-        if User.all.include? user
-            user = User.find_by(username: user)
-        else
-            user = User.create(username: user)
+        username = gets.chomp
+        user = User.find_by(username: username)
+
+        if !user
+           user = User.create(username: username)
         end
+
+        #binding.pry
         # puts "Hello, #{user.username}! What's your current location?"
         # user_location = gets.chomp
         #     #if provided then use
@@ -27,9 +28,8 @@ require_relative '../config/environment.rb'
         # puts "Here are some objects you can observe from #{user_location}. Please enter a command or alternatively use the 'help' keyword for all options."
         # top_5_for_current_location(user_location)
 
-        puts "Please enter a valid command or alternatively use the 'help' keyword for all options."
-        input
 
+        input(user.id)
 
 
 
