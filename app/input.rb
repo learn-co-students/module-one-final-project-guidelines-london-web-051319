@@ -23,13 +23,11 @@ def input(userid)
       when 'aiod'
         aiod
       when 'longest'
-<<<<<<< HEAD
         longest
       when 'remove'
         remove_fav(user)
-=======
+      when 'longest'
         longest_article
->>>>>>> b7be1e40a2ba36226c6a5aecf24460ea97fa16fa
       when 'help'
         help
       when 'exit'
