@@ -17,3 +17,5 @@ json.each do |key, data|
 end
 # Create 10 Users
 10.times { User.create(username: Faker::Name.name) }
+
+Favourite.new(user_id: 1, article_id: 10)

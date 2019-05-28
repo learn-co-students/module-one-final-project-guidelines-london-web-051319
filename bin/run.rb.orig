@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env ruby
 require_relative '../config/environment.rb'
 
@@ -10,6 +11,7 @@ require_relative '../config/environment.rb'
 # id = most_liked_id(largest)
 # most_liked(id)
 # aiod
+=======
  require_relative '../config/environment'
 
         puts "Welcome SpaceTraveller! Please enter your username:"
@@ -21,7 +23,7 @@ require_relative '../config/environment.rb'
         end
         # puts "Hello, #{user.username}! What's your current location?"
         # user_location = gets.chomp
-        #     #if provided then use
+        #     #if provided then use 
         #     #else obtain location from the browser
 
         # puts "Here are some objects you can observe from #{user_location}. Please enter a command or alternatively use the 'help' keyword for all options."
@@ -33,7 +35,7 @@ require_relative '../config/environment.rb'
 
 
 
-
+ 
 #3. Here are some objects you can observe from {#location}. For the full list of available objects in our database type ??? and hit enter. Or alternatively use the "help" command for all options.
     #prints 5 objects based on location
 
@@ -52,3 +54,4 @@ require_relative '../config/environment.rb'
     #lists all favourite objects
 
 #7. You have selected {#fav. object}. What would you like to do? Type "info" to get a full description or "remove" to delete it from your list.
+>>>>>>> refs/remotes/origin/CLI
