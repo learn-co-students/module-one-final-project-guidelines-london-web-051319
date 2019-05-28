@@ -1,6 +1,3 @@
-
-require "pry"
-=======
 # CURATED
 def print_curated_article_overview
   puts "\n\n"
@@ -182,6 +179,9 @@ end
 def input
     loop do
         user_input = gets.chomp
+        user_id = user.id
+        article_id = 0
+        
         case user_input.downcase
         when 'add'
             add_fav
