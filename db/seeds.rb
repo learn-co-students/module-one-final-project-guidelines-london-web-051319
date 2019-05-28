@@ -18,4 +18,10 @@ end
 # Create 10 Users
 10.times { User.create(username: Faker::Name.name) }
 
-Favourite.new(user_id: 1, article_id: 10)
+Favourite.create(user_id: 1, article_id: 13)
+Favourite.create(user_id: 2, article_id: 10)
+Favourite.create(user_id: 1, article_id: 12)
+Favourite.create(user_id: 13, article_id: 9)
+Favourite.create(user_id: 1, article_id: 17)
+Favourite.create(user_id: 1, article_id: 15)
+Favourite.create(user_id: 1, article_id: 20)
