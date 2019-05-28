@@ -121,13 +121,18 @@ def add_to_fav(user)
   end
 end
 
-def remove_fav(article_id, user_id)
+def remove_fav(user)
+  article_id = user.article_id
+  user_id = user.user_id
+
   puts "Are you sure you want to remove this article from your favourites? (y/n)"
   input = gets.chomp
 
   loop do
     if input == "y"
-      Favourite.find_by(article_id: article_id, user_id: user_id).destroy
+      fav = Favourite.find_by(article_id: article_id, user_id: user_id)
+      fav.destroy
+      exit
       puts "Article removed from favourites"
     elsif input == "n"
       puts "Article not removed from favourites"
@@ -187,6 +192,7 @@ def favourites(user)
     puts "Choose the article that you would like to read by typing its number"
     article_number = gets.chomp.to_i - 1
     article = article_arr[article_number]
+    user.article_id = article.id
     puts article.overview
 end
 

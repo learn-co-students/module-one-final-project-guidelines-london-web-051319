@@ -24,6 +24,8 @@ def input(userid)
         aiod
       when 'longest'
         longest
+      when 'remove'
+        remove_fav(user)
       when 'help'
         help
       when 'exit'
