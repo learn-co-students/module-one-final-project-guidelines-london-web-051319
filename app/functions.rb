@@ -1,4 +1,4 @@
-#require "pry"
+require "pry"
 
 def search
     puts "Please enter an object's name:"
@@ -19,10 +19,16 @@ def add
     puts "Please enter an object's name:"
     searched_name = gets.chomp
     searched_name.downcase
-    if user_id = nil && article_id = nil
-        puts "There is no article selected. Please first select an article and then try to add it to your Favourites list."
-    else
-    new_favourite = Favourite.new(user_id, article_id)
+    binding.pry
+    add_article = Article.all.select do |article| article.id.include?(article.id) article.id
+    end
+    check_user = User.all.select do |user| user.id.include?(user.id) user.id
+    end
+
+    # if user_id = nil && article_id = nil
+    #     puts "There is no article selected. Please first select an article and then try to add it to your Favourites list."
+    # else
+    new_favourite = Favourite.new(check_user, add_article)
     new_favourite.save
     end
 end
