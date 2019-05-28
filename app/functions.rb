@@ -42,7 +42,8 @@ end
 
 
 # LONGEST OVERVIEW
-def longest_article(article_id)
+def longest_article(user)
+  
   nums = []
   Article.all.each {|article| nums << article.overview.length}
   largest = nums.sort.last
@@ -53,7 +54,7 @@ def longest_article(article_id)
   puts "\n\n"
   puts article.overview.gsub("\n","")
 
-  article_id = article.id
+  user.article_id = article.id
 end
 
 
@@ -84,11 +85,11 @@ def most_liked_article(most_liked_id)
 end
 
 def print_most_liked_overview(article)
-  puts "\n\n"
+  puts "\n"
   puts article.title.upcase
-  puts "\n"
-  puts article.overview.gsub("\n", "")
-  puts "\n"
+  # puts "\n"
+  # puts article.overview.gsub("\n", "")
+  # puts "\n"
 end
 
 # Astronomy Info of the Day
@@ -151,14 +152,14 @@ def search(user)
   searched_name = gets.chomp
   searched_name.downcase
   num1 = rand(1..10) * rand(10)
-  num2 = rand(1..10) * rand(10)
+  num2 = num1 + 10
 
   articles = Article.all.select {|article| article.title.downcase.include?(searched_name) }
   articles = articles[num1..num2]
 
   #binding.pry
   articles.each_with_index do |article, index|
-    puts "#{index+1}. #{article.title.upcase}\n #{article.overview}\n\n"
+    puts "#{index+1}. #{article.title.upcase}\n"
   end
 
   puts "Choose the article that you would like to read by typing its number"
@@ -170,22 +171,6 @@ def search(user)
     
     user.article_id = article.id
 end
-# def search_article
-#   puts "Please enter an object's name:"
-#   searched_name = gets.chomp
-#   searched_name.downcase
-#   num1 = rand(1..10)
-#   num2 = rand(1..10)
-#   articles = Article.all.select {|article| article.title.include?(searched_name) }.slice(0,9)
-
-#   articles.each_with_index do |article, index|
-#     puts "#{index+1}. #{article.title.upcase}\n #{article.overview}"
-#   end
-
-#   puts "Choose the article that you would like to read by typing its number"
-#     article_number = gets.chomp.to_i - 1
-#     puts articles[article_number]
-# end
 
 
 def favourites(user)

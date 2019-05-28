@@ -1,16 +1,16 @@
 def input(userid)
-
+    puts "Please enter a valid command or alternatively use the 'help' keyword for all options."
     user = Input.new(userid)
     loop do
       #binding.pry
-      puts "Please enter a valid command or alternatively use the 'help' keyword for all options."
+
       user_input = gets.chomp
 
       case user_input.downcase
       when 'add'
         add_to_fav(user)
-      # when 'remove'
-      #   remove_fav
+      when 'remove'
+        remove_fav(user)
       when 'favourites'
         favourites(user)
       when 'curated'
@@ -19,19 +19,17 @@ def input(userid)
       when 'search'
         search(user)
       when 'most liked'
-        most_liked
+        most_liked_article
       when 'aiod'
         aiod
       when 'longest'
-        longest
-      when 'remove'
-        remove_fav(user)
+        longest_article
       when 'help'
         help
       when 'exit'
         exit
       else
-        puts "Please enter a valid command"
+        puts "Please enter a valid command or alternatively use the 'help' keyword for all options."
         #binding.pry
     end
 
