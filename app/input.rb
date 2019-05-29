@@ -1,11 +1,9 @@
-def input(userid)
+def input(user)
     puts "\n"
     puts "-- Please enter a valid command or alternatively use the 'help' keyword for all options. --"
     puts "\n"
-    user = Input.new(userid)
     loop do
       #binding.pry
-
       user_input = gets.chomp
 
       case user_input.downcase

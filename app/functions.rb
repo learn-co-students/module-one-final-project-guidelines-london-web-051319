@@ -212,17 +212,18 @@ def choose_by_number(article_arr, user)
     num = user_num - 1
     article = article_arr[num]
     user.article_id = article.id
+
+    #binding.pry
     puts "\n"
     puts article.title.upcase
     puts "\n"
     puts article.overview
     puts "\n"
-    puts "finished"
-    input(user.user_id)
+    input(user)
   end
  
   if user_input == "back"
-    input(user.user_id)
+    input(user)
   elsif !user_num.is_a? Integer
     puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
   end
