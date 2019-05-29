@@ -49,8 +49,8 @@ concert14 = Concert.create(name: "Green Grass Tour: Manchester", price: 65, webs
 concert15 = Concert.create(name: "Green Grass Tour: London", price: 100, website_url: "TBC", artist_id: jones.id, venue_id: wembley.id)
 concert16 = Concert.create(name: "Oh no!", price: 40, website_url: "TBC", artist_id: fonsi.id, venue_id: nec.id)
 concert17 = Concert.create(name: "Mindgoogling: Newcastle", price: 70, website_url: "TBC", artist_id: bill.id, venue_id: o2_newc.id)
-concert18 = Concert.create(name: "Spice Up Your Life", price: 90, website_url: "TBC", artist_id: spice.id, venue_id: manchester.id)
-concert19 = Concert.create(name: "Spice Up Your Life", price: 90, website_url: "TBC", artist_id: spice.id, venue_id: o2_newc.id)
+concert18 = Concert.create(name: "Spice Up Your Life: Manchester", price: 90, website_url: "TBC", artist_id: spice.id, venue_id: manchester.id)
+concert19 = Concert.create(name: "Spice Up Your Life: Newcastle", price: 90, website_url: "TBC", artist_id: spice.id, venue_id: o2_newc.id)
 concert20 = Concert.create(name: "Good Vibrations", price: 60, website_url: "TBC", artist_id: lenny.id, venue_id: o2.id)
 
 

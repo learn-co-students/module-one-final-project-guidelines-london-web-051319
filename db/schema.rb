@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_28_145047) do
+ActiveRecord::Schema.define(version: 2019_05_29_113931) do
 
   create_table "artists", force: :cascade do |t|
     t.string "name"
@@ -39,9 +39,11 @@ ActiveRecord::Schema.define(version: 2019_05_28_145047) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.datetime "dob"
-    t.integer "card_number"
+    t.integer "card_1_number"
     t.string "email"
     t.string "password"
+    t.integer "card_2_number"
+    t.integer "card_3_number"
   end
 
   create_table "venues", force: :cascade do |t|
