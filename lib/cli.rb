@@ -27,7 +27,7 @@ class Cli
 			end
 	end
 
-	def sign_in
+	def sign_in #asks for email, checks against 3 tables for a record. Returns the record as @current_user and launches the correct portal.
 		puts "Mus.ic sign in"
 		prompt = TTY::Prompt.new
 		email_prompt = prompt.ask('Please enter the email address you signed up with', default: ENV['yourname@gmail.com'])
@@ -35,6 +35,7 @@ class Cli
 		user_check = User.find_user_by_email(email_prompt)
 		artist_check = Artist.find_artist_by_email(email_prompt)
 		venue_check = Venue.find_venue_by_email(email_prompt)
+      #we could merge these methods and inherit them to self (find_by_email)
 
 		if user_check
 			@current_user = user_check
@@ -51,7 +52,10 @@ class Cli
 	end
 
 	def new_user_sign_up
-		puts "this is the user sign up method"
+		puts "Welcome to Mus.ic! Please let us know which account you would like to create:"
+      prompt = TTY::Prompt.new
+      choices = ["Customer", "Artist", "Venue Manager", "Log out"]
+      response = prompt.select("Please select an option:", choices)
 	end
 	
 	def exit_menu
