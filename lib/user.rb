@@ -72,13 +72,19 @@ class User < ActiveRecord::Base
    end
 
    def buy_ticket(concert_name)
-      concert = Concert.all.find{|inst| inst.name == concert_name}
+      concert = Concert.all.find{|inst| inst.name.downcase == concert_name.downcase}
+      if concert == nil
+         puts "Concert does not exist"
+         exit
+      else
       Ticket.create(user_id: self.id, concert_id: concert.id)
+      end
    end
 
    def cancel_ticket(concert_name)
-      concert = Concert.all.find{|inst| inst.name == concert_name}
-      Ticket.all.select{|inst| inst.user_id == self.id && inst.concert_id == concert.id}[0].destroy
+      # binding.pry
+      concert = Concert.all.find{|inst| inst.name.downcase == concert_name.downcase}
+      Ticket.all.find{|inst| inst.user_id == self.id && inst.concert_id == concert.id}.destroy
    end
 
 end

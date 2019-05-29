@@ -62,8 +62,6 @@ class Cli
    # ARTISTS
 
    def customer_portal(user)
-      # user = User.all.select{|inst| inst.email == email_add}.first
-      # binding.pry
       prompt = TTY::Prompt.new
       choices = ["Add card", "Update name", "Update dob", "Update card details", "Remove card", "My concerts", "Buy ticket", "Cancel ticket", "Log out"]
       response = prompt.select("Please select an option:", choices)
@@ -81,7 +79,7 @@ class Cli
          user.update_card_details(new_card)
       elsif response == "Remove card" 
          options = ["Yes", "No"]
-         check = prompt.ask("Are you sure you want to delete your current card?", options)
+         check = prompt.select["Are you sure you want to delete your current card?", options]
          if check == "Yes"
             user.remove_card
          end
@@ -93,7 +91,7 @@ class Cli
       elsif response == "Cancel ticket"
          cancel = prompt.ask("Please confirm which tickets you would like to cancel?")
          options = ["Yes", "No"]
-         check = prompt.ask("Are you sure you want to cancel your tickets?", options)
+         check = prompt.select("Are you sure you want to cancel your tickets?", options)
          if check == "Yes"
             user.cancel_ticket(cancel)
          end
@@ -104,7 +102,6 @@ class Cli
    end 
 
    def venue_portal(user)
-      # user = Venue.all.find{|inst| inst.email == email_add}
       prompt = TTY::Prompt.new
       choices = ["View my concerts", "View all artists", "Log out"]
       response = prompt.select("Please select an option:", choices)
@@ -119,7 +116,6 @@ class Cli
    end 
 
    def artist_portal(user)
-      # user = Artist.all.find{|inst| inst.email == email_add}
       prompt = TTY::Prompt.new
       choices = ["My schedule", "Concert tickets sold", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
       response = prompt.select("Please select an option:", choices)
@@ -143,7 +139,6 @@ class Cli
       end
       artist_portal(user)
    end
-
 
 
 end
