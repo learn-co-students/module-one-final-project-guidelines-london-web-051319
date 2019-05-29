@@ -95,54 +95,53 @@ end
 def add_to_fav(user)
   article_id = user.article_id
   user_id = user.user_id
+
   user_liked = Favourite.all.find {|fav| fav.article_id == article_id && fav.user_id == user_id}
   if !user_liked && article_id
     Favourite.create(article_id: user.article_id, user_id: user.user_id)
     puts "\n"
     puts "-- Added to your favourites --"
     puts "\n"
-    input(user_id)
+    puts "\n\n"
+    puts "Press Enter For Main Menu"
   elsif !article_id
     puts "Cannot Add This Article"
-    input(user_id)
+    puts "Press Enter For Main Menu"
   else
     puts "\n"
     puts "-- This is already in your collections of favourites --"
-    puts "\n"
-    input(user_id)
+    puts "\n\n"
+    puts "Press Enter For Main Menu"
   end
 end
 
 def remove_fav(user)
   article_id = user.article_id
   user_id = user.user_id
+  #.pry
   puts "\n"
-  puts "-- Are you sure you want to REMOVE this article from your favourites? (yes/no) --"
+  puts "-- Are you sure you want to REMOVE this article from your favourites? (y/n) --"
   puts "\n"
-  input = gets.chomp
-  loop do
-    if input == "yes"
-      fav = Favourite.find_by(article_id: article_id, user_id: user_id)
-      #binding.pry
-      fav.destroy
-      puts "\n"
-      puts "-- Article removed from favourites --"
-      puts "\n"
-      input(user_id)
-    elsif input == "no"
-      puts "\n"
-      puts "-- Article not removed from favourites --"
-      puts "\n"
-      input(user_id)
-    elsif input == "exit"
-      input(user_id)
-    else
-      puts "\n"
-      puts "-- Enter valid command or type exit to close --"
-      puts "\n"
-      input = gets.chomp
-    end
+  user_input = gets.chomp
+  if user_input == "y"
+    fav = Favourite.find_by(article_id: article_id, user_id: user_id)
+    fav.destroy
+    puts "\n"
+    puts "-- Article removed from favourites --"
+    puts "\n"
+  elsif user_input == "n"
+    puts "\n"
+    puts "-- Article not removed from favourites --"
+    puts "\n"
+  elsif user_input == "0"
+    exit
+  else
+    puts "\n"
+    puts "-- Enter valid command or type exit to close --"
+    puts "\n"
+    user_input = gets.chomp
   end
+  puts "Press Enter For Main Menu"
 end
 
 def search(user)
@@ -161,14 +160,12 @@ def search(user)
     choose_by_number(article_arr, user)
     else
       puts "ERROR 404! No articles found with this search term"
-      input(user)
   end
 
 end
 
 
 def favourites(user)
-  #binding.pry
   user_id = user.user_id
   list = Favourite.all.select {|fav| fav.user_id == user_id}
   article_arr = list.map {|fav| Article.find_by(id: fav.article_id)}
@@ -217,8 +214,8 @@ def choose_by_number(article_arr, user)
     puts article.title.upcase
     puts "\n"
     puts article.overview
-    puts "\n"
-    puts "Press Enter"
+    puts "\n\n"
+    puts "Press Enter For Main Menu"
   else
     puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
   end
