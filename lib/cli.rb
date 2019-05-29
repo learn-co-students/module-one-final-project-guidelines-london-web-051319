@@ -30,19 +30,24 @@ class Cli
 	def sign_in
 		puts "Mus.ic sign in"
 		prompt = TTY::Prompt.new
-		email = prompt.ask('Please enter the email address you signed up with', default: ENV['yourname@gmail.com'])
-		
-		# email_check = User.find_user_by_email(email) #this is working :-) tomorrow i'll continue on the log in/ sign up methods
-      # # binding.pry 
+		email_prompt = prompt.ask('Please enter the email address you signed up with', default: ENV['yourname@gmail.com'])
 
-      #We could actually just do an && condition where they only get through if the username and password match our records. Also going through each list actually worked pretty well. 
-      if User.all.map(&:email).include?(email)
-         customer_portal(email)
-      elsif Venue.all.map(&:email).include?(email)
-         venue_portal(email)
-      elsif Artist.all.map(&:email).include?(email)
-         artist_portal(email)
-      end
+		user_check = User.find_user_by_email(email_prompt)
+		artist_check = Artist.find_artist_by_email(email_prompt)
+		venue_check = Venue.find_venue_by_email(email_prompt)
+
+		if user_check
+			@current_user = user_check
+			customer_portal
+		elsif artist_check
+			@current_user = artist_check
+			artist_portal
+		elsif venue_check
+			@current_user = venue_check
+			venue_portal
+		else
+			sign_in
+		end
 	end
 
 	def new_user_sign_up
@@ -138,7 +143,36 @@ class Cli
          exit
       end
       artist_portal(email_add)
-   end 
+   end
+
+#    # binding.pry
+
+#    def customer_options
+#    		puts "this is customer_options"
+
+#    		# user_x = User.all[0] #James, i think this is working! we were looking at an old file.... Chris.
+#      #  prompt = TTY::Prompt.new
+#      #  choices = %w(add_card, update_name, update_dob, update_card_details, remove_card, my_concerts, buy_ticket, cancel_ticket)
+#      #  prompt.enum_select("Please select an option:", choices)
+#       binding.pry
+#    end 
+
+#    def venue_options
+#    		puts "this is venue_options"
+#    		binding.pry
+#       # prompt = TTY::Prompt.new
+#       # choices = %w(my_concerts, my_artists)
+#       # prompt.enum_select("Please select an option:", choices)
+#    end 
+
+#    def artist_options
+#    		puts "this is artist_options"
+#    		binding.pry
+#       # prompt = TTY::Prompt.new
+#       # choices = %w(my_schedule, concert_tickets_sold, all_tickets, total_tickets_sold, where_am_i_playing, my_ticket_prices, my_earnings_concert)
+#       # prompt.enum_select("Please select an option:", choices)
+# >>>>>>> Stashed changes
+    
 
 
 
