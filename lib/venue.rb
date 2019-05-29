@@ -14,6 +14,14 @@ class Venue < ActiveRecord::Base
 
    # INSTANCE *****************
 
+   def update_email(new_email)
+      self.update(email: new_email)
+   end
+
+   def update_password(new_password)
+      self.update(password: new_password)
+   end
+
    def my_concerts
       Concert.all.select{|inst| inst.venue_id == self.id}
    end
