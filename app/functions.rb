@@ -101,15 +101,12 @@ def add_to_fav(user)
     puts "\n"
     puts "-- Added to your favourites --"
     puts "\n"
-    input(user_id)
   elsif !article_id
     puts "Cannot Add This Article"
-    input(user_id)
   else
     puts "\n"
     puts "-- This is already in your collections of favourites --"
     puts "\n"
-    input(user_id)
   end
 end
 
@@ -117,31 +114,29 @@ def remove_fav(user)
   article_id = user.article_id
   user_id = user.user_id
   puts "\n"
-  puts "-- Are you sure you want to REMOVE this article from your favourites? (yes/no) --"
+  puts "-- Are you sure you want to REMOVE this article from your favourites? (y/n) --"
   puts "\n"
   input = gets.chomp
   loop do
-    if input == "yes"
+    if input == "y"
       fav = Favourite.find_by(article_id: article_id, user_id: user_id)
       #binding.pry
       fav.destroy
       puts "\n"
       puts "-- Article removed from favourites --"
       puts "\n"
-      input(user_id)
-    elsif input == "no"
+    elsif input == "n"
       puts "\n"
       puts "-- Article not removed from favourites --"
       puts "\n"
-      input(user_id)
-    elsif input == "exit"
-      input(user_id)
+    elsif input == "0"
+      exit
     else
       puts "\n"
-      puts "-- Enter valid command or type exit to close --"
+      puts "-- Enter valid command or type 0 to close --"
       puts "\n"
-      input = gets.chomp
     end
+    
   end
 end
 
@@ -212,14 +207,11 @@ def choose_by_number(article_arr, user)
     num = user_num - 1
     article = article_arr[num]
     user.article_id = article.id
-
-    #binding.pry
     puts "\n"
     puts article.title.upcase
     puts "\n"
     puts article.overview
     puts "\n"
-    input(user)
   end
  
   if user_input == "back"
