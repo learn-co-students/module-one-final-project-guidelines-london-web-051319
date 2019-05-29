@@ -1,18 +1,10 @@
 # CURATED
 def print_curated_article_overview(user)
   puts "\n\n"
-  articles = Article.where(curated: true)
+  article_arr = Article.where(curated: true)
   curated_overview = []
-  articles.each {|article| curated_overview << "#{article.overview}"}
-  puts "\n"
-  puts "-- Choose the article that you would like to read by typing its number --"
-  puts "\n"
-  article_number = gets.chomp.to_i - 1
-  article = articles[article_number]
-  user.article_id = article.id
-  puts "\n"
-  puts article.overview
-  puts "\n"
+  article_arr.each {|article| curated_overview << "#{article.overview}"}
+  choose_by_number(article_arr, user)
 end
 
 def list_curated_articles
@@ -112,6 +104,7 @@ def add_to_fav(user)
     input(user_id)
   elsif !article_id
     puts "Cannot Add This Article"
+    input(user_id)
   else
     puts "\n"
     puts "-- This is already in your collections of favourites --"
@@ -124,12 +117,13 @@ def remove_fav(user)
   article_id = user.article_id
   user_id = user.user_id
   puts "\n"
-  puts "-- Are you sure you want to remove this article from your favourites? (yes/no) --"
+  puts "-- Are you sure you want to REMOVE this article from your favourites? (yes/no) --"
   puts "\n"
   input = gets.chomp
   loop do
     if input == "yes"
       fav = Favourite.find_by(article_id: article_id, user_id: user_id)
+      #binding.pry
       fav.destroy
       puts "\n"
       puts "-- Article removed from favourites --"
@@ -158,23 +152,13 @@ def search(user)
   searched_name = gets.chomp
   puts "\n"
   searched_name.downcase!
-  articles = Article.all.select {|article| article.title.downcase.index(searched_name) } 
+  article_arr = Article.all.select {|article| article.title.downcase.index(searched_name) } 
   puts "\n"
-  if !articles.empty?
-    articles.each_with_index do |article, index|
+  if !article_arr.empty?
+    article_arr.each_with_index do |article, index|
       puts "#{index+1}. #{article.title.upcase}\n\n"
     end
-    puts "\n"
-    puts "-- Choose the article that you would like to read by typing its number --"
-    puts "\n"
-    article_number = gets.chomp.to_i - 1
-    article = articles[article_number]
-    puts "\n\n"
-    puts article.title
-    puts "\n"
-    puts article.overview
-    puts "\n"
-    user.article_id = article.id
+    choose_by_number(article_arr, user)
     else
       puts "ERROR 404! No articles found with this search term"
       input(user)
@@ -191,41 +175,55 @@ def favourites(user)
   puts "-- F A V O U R I T E  A R T I C L E S --"
   puts "========================================\n\n"
   article_arr.each_with_index {|article, index| puts "#{index+1}. #{article.title}\n\n"}
-  puts "\n"
-  puts "-- Choose the article that you would like to read by typing its number --"
-  puts "\n"
-  article_number = gets.chomp.to_i - 1
-  article = article_arr[article_number]
-  user.article_id = article.id
-  puts "\n"
-  puts article.overview
-  puts "\n"
+  choose_by_number(article_arr, user)
 end
 
 def help
   puts "\n"
-  puts "|'search' - gives the option to search through all articles"
+  puts "|'0' - terminates the app"
   puts "\n"
-  puts "|'add' - adds the selected article to the user's favourites list"
+  puts "|'1' - gives the option to search through all articles"
   puts "\n"
-  puts "|'remove' - removes the selected article from the user's favourites list"
+  puts "|'2' - adds the selected article to the user's favourites list"
   puts "\n"
-  puts "|'favourites' - user's current list of favourite articles"
+  puts "|'3' - removes the selected article from the user's favourites list"
   puts "\n"
-  puts "|'curated' - lists a number of curated articles"
+  puts "|'4' - user's current list of favourite articles"
   puts "\n"
-  puts "|'aiod' - pulls an article from NASA's Astronomy Photo of the Day website about the featured photo"
+  puts "|'5' - pulls an article from NASA's Astronomy Photo of the Day website about the featured photo"
   puts "\n"
-  puts "|'most liked' - prints out the article with the most entries in all users' favourites lists"
+  puts "|'6' - prints out the article with the most entries in all users' favourites lists"
   puts "\n"
-  puts "|'longest' - prints out the article with the longest description"
+  puts "|'7' - prints out the article with the longest description"
   puts "\n"
-  puts "|'exit' - terminates the app"
+  puts "|'8' - lists a number of curated articles"
   puts "\n"
 end
 
-def choose_by_number
+def choose_by_number(article_arr, user)
   puts "\n"
-  puts "-- Choose the article that you would like to read by typing its number --"
+  puts "-- Choose the article that you would like to read by typing its number or type 'back' to return to main menu --"
   puts "\n"
+  
+  user_input = gets.chomp
+  user_num = user_input.to_i
+
+  if user_num.is_a? Integer
+    num = user_num - 1
+    article = article_arr[num]
+    user.article_id = article.id
+    puts "\n"
+    puts article.title.upcase
+    puts "\n"
+    puts article.overview
+    puts "\n"
+    puts "finished"
+    input(user.user_id)
+  end
+ 
+  if user_input == "back"
+    input(user.user_id)
+  elsif !user_num.is_a? Integer
+    puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
+  end
 end
