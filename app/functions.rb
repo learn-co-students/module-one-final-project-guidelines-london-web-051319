@@ -27,13 +27,13 @@ def longest_article(user)
   Article.all.each {|article| nums << article.overview.length}
   largest = nums.sort.last
   article = Article.all.find {|article| article.overview.length == largest}
+  user.article_id = article.id
   puts "\n"
   puts "-- L O N G E S T  A R T I C L E --"
   puts "==================================\n\n"
   puts article.title.upcase
   puts "\n"
   puts article.overview.gsub("\n","")
-  user.article_id = article.id
   puts "\n"
 end
 
