@@ -98,7 +98,8 @@ class User < ActiveRecord::Base
       end
    end
 
-   def cancel_ticket(concert_name)
+
+   def cancel_ticket(concert_name) #we need to add this one to Customer menu cli
       # binding.pry
       concert = Concert.all.find{|inst| inst.name.downcase == concert_name.downcase}
       Ticket.all.find{|inst| inst.user_id == self.id && inst.concert_id == concert.id}.destroy
