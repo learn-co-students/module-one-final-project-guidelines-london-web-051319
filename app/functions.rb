@@ -1,4 +1,31 @@
 # CURATED
+
+def update_user(user)
+  puts "-- Enter new title to change your name --"
+  inp = gets.chomp
+  loop do
+    userExist = User.find_by(username: inp)
+    if userExist
+      puts "\n"
+      puts "-- This name is taken. Please choose another name. --"
+      puts "\n"
+      puts "-- Press Enter For Main Menu --"
+      puts "\n"
+      inp = gets.chomp
+    else 
+      current_user = User.find_by(id: user.user_id)
+      current_user.username = inp
+      current_user.save
+      puts "\n"
+      puts "-- Your new name is #{inp} --"
+      puts "\n"
+      puts "-- Press Enter For Main Menu --"
+      puts "\n"
+      break
+    end
+  end
+end
+
 def print_curated_article_overview(user)
   puts "\n\n"
   article_arr = Article.where(curated: true)
@@ -39,6 +66,8 @@ def longest_article(user)
   puts article.overview.gsub("\n","")
   user.article_id = article.id
   puts "\n"
+  puts "Press Enter For Main Menu"
+  puts "\n"
 end
 
 
@@ -61,12 +90,12 @@ def most_liked_id(most_liked_num)
   end
 end
 
-def most_liked_article(most_liked_id)
+def most_liked_article(most_liked_id, user)
   article = Article.find_by(id: most_liked_id)
-  print_most_liked_overview(article)
+  print_most_liked_overview(article, user)
 end
 
-def print_most_liked_overview(article)
+def print_most_liked_overview(article, user)
   puts "\n"
   puts "-- M O S T  L I K E D  A R T I C L E --"
   puts "=======================================\n\n"
@@ -75,6 +104,10 @@ def print_most_liked_overview(article)
   puts "\n"
   puts article.overview.gsub("\n", "")
   puts "\n"
+  puts "Press Enter For Main Menu"
+  puts "\n"
+
+  user.article_id = article.id
 end
 
 # Astronomy Info of the Day
@@ -123,6 +156,7 @@ def add_to_fav(user)
     puts "-- This is already in your collections of favourites --"
     puts "\n\n"
     puts "-- Press Enter For Main Menu --"
+    puts "\n"
   end
 end
 
@@ -152,6 +186,7 @@ def remove_fav(user)
     user_input = gets.chomp
   end
   puts "-- Press Enter For Main Menu --"
+  puts "\n"
 end
 
 def search(user)
@@ -169,7 +204,9 @@ def search(user)
     end
     choose_by_number(article_arr, user)
     else
+      puts "\n"
       puts "-- ERROR 404! No articles found with this search term --"
+      puts "\n"
   end
 
 end
@@ -210,7 +247,7 @@ end
 
 def choose_by_number(article_arr, user)
   puts "\n"
-  puts "-- Choose the article that you would like to read by typing its number or type 'back' to return to main menu --"
+  puts "-- Choose the article that you would like to read by typing its number or press Enter to return to main menu --"
   puts "\n"
 
   user_input = gets.chomp
@@ -228,17 +265,19 @@ def choose_by_number(article_arr, user)
         puts "\n"
         puts article.overview
         puts "\n\n"
-        puts "Press Enter For Main Menu"
+        puts "-- Press Enter For Main Menu --"
+        puts "\n"
         break if article
+      elsif len == 0 
+        puts "-- No Articles in here :( Add some plox!!! --"
+        puts "-- Press Enter For Main Menu --"
+        puts "\n"
+        break
       else
-        puts "\n\nEnter Value Between 1 and #{len}"
+        puts "\n\n-- Enter Value Between 1 and #{len} --"
         user_input = gets.chomp
         user_num = user_input.to_i
       end
-    else
-      puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
-      user_input = gets.chomp
-      user_num = user_input.to_i
     end
   end
 end

@@ -18,13 +18,15 @@ def input(user)
       search(user)
     when '6'
       id = most_liked_id(most_liked_num)
-      most_liked_article(id)
+      most_liked_article(id, user)
     when '5'
       aiod(user)
     when '7'
       longest_article(user)
     when 'help'
       help
+    when "9"
+      update_user(user)
     when '0'
       exit
     else
