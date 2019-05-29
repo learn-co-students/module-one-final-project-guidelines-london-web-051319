@@ -8,6 +8,8 @@ class Ticket < ActiveRecord::Base
       Ticket.all.count
    end
 
+   
+
    # INSTANCE ********************
 
    def concert

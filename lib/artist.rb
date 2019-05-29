@@ -8,6 +8,10 @@ class Artist < ActiveRecord::Base
       Artist.all.select{|inst| inst.name == band_name}[0].my_schedule
    end
 
+   def self.find_artist_by_email(email_address) #this method is used to check the email address for sign in in cli.rb
+      self.where(["email = ?", email_address]).first
+   end
+
    # def self.average_total_revenue
    #    will require the user and ticket classes
    # end
