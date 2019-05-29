@@ -54,6 +54,18 @@ class User < ActiveRecord::Base
       puts "Record updated"
    end
 
+   def update_email(new_email)
+      self.update(email: new_email)
+   end
+
+   def update_password(new_password)
+      self.update(password: new_password)
+   end
+
+   # def update_tel(new_tel)
+   #    self.update(tel: new_tel)
+   # end
+
    def update_card_details(new_card_no, card_to_update)
       if card_1_number == card_to_update
          self.update(card_1_number: new_card_no)
