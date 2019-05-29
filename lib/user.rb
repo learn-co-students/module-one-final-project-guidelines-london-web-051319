@@ -22,15 +22,25 @@ class User < ActiveRecord::Base
 
    # INSTANCE ****************
 
-   def add_card(card_number)
-      if self.card_number != nil
-         puts "Please change existing card details"
-         return
-      else
-         self.update(card_number: card_number)
-         self
+   def add_card(new_number, card_slot)
+      if card_slot == 0
+         self.update(card_1_number: new_number)
+      elsif card_slot == 1
+         self.update(card_2_number: new_number)
+      elsif card_slot == 2
+         self.update(card_3_number: new_number)
       end
    end
+
+   # def add_card(card_number)
+   #    if self.card_number != nil
+   #       puts "Please change existing card details"
+   #       return
+   #    else
+   #       self.update(card_number: card_number)
+   #       self
+   #    end
+   # end
 
    def update_name(new_name)
       self.update(name: new_name)
@@ -44,20 +54,26 @@ class User < ActiveRecord::Base
       puts "Record updated"
    end
 
-   def update_card_details(new_card_no)
-      if self.card_number != nil
-         self.remove_card
-         self.update(card_number: new_card_no)
-      else
-         self.update(card_number: new_card_no)
-      self
+   def update_card_details(new_card_no, card_to_update)
+      if card_1_number == card_to_update
+         self.update(card_1_number: new_card_no)
+      elsif card_2_number == card_to_update
+         self.update(card_2_number: new_card_no)
+      elsif card_3_number == card_to_update
+         self.update(card_3_number: new_card_no)
       end
       puts "Record updated"
    end
 
-   def remove_card
-      self.update(card_number: nil)
-      self
+   def remove_card(card_number)
+      if card_1_number == card_number
+         self.update(card_1_number: nil)
+      elsif card_2_number == card_number
+         self.update(card_2_number: nil)
+      elsif card_3_number == card_number
+         self.update(card_3_number: nil)
+      end
+      puts "Record updated"
    end
 
    def my_concerts_list
@@ -71,14 +87,22 @@ class User < ActiveRecord::Base
       Concert.all.select{|inst| concert_ids.include?(inst.id)}
    end
 
-   def buy_ticket(concert_name) #we need to add this one to Customer menu cli
-      concert = Concert.all.find{|inst| inst.name == concert_name}
+   def buy_ticket(concert_name)
+      concert = Concert.all.find{|inst| inst.name.downcase == concert_name.downcase}
+      if concert == nil
+         puts "Concert does not exist"
+         exit
+      else
       Ticket.create(user_id: self.id, concert_id: concert.id)
+      puts "You have purchased tickets for #{concert.name}"
+      end
    end
 
+
    def cancel_ticket(concert_name) #we need to add this one to Customer menu cli
-      concert = Concert.all.find{|inst| inst.name == concert_name}
-      Ticket.all.select{|inst| inst.user_id == self.id && inst.concert_id == concert.id}[0].destroy
+      # binding.pry
+      concert = Concert.all.find{|inst| inst.name.downcase == concert_name.downcase}
+      Ticket.all.find{|inst| inst.user_id == self.id && inst.concert_id == concert.id}.destroy
    end
 
 end
