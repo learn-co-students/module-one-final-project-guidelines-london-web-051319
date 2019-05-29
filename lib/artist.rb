@@ -82,17 +82,9 @@ class Artist < ActiveRecord::Base
       puts "£#{my_earnings_concert(concert_name)}"
    end
 
+   def my_total_earnings
+      a = self.my_schedule.map(&:name).collect{|inst| my_earnings_concert(inst)}.inject(0){|sum, x| sum+x}
+      puts "£#{a}"
+   end
+
 end
-
-# Practice code
-
-# def where_am_i_playing
-#    my_venues = []
-#    venues = self.my_schedule.map{|inst| inst.venue_id}
-#    Venue.all.each do |inst| 
-#       venues.each do |item|
-#          inst.id == item ? my_venues << inst : nil
-#       end
-#    end
-#    my_venues
-# end
