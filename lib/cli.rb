@@ -35,6 +35,7 @@ class Cli
 		user_check = User.find_user_by_email(email_prompt)
 		artist_check = Artist.find_artist_by_email(email_prompt)
 		venue_check = Venue.find_venue_by_email(email_prompt)
+      #no password checks working yet
 		if user_check 
          @current_user = user_check
          pastel = Pastel.new 
@@ -67,6 +68,7 @@ class Cli
             key(:card_number).ask('Please enter your card number:', convert: :int) 
             #crashes if you add text
             key(:password).ask('Please enter a new password:')
+
          end
          #we need to check if email already exists and divert to log in if appropriate
          @current_user = User.create(result)
@@ -97,6 +99,7 @@ class Cli
             key(:facilities).ask('Please enter your Venue facilities')
             #facilities expects an array? ["bars", "restaurants", "bathrooms", "disabled access"]
             #we could select from a list of options with multi-select ppy
+            #...or we could just remove it because it isn't that interesting.
          end
          @current_user = Venue.create(result)
          pastel = Pastel.new 
