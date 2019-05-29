@@ -46,6 +46,7 @@ def longest_article(user)
   puts article.overview.gsub("\n","")
 
   user.article_id = article.id
+  puts "\n"
 end
 
 
@@ -93,6 +94,10 @@ def aiod(user)
   data = Net::HTTP.get(uri)
 
   json = JSON.parse(data)
+
+  puts "\n"
+  puts "-- A S T R O N O M Y  I N F O  O F  T H E  D A Y --"
+  puts "===================================================\n\n"
 
   puts "
     TITLE: #{json["title"].upcase!}'\n
@@ -218,23 +223,23 @@ end
 
 def help
   puts "\n"
-  puts |"'search' - give the option to search"
+  puts "|'search' - gives the option to search through all articles"
   puts "\n"
-  puts |"'add' - adds the object to the user's favourites list"
+  puts "|'add' - adds the selected article to the user's favourites list"
   puts "\n"
-  puts |"'remove' - removes the object from the user's favourites list"
+  puts "|'remove' - removes the selected article from the user's favourites list"
   puts "\n"
-  puts |"'favourites' - user's current list of favourites"
+  puts "|'favourites' - user's current list of favourite articles"
   puts "\n"
-  puts |"'curated_articles' - lists a number of curated articles"
+  puts "|'curated' - lists a number of curated articles"
   puts "\n"
-  puts |"'total' - a full list of objects in the database"
+  puts "|'aiod' - pulls an article from NASA's Astronomy Photo of the Day website about the featured photo"
   puts "\n"
-  puts |"'most liked' - prints out the object with the most entries in all users' favourites lists"
+  puts "|'most liked' - prints out the article with the most entries in all users' favourites lists"
   puts "\n"
-  puts |"'best known' - prints out the object with the longest description"
+  puts "|'longest' - prints out the article with the longest description"
   puts "\n"
-  puts |"'exit' - terminates the app"
+  puts "|'exit' - terminates the app"
   puts "\n"
 end
 
