@@ -11,9 +11,11 @@ def list_curated_articles
   articles = Article.where(curated: true)
   curated_titles = []
   articles.each_with_index {|article, index| curated_titles << "#{index+1}. #{article.title}"}
+
   puts "\n"
   puts "-- C U R A T E D  A R T I C L E S --"
   puts "====================================\n\n"
+
   curated_titles.each do |title|
     ind = curated_titles.index(title)
     print "#{title}\n\n"
@@ -27,9 +29,11 @@ def longest_article(user)
   Article.all.each {|article| nums << article.overview.length}
   largest = nums.sort.last
   article = Article.all.find {|article| article.overview.length == largest}
+
   puts "\n"
   puts "-- L O N G E S T  A R T I C L E --"
   puts "==================================\n\n"
+
   puts article.title.upcase
   puts "\n"
   puts article.overview.gsub("\n","")
@@ -103,15 +107,15 @@ def add_to_fav(user)
     puts "-- Added to your favourites --"
     puts "\n"
     puts "\n\n"
-    puts "Press Enter For Main Menu"
+    puts "-- Press Enter For Main Menu --"
   elsif !article_id
-    puts "Cannot Add This Article"
-    puts "Press Enter For Main Menu"
+    puts "-- Cannot Add This Article --"
+    puts "-- Press Enter For Main Menu --"
   else
     puts "\n"
     puts "-- This is already in your collections of favourites --"
     puts "\n\n"
-    puts "Press Enter For Main Menu"
+    puts "-- Press Enter For Main Menu --"
   end
 end
 
@@ -140,7 +144,7 @@ def remove_fav(user)
     puts "\n"
     user_input = gets.chomp
   end
-  puts "Press Enter For Main Menu"
+  puts "-- Press Enter For Main Menu --"
 end
 
 def search(user)
@@ -158,7 +162,7 @@ def search(user)
     end
     choose_by_number(article_arr, user)
     else
-      puts "ERROR 404! No articles found with this search term"
+      puts "-- ERROR 404! No articles found with this search term --"
   end
 
 end
@@ -214,7 +218,7 @@ def choose_by_number(article_arr, user)
     puts "\n"
     puts article.overview
     puts "\n\n"
-    puts "Press Enter For Main Menu"
+    puts "-- Press Enter For Main Menu --"
   else
     puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
   end
