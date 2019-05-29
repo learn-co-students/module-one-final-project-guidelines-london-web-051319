@@ -152,7 +152,7 @@ def search(user)
   searched_name = gets.chomp
   puts "\n"
   searched_name.downcase!
-  article_arr = Article.all.select {|article| article.title.downcase.index(searched_name) } 
+  article_arr = Article.all.select {|article| article.title.downcase.index(searched_name) }
   puts "\n"
   if !article_arr.empty?
     article_arr.each_with_index do |article, index|
@@ -163,11 +163,12 @@ def search(user)
       puts "ERROR 404! No articles found with this search term"
       input(user)
   end
-  
+
 end
 
 
 def favourites(user)
+  #binding.pry
   user_id = user.user_id
   list = Favourite.all.select {|fav| fav.user_id == user_id}
   article_arr = list.map {|fav| Article.find_by(id: fav.article_id)}
@@ -204,7 +205,7 @@ def choose_by_number(article_arr, user)
   puts "\n"
   puts "-- Choose the article that you would like to read by typing its number or type 'back' to return to main menu --"
   puts "\n"
-  
+
   user_input = gets.chomp
   user_num = user_input.to_i
 
@@ -212,19 +213,13 @@ def choose_by_number(article_arr, user)
     num = user_num - 1
     article = article_arr[num]
     user.article_id = article.id
-
-    #binding.pry
     puts "\n"
     puts article.title.upcase
     puts "\n"
     puts article.overview
     puts "\n"
-    input(user)
-  end
- 
-  if user_input == "back"
-    input(user)
-  elsif !user_num.is_a? Integer
+    puts "Press Enter"
+  else
     puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
   end
 end
