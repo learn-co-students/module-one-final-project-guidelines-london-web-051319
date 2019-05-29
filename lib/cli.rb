@@ -158,7 +158,7 @@ class Cli
 
    def update_account(user) # will allow the user to update contact details
       prompt = TTY::Prompt.new
-      response = prompt.select("Please select an option:", ["Email", "Password", "Phone", "Go back"]) # prompt allows user to select contact details to edit
+      response = prompt.select("Please select an option:", ["Email", "Password", "Go back"]) # prompt allows user to select contact details to edit
       if response == "Email"
          puts user.email
          manage = prompt.select("Please select an option:", ["Change email", "Go back"])
@@ -180,11 +180,6 @@ class Cli
             user.update_password(new_pass)
             update_account(user)
          end
-      elsif response == "Phone" # will add when we add a column
-         puts "Phone number feature not yet available"
-         update_account(user)
-         #    new_tel = prompt.ask("Please provide new phone number:")
-         #    user.update_tel(new_tel)
       end
    end
 
@@ -224,42 +219,54 @@ class Cli
 
    def search(category) # This will allow users to search by artist, venue and concert and then book tickets according to what's available.
       prompt = TTY::Prompt.new
-      if category == "Artist"
-         search_term = prompt.ask("Search artists:")
-         list = []
-         Artist.all.each do |inst|
-            if inst.name.downcase.include? search_term
-               list << inst
+      search_term = prompt.ask("Search for:")
+      if search_term == nil
+         Concert.all
+      else
+         if category == "Artist"
+            list = []
+            Artist.all.each do |inst|
+               if inst.name.downcase.include? search_term
+                  list << inst
+               end
             end
-         end
-         list.map{|inst| inst.my_schedule}.flatten
-      elsif category == "Concert"
-         search_term = prompt.ask("Search upcoming events:")
-         list = []
-         Concert.all.each do |inst|
-            if inst.name.downcase.include? search_term
-               list << inst
+            list.map{|inst| inst.my_schedule}.flatten
+         elsif category == "Concert"
+            list = []
+            Concert.all.each do |inst|
+               if inst.name.downcase.include? search_term
+                  list << inst
+               end
             end
-         end
-         list
-      elsif category == "Venue"
-         search_term = prompt.ask("Search venues:")
-         list = []
-         Venue.all.each do |inst|
-            if inst.name.downcase.include? search_term
-               list << inst
+            list
+         elsif category == "Venue"
+            list = []
+            Venue.all.each do |inst|
+               if inst.name.downcase.include? search_term
+                  list << inst
+               end
             end
+            list.map{|inst| inst.my_concerts}.flatten
          end
-         list.map{|inst| inst.my_concerts}.flatten
       end
    end
 
    def buy_tickets(user)
       prompt = TTY::Prompt.new
-      category = prompt.select("Search by:", ["Artist", "Concert", "Venue"])
-      events = search(category)
-      buy = prompt.select("Please confirm which event you would like to purchase tickets for?", events.map(&:name))
-      user.buy_ticket(buy)
+      category = prompt.select("Search by:", ["Artist", "Concert", "Venue", "Cancel"])
+      if category == "Cancel"
+         customer_portal(user)
+      else
+         events = search(category)
+         results = []
+         events.each{|inst| results << "#{inst.name} | #{inst.artist.name} | #{inst.date} | £#{inst.price}"}
+         buy = prompt.select("Please confirm which event you would like to purchase tickets for?", results<<"Cancel")
+         if buy == "Cancel"
+            buy_tickets(user)
+         else
+         user.buy_ticket(buy)
+         end
+      end
    end
 
 # PORTALS

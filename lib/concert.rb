@@ -35,4 +35,13 @@ class Concert < ActiveRecord::Base
       "£#{self.ticket_price}"
    end
 
+   def artist
+      Artist.all.find{|inst|inst.id == self.artist_id}
+   end
+
+   def customers
+      tickets = Ticket.all.select{|inst|inst.concert_id == self.id}
+      User.all.select{|inst| tickets.map(&:user_id).include?(inst.id)}
+   end
+
 end

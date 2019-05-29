@@ -28,7 +28,7 @@ class Venue < ActiveRecord::Base
 
    def my_concerts_list
       concerts = Concert.all.select{|inst| inst.venue_id == self.id}
-      list = concerts.map(&:name)
+      list = concerts.map{|inst| "#{inst.name} - #{inst.artist.name}"}
       puts list
    end
 
