@@ -21,8 +21,8 @@ def list_curated_articles
   curated_titles = []
   articles.each_with_index {|article, index| curated_titles << "#{index+1}. #{article.title}"}
   puts "\n"
-  puts "C U R A T E D  A R T I C L E S"
-  puts "==============================\n\n"
+  puts "-- C U R A T E D  A R T I C L E S --"
+  puts "====================================\n\n"
   curated_titles.each do |title|
     ind = curated_titles.index(title)
     print "#{title}\n\n"
@@ -39,8 +39,8 @@ def longest_article(user)
 
   article = Article.all.find {|article| article.overview.length == largest}
   puts "\n"
-  puts "L O N G E S T  A R T I C L E"
-  puts "============================\n\n"
+  puts "-- L O N G E S T  A R T I C L E --"
+  puts "==================================\n\n"
   puts article.title.upcase
   puts "\n"
   puts article.overview.gsub("\n","")
@@ -77,6 +77,9 @@ end
 
 def print_most_liked_overview(article)
   puts "\n"
+  puts "-- M O S T  L I K E D  A R T I C L E --"
+  puts "=======================================\n\n"
+  puts "\n"
   puts article.title.upcase
   puts "\n"
   puts article.overview.gsub("\n", "")
@@ -108,12 +111,14 @@ def add_to_fav(user)
   user_liked = Favourite.all.find {|fav| fav.article_id == article_id && fav.user_id == user_id}
 
   #binding.pry
-  if !user_liked
+  if !user_liked && article_id
     Favourite.create(article_id: user.article_id, user_id: user.user_id)
     puts "\n"
     puts "-- Added to your favourites --"
     puts "\n"
     input(user_id)
+  elsif !article_id
+    puts "Cannot Add This Article"
   else
     puts "\n"
     puts "-- This is already in your collections of favourites --"
@@ -181,7 +186,7 @@ def search(user)
     puts "\n"
     puts article.overview
     puts "\n"
-    # user.article_id = article.id
+    user.article_id = article.id
 end
 
 
@@ -190,14 +195,14 @@ def favourites(user)
   list = Favourite.all.select {|fav| fav.user_id == user_id}
   #binding.pry
   article_arr = list.map {|fav| Article.find_by(id: fav.article_id)}
-
-
+  #article_arr.pop # get rid of nil value
+  #binding.pry
 
   puts "\n"
-  puts "F A V O U R I T E  A R T I C L E S"
-  puts "==================================\n\n"
+  puts "-- F A V O U R I T E  A R T I C L E S --"
+  puts "========================================\n\n"
 
-  article_arr.each_with_index {|article, index| puts "#{index+1}. #{article.title}"}
+  article_arr.each_with_index {|article, index| puts "#{index+1}. #{article.title}\n\n"}
     puts "\n"
     puts "-- Choose the article that you would like to read by typing its number --"
     puts "\n"
@@ -211,23 +216,23 @@ end
 
 def help
   puts "\n"
-  puts "'search' - give the option to search"
+  puts |"'search' - give the option to search"
   puts "\n"
-  puts "'add' - adds the object to the user's favourites list"
+  puts |"'add' - adds the object to the user's favourites list"
   puts "\n"
-  puts "'remove' - removes the object from the user's favourites list"
+  puts |"'remove' - removes the object from the user's favourites list"
   puts "\n"
-  puts "'favourites' - user's current list of favourites"
+  puts |"'favourites' - user's current list of favourites"
   puts "\n"
-  puts "'curated_articles' - lists a number of curated articles"
+  puts |"'curated_articles' - lists a number of curated articles"
   puts "\n"
-  puts "'total' - a full list of objects in the database"
+  puts |"'total' - a full list of objects in the database"
   puts "\n"
-  puts "'most liked' - prints out the object with the most entries in all users' favourites lists"
+  puts |"'most liked' - prints out the object with the most entries in all users' favourites lists"
   puts "\n"
-  puts "'best known' - prints out the object with the longest description"
+  puts |"'best known' - prints out the object with the longest description"
   puts "\n"
-  puts "'exit' - terminates the app"
+  puts |"'exit' - terminates the app"
   puts "\n"
 end
 

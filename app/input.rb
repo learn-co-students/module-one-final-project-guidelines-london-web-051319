@@ -26,7 +26,7 @@ def input(userid)
       when 'aiod'
         aiod(user)
       when 'longest'
-        longest_article
+        longest_article(user)
       when 'help'
         help
       when 'exit'
