@@ -1,5 +1,7 @@
 def input(userid)
-    puts "Please enter a valid command or alternatively use the 'help' keyword for all options."
+    puts "\n"
+    puts "-- Please enter a valid command or alternatively use the 'help' keyword for all options. --"
+    puts "\n"
     user = Input.new(userid)
     loop do
       #binding.pry
@@ -30,7 +32,7 @@ def input(userid)
       when 'exit'
         exit
       else
-        puts "Please enter a valid command or alternatively use the 'help' keyword for all options."
+        puts "-- Please enter a valid command or alternatively use the 'help' keyword for all options. --"
         #binding.pry
     end
 
