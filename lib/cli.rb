@@ -37,13 +37,13 @@ class Cli
 		venue_check = Venue.find_venue_by_email(email_prompt)
       #we could merge these methods and inherit them to self (find_by_email)
 
-		if user_check != nil
+		if user_check
          @current_user = user_check
          customer_portal(@current_user)
-		elsif artist_check !=nil
+		elsif artist_check
 			@current_user = artist_check
 			artist_portal(@current_user)
-		elsif venue_check !=nil
+		elsif venue_check
 			@current_user = venue_check
 			venue_portal(@current_user)
 		else
@@ -52,10 +52,33 @@ class Cli
 	end
 
 	def new_user_sign_up
-		puts "Welcome to Mus.ic! Please let us know which account you would like to create:"
       prompt = TTY::Prompt.new
       choices = ["Customer", "Artist", "Venue Manager", "Log out"]
-      response = prompt.select("Please select an option:", choices)
+      response = prompt.select("Welcome to Mus.ic! Please let us know which account you would like to create:", choices)
+
+      if response == "Customer"
+         result = prompt.collect do
+            key(:name).ask('Please enter your name:')
+            # key(:dob).ask('Please enter your date of birth ')
+            key(:email).ask('Please enter your email:')
+            key(:card_number).ask('Please enter your card number:', convert: :int) 
+            #crashes if you add text
+            key(:password).ask('Please enter a new password:')
+         end
+
+         @current_user = User.create(result)
+         puts "Your account is now created! Welcome to Mus.ic!"
+         customer_portal(@current_user)
+         
+
+      elsif response == "Artist"
+         # Artist.create(new_text)
+      elsif response == "Venue Manager"
+         # Venue.create(new_text)
+      elsif response == "Log out"
+         sign_in_or_new
+      end
+
 	end
 	
 	def exit_menu

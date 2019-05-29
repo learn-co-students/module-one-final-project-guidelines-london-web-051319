@@ -71,12 +71,12 @@ class User < ActiveRecord::Base
       Concert.all.select{|inst| concert_ids.include?(inst.id)}
    end
 
-   def buy_ticket(concert_name)
+   def buy_ticket(concert_name) #we need to add this one to Customer menu cli
       concert = Concert.all.find{|inst| inst.name == concert_name}
       Ticket.create(user_id: self.id, concert_id: concert.id)
    end
 
-   def cancel_ticket(concert_name)
+   def cancel_ticket(concert_name) #we need to add this one to Customer menu cli
       concert = Concert.all.find{|inst| inst.name == concert_name}
       Ticket.all.select{|inst| inst.user_id == self.id && inst.concert_id == concert.id}[0].destroy
    end
