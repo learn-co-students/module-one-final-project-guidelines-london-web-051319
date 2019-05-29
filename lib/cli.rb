@@ -37,15 +37,15 @@ class Cli
 		venue_check = Venue.find_venue_by_email(email_prompt)
       #we could merge these methods and inherit them to self (find_by_email)
 
-		if user_check
-			@current_user = user_check
-			customer_portal
-		elsif artist_check
+		if user_check != nil
+         @current_user = user_check
+         customer_portal(@current_user)
+		elsif artist_check !=nil
 			@current_user = artist_check
-			artist_portal
-		elsif venue_check
+			artist_portal(@current_user)
+		elsif venue_check !=nil
 			@current_user = venue_check
-			venue_portal
+			venue_portal(@current_user)
 		else
 			sign_in
 		end
@@ -65,11 +65,11 @@ class Cli
 
    # ARTISTS
 
-   def customer_portal(email_add)
-      user = User.all.select{|inst| inst.email == email_add}.first
+   def customer_portal(user)
+      # user = User.all.select{|inst| inst.email == email_add}.first
       # binding.pry
       prompt = TTY::Prompt.new
-      choices = ["Add Card", "Update name", "Update dob", "Update card details", "Remove card", "My concerts", "Buy ticket", "Cancel ticket", "Log out"]
+      choices = ["Add card", "Update name", "Update dob", "Update card details", "Remove card", "My concerts", "Buy ticket", "Cancel ticket", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "Add card"
          card_no = prompt.ask("Please enter the card number")
@@ -104,11 +104,11 @@ class Cli
       elsif response == "Log out"
          exit
       end
-      customer_portal(email_add)
+      customer_portal(user)
    end 
 
-   def venue_portal(email_add)
-      user = Venue.all.find{|inst| inst.email == email_add}
+   def venue_portal(user)
+      # user = Venue.all.find{|inst| inst.email == email_add}
       prompt = TTY::Prompt.new
       choices = ["View my concerts", "View all artists", "Log out"]
       response = prompt.select("Please select an option:", choices)
@@ -119,64 +119,34 @@ class Cli
       elsif response == "Log out"
          exit
       end
-      venue_portal(email_add)
+      venue_portal(user)
    end 
 
-   def artist_portal(email_add)
-      user = Artist.all.find{|inst| inst.email == email_add}
-      # binding.pry
+   def artist_portal(user)
+      # user = Artist.all.find{|inst| inst.email == email_add}
       prompt = TTY::Prompt.new
-      choices = ["My schedule", "Concert tickets sold", "All tickets", "Total tickets sold", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
+      choices = ["My schedule", "Concert tickets sold", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "My schedule"
          user.my_schedule_info
       elsif response == "Concert tickets sold"
          concert = prompt.ask("Please specify a concert")
          user.number_tickets_sold_concert(concert)
-      elsif response == "All tickets"
-         user.number_tickets_sold
+      elsif response == "Total ticket sales"
+         user.total_number_tickets_sold
       elsif response == "Where am I playing"
          user.where_am_i_playing
       elsif response == "My ticket prices"
          concert = prompt.ask("Please specify a concert")
-         user.my_ticket_prices(concert)
+         user.list_my_ticket_prices(concert)
       elsif response == "My earnings (concert)"
          concert = prompt.ask("Please specify a concert")
-         user.my_earnings_concert(concert)
+         user.my_earnings_concert_gbp(concert)
       elsif response == "Log out"
          exit
       end
-      artist_portal(email_add)
+      artist_portal(user)
    end
-
-#    # binding.pry
-
-#    def customer_options
-#    		puts "this is customer_options"
-
-#    		# user_x = User.all[0] #James, i think this is working! we were looking at an old file.... Chris.
-#      #  prompt = TTY::Prompt.new
-#      #  choices = %w(add_card, update_name, update_dob, update_card_details, remove_card, my_concerts, buy_ticket, cancel_ticket)
-#      #  prompt.enum_select("Please select an option:", choices)
-#       binding.pry
-#    end 
-
-#    def venue_options
-#    		puts "this is venue_options"
-#    		binding.pry
-#       # prompt = TTY::Prompt.new
-#       # choices = %w(my_concerts, my_artists)
-#       # prompt.enum_select("Please select an option:", choices)
-#    end 
-
-#    def artist_options
-#    		puts "this is artist_options"
-#    		binding.pry
-#       # prompt = TTY::Prompt.new
-#       # choices = %w(my_schedule, concert_tickets_sold, all_tickets, total_tickets_sold, where_am_i_playing, my_ticket_prices, my_earnings_concert)
-#       # prompt.enum_select("Please select an option:", choices)
-# >>>>>>> Stashed changes
-    
 
 
 
