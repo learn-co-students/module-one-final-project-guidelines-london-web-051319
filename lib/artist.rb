@@ -61,7 +61,7 @@ class Artist < ActiveRecord::Base
    end
 
    def list_my_ticket_prices(concert_name)
-      puts my_ticket_prices(concert_name)
+      puts "£#{my_ticket_prices(concert_name)}"
    end
 
    def my_earnings_concert(concert_name)
