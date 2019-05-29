@@ -91,7 +91,7 @@ class Cli
          elsif manage_info =="Go back"
             customer_portal(user)
          end   
-      end
+   end
 
    def check_cards(user)
       prompt = TTY::Prompt.new
@@ -110,9 +110,41 @@ class Cli
       end
    end
 
+   def update_account(user) # will allow the user to update contact details
+      prompt = TTY::Prompt.new
+      response = prompt.select("Please select an option:", ["Email", "Password", "Phone", "Go back"]) # prompt allows user to select contact details to edit
+      if response == "Email"
+         puts user.email
+         manage = prompt.select("Please select an option:", ["Change email", "Go back"])
+         # binding.pry
+         if manage == "Change email" # allows to change email
+            new_email = prompt.ask("Please provide new email address:")
+            user.update_email(new_email) # Activates method in user class
+            update_account(user)
+         elsif manage == "Go back"
+            update_account(user)
+         end
+      elsif response == "Password" # allows to view and change password
+         manage = prompt.select("Please select an option:", ["View password", "Change password", "Go back"])
+         if manage == "View password"
+            puts "#{user.password}"
+            update_account(user)
+         elsif manage == "Change password"
+            new_pass = prompt.ask("Please provide a new password:")
+            user.update_password(new_pass)
+            update_account(user)
+         end
+      elsif response == "Phone" # will add when we add a column
+         puts "Phone number feature not yet available"
+         update_account(user)
+      #    new_tel = prompt.ask("Please provide new phone number:")
+      #    user.update_tel(new_tel)
+      end
+   end
+
    def customer_portal(user)
       prompt = TTY::Prompt.new
-      choices = ["Update name", "Update dob", "Manage payment information", "My concerts", "Buy tickets", "Cancel tickets", "Log out"]
+      choices = ["Update name", "Update dob", "Review account information", "Manage payment information", "My concerts", "Buy tickets", "Cancel tickets", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "Manage payment information"
          customer_manage_payment_info(user)
@@ -122,6 +154,8 @@ class Cli
       elsif response == "Update dob"
          new_dob = prompt.ask("Please provide your DOB")
          user.update_dob(new_dob)
+      elsif response == "Review account information"
+         update_account(user)
       elsif response == "My concerts" 
          user.my_concerts_list
       elsif response == "Buy tickets"
@@ -141,7 +175,6 @@ class Cli
                end
          end   
       elsif response == "Log out"
-         # exit
          sign_in_or_new
       end
       customer_portal(user)
@@ -149,12 +182,14 @@ class Cli
 
    def venue_portal(user)
       prompt = TTY::Prompt.new
-      choices = ["View my concerts", "View all artists", "Log out"]
+      choices = ["View my concerts", "View all artists", "Review account information", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "View my concerts"
          user.my_concerts_list
       elsif response == "View all artists"
          user.my_artists_list
+      elsif response == "Review account information"
+         update_account(user)
       elsif response == "Log out"
          # exit
          sign_in_or_new
@@ -164,7 +199,7 @@ class Cli
 
    def artist_portal(user)
       prompt = TTY::Prompt.new
-      choices = ["My schedule", "Concert tickets sold", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
+      choices = ["My schedule", "Concert tickets sold", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Review account information", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "My schedule"
          user.my_schedule_info
@@ -181,6 +216,8 @@ class Cli
       elsif response == "My earnings (concert)"
          concert = prompt.ask("Please specify a concert")
          user.my_earnings_concert_gbp(concert)
+      elsif response == "Review account information"
+         update_account(user)
       elsif response == "Log out"
          # exit
          sign_in_or_new
