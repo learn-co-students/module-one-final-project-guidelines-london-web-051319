@@ -189,17 +189,54 @@ def customer_manage_payment_info(user)
       end   
 end
 
-def search_concerts(term)
-   # binding.pry
-   Concert.all.find(:all, :conditions => ['name LIKE ?', "%#{term}%"])
+def search(category) # This will allow users to search by artist, venue and concert and then book tickets according to what's available.
+   prompt = TTY::Prompt.new
+   if category == "Artist"
+      search_term = prompt.ask("Search artists:")
+      list = []
+      Artist.all.each do |inst|
+         if inst.name.downcase.include? search_term
+            list << inst
+         end
+      end
+      list.map{|inst| inst.my_schedule}.flatten
+   elsif category == "Concert"
+      search_term = prompt.ask("Search upcoming events:")
+      list = []
+      Concert.all.each do |inst|
+         if inst.name.downcase.include? search_term
+            list << inst
+         end
+      end
+      list
+   elsif category == "Venue"
+      search_term = prompt.ask("Search venues:")
+      list = []
+      Venue.all.each do |inst|
+         if inst.name.downcase.include? search_term
+            list << inst
+         end
+      end
+      list.map{|inst| inst.my_concerts}.flatten
+   end
 end
+
+
+# def search_concerts(term)
+#    a = []
+#    Concert.all.each do |inst|
+#       if inst.name.downcase.include? term
+#          a << inst
+#       end
+#    end
+#    a
+# end
 
 def buy_tickets(user)
    prompt = TTY::Prompt.new
-   search_term = prompt.ask("Search for an upcoming event:")
-      events = search_concerts(search_term) # looking to find an entry which has the characters in the search term
-      # binding.pry
-   buy = prompt.ask("Please confirm which event you would like to purchase tickets for?")
+   category = prompt.select("Search by:", ["Artist", "Concert", "Venue"])
+   events = search(category)
+   buy = prompt.select("Please confirm which event you would like to purchase tickets for?", events.map(&:name))
    user.buy_ticket(buy)
 end
 
