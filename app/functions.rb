@@ -95,18 +95,23 @@ end
 def add_to_fav(user)
   article_id = user.article_id
   user_id = user.user_id
+
   user_liked = Favourite.all.find {|fav| fav.article_id == article_id && fav.user_id == user_id}
   if !user_liked && article_id
     Favourite.create(article_id: user.article_id, user_id: user.user_id)
     puts "\n"
     puts "-- Added to your favourites --"
     puts "\n"
+    puts "\n\n"
+    puts "Press Enter For Main Menu"
   elsif !article_id
     puts "Cannot Add This Article"
+    puts "Press Enter For Main Menu"
   else
     puts "\n"
     puts "-- This is already in your collections of favourites --"
-    puts "\n"
+    puts "\n\n"
+    puts "Press Enter For Main Menu"
   end
 end
 
@@ -116,28 +121,26 @@ def remove_fav(user)
   puts "\n"
   puts "-- Are you sure you want to REMOVE this article from your favourites? (y/n) --"
   puts "\n"
-  input = gets.chomp
-  loop do
-    if input == "y"
-      fav = Favourite.find_by(article_id: article_id, user_id: user_id)
-      #binding.pry
-      fav.destroy
-      puts "\n"
-      puts "-- Article removed from favourites --"
-      puts "\n"
-    elsif input == "n"
-      puts "\n"
-      puts "-- Article not removed from favourites --"
-      puts "\n"
-    elsif input == "0"
-      exit
-    else
-      puts "\n"
-      puts "-- Enter valid command or type 0 to close --"
-      puts "\n"
-    end
-    
+  user_input = gets.chomp
+  if user_input == "y"
+    fav = Favourite.find_by(article_id: article_id, user_id: user_id)
+    fav.destroy
+    puts "\n"
+    puts "-- Article removed from favourites --"
+    puts "\n"
+  elsif user_input == "n"
+    puts "\n"
+    puts "-- Article not removed from favourites --"
+    puts "\n"
+  elsif user_input == "0"
+    exit
+  else
+    puts "\n"
+    puts "-- Enter valid command or type exit to close --"
+    puts "\n"
+    user_input = gets.chomp
   end
+  puts "Press Enter For Main Menu"
 end
 
 def search(user)
@@ -147,7 +150,7 @@ def search(user)
   searched_name = gets.chomp
   puts "\n"
   searched_name.downcase!
-  article_arr = Article.all.select {|article| article.title.downcase.index(searched_name) } 
+  article_arr = Article.all.select {|article| article.title.downcase.index(searched_name) }
   puts "\n"
   if !article_arr.empty?
     article_arr.each_with_index do |article, index|
@@ -156,9 +159,8 @@ def search(user)
     choose_by_number(article_arr, user)
     else
       puts "ERROR 404! No articles found with this search term"
-      input(user)
   end
-  
+
 end
 
 
@@ -199,7 +201,7 @@ def choose_by_number(article_arr, user)
   puts "\n"
   puts "-- Choose the article that you would like to read by typing its number or type 'back' to return to main menu --"
   puts "\n"
-  
+
   user_input = gets.chomp
   user_num = user_input.to_i
 
@@ -211,12 +213,9 @@ def choose_by_number(article_arr, user)
     puts article.title.upcase
     puts "\n"
     puts article.overview
-    puts "\n"
-  end
- 
-  if user_input == "back"
-    input(user)
-  elsif !user_num.is_a? Integer
+    puts "\n\n"
+    puts "Press Enter For Main Menu"
+  else
     puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
   end
 end
