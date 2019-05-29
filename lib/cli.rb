@@ -39,7 +39,6 @@ class Cli
 
 
 		if user_check 
-         master
          @current_user = user_check
          customer_portal(@current_user)
 		elsif artist_check
