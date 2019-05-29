@@ -66,12 +66,28 @@ class Cli
             key(:password).ask('Please enter a new password:')
          end
 
+         #we need to check if email already exists and divert to log in if appropriate
          @current_user = User.create(result)
-         puts "Your account is now created! Welcome to Mus.ic!"
+         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
          customer_portal(@current_user)
          
 
       elsif response == "Artist"
+         result = prompt.collect do
+            key(:name).ask('Please enter your name:')
+         end
+
+         @current_user = Artist.create(result)
+         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
+         artist_portal(@current_user)
+
+# t.string "name"
+#     t.string "genre"
+#     t.string "website_url"
+#     t.string "email"
+#     t.string "password"
+
+
          # Artist.create(new_text)
       elsif response == "Venue Manager"
          # Venue.create(new_text)
