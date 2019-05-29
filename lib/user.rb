@@ -110,8 +110,8 @@ class User < ActiveRecord::Base
       end
    end
 
-   def cancel_ticket(concert_name)
-      # binding.pry
+
+   def cancel_ticket(concert_name) 
       concert = Concert.all.find{|inst| inst.name.downcase == concert_name.downcase}
       Ticket.all.find{|inst| inst.user_id == self.id && inst.concert_id == concert.id}.destroy
    end

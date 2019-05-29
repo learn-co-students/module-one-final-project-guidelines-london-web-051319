@@ -27,7 +27,7 @@ class Cli
 			end
 	end
 
-	def sign_in
+	def sign_in #asks for email, checks against 3 tables for a record. Returns the record as @current_user and launches the correct portal.
 		puts "Mus.ic sign in"
 		prompt = TTY::Prompt.new
 		email_prompt = prompt.ask('Please enter the email address you signed up with', default: ENV['yourname@gmail.com'])
@@ -35,6 +35,8 @@ class Cli
 		user_check = User.find_user_by_email(email_prompt)
 		artist_check = Artist.find_artist_by_email(email_prompt)
 		venue_check = Venue.find_venue_by_email(email_prompt)
+      #we could merge these methods and inherit them to self (find_by_email)
+
 
 		if user_check 
          @current_user = user_check
@@ -51,7 +53,49 @@ class Cli
 	end
 
 	def new_user_sign_up
-		puts "this is the user sign up method"
+      prompt = TTY::Prompt.new
+      choices = ["Customer", "Artist", "Venue Manager", "Log out"]
+      response = prompt.select("Welcome to Mus.ic! Please let us know which account you would like to create:", choices)
+
+      if response == "Customer"
+         result = prompt.collect do
+            key(:name).ask('Please enter your name:')
+            # key(:dob).ask('Please enter your date of birth ')
+            key(:email).ask('Please enter your email:')
+            key(:card_number).ask('Please enter your card number:', convert: :int) 
+            #crashes if you add text
+            key(:password).ask('Please enter a new password:')
+         end
+
+         #we need to check if email already exists and divert to log in if appropriate
+         @current_user = User.create(result)
+         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
+         customer_portal(@current_user)
+         
+
+      elsif response == "Artist"
+         result = prompt.collect do
+            key(:name).ask('Please enter your name:')
+         end
+
+         @current_user = Artist.create(result)
+         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
+         artist_portal(@current_user)
+
+# t.string "name"
+#     t.string "genre"
+#     t.string "website_url"
+#     t.string "email"
+#     t.string "password"
+
+
+         # Artist.create(new_text)
+      elsif response == "Venue Manager"
+         # Venue.create(new_text)
+      elsif response == "Log out"
+         sign_in_or_new
+      end
+
 	end
 	
 	def exit_menu
