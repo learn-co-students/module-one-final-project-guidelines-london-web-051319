@@ -35,21 +35,35 @@ class User < ActiveRecord::Base
    def update_name(new_name)
       self.update(name: new_name)
       self
+      puts "Record updated"
    end
 
    def update_dob(value)
       self.update(dob: value)
       self
+      puts "Record updated"
    end
 
    def update_card_details(new_card_no)
-      self.update(card_number: new_card_no)
+      if self.card_number != nil
+         self.remove_card
+         self.update(card_number: new_card_no)
+      else
+         self.update(card_number: new_card_no)
       self
+      end
+      puts "Record updated"
    end
 
    def remove_card
       self.update(card_number: nil)
       self
+   end
+
+   def my_concerts_list
+      concert_ids = Ticket.all.select{|inst| inst.user_id == self.id}.map{|inst| inst.concert_id}
+      list = Concert.all.select{|inst| concert_ids.include?(inst.id)}.map(&:name)
+      puts list # added in to work with the CLI
    end
 
    def my_concerts
