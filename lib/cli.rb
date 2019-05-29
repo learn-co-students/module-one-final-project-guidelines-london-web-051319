@@ -1,6 +1,7 @@
 require "pry"
 
-class Cli 
+class Cli
+   
 	def run # this will be the first method called by run.rb
 		welcome_message
 		sign_in_or_new
@@ -31,33 +32,34 @@ class Cli
 		puts "Mus.ic sign in"
 		prompt = TTY::Prompt.new
 		email_prompt = prompt.ask('Please enter the email address you signed up with', default: ENV['yourname@gmail.com'])
-
 		user_check = User.find_user_by_email(email_prompt)
 		artist_check = Artist.find_artist_by_email(email_prompt)
 		venue_check = Venue.find_venue_by_email(email_prompt)
-      #we could merge these methods and inherit them to self (find_by_email)
-
-
 		if user_check 
          @current_user = user_check
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Welcome back, #{@current_user.name}")
          customer_portal(@current_user)
 		elsif artist_check
 			@current_user = artist_check
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Welcome back, #{@current_user.name}")
 			artist_portal(@current_user)
 		elsif venue_check 
 			@current_user = venue_check
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Welcome back, #{@current_user.name}")
 			venue_portal(@current_user)
 		else
 			sign_in
 		end
 	end
 
-	def new_user_sign_up
+	def new_user_sign_up #asks the user which type of account they would like to create, requests set up info, sends new user to correct portal.
       prompt = TTY::Prompt.new
       choices = ["Customer", "Artist", "Venue Manager", "Log out"]
       response = prompt.select("Welcome to Mus.ic! Please let us know which account you would like to create:", choices)
-
-      if response == "Customer"
+      if response == "Customer" #takes new customer information, creates a new user and launches the customer portal.
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
             # key(:dob).ask('Please enter your date of birth ')
@@ -66,39 +68,46 @@ class Cli
             #crashes if you add text
             key(:password).ask('Please enter a new password:')
          end
-
          #we need to check if email already exists and divert to log in if appropriate
          @current_user = User.create(result)
-         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!")
          customer_portal(@current_user)
          
 
       elsif response == "Artist"
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
+            key(:genre).ask('Please enter your music\'s genre:')
+            key(:website_url).ask('Please enter your website:')
+            key(:email).ask('Please enter your email address:')
+            key(:password).ask('Please enter a new password:')
          end
-
          @current_user = Artist.create(result)
-         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!")
          artist_portal(@current_user)
-
-# t.string "name"
-#     t.string "genre"
-#     t.string "website_url"
-#     t.string "email"
-#     t.string "password"
-
-
-         # Artist.create(new_text)
       elsif response == "Venue Manager"
-         # Venue.create(new_text)
+         result = prompt.collect do
+            key(:name).ask('Please enter your name:')
+            key(:website_url).ask('Please enter your website:')
+            key(:email).ask('Please enter your email address:')
+            key(:password).ask('Please enter a new password:')
+            key(:location).ask('Please enter your Venue location')
+            key(:facilities).ask('Please enter your Venue facilities')
+            #facilities expects an array? ["bars", "restaurants", "bathrooms", "disabled access"]
+            #we could select from a list of options with multi-select ppy
+         end
+         @current_user = Venue.create(result)
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!")
+         venue_portal(@current_user)
       elsif response == "Log out"
          sign_in_or_new
       end
-
 	end
 	
-	def exit_menu
+	def exit_menu #close the program from top level menu
 		puts "Thank you for using mus.ic, Goodbye."
 		exit
 	end

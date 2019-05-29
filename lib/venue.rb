@@ -36,6 +36,8 @@ class Venue < ActiveRecord::Base
       puts list
    end
 
+   #most important functionality (through venue portal i think) is to create a concert, assign an artist, assign tickets, assign a venue and view ticket sales for that concert.. 
+
    #idea for a method, launch the location in google maps.
    #pull venue info from an api to get the lat/longitude
 
