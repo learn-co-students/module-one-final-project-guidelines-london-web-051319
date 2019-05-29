@@ -91,8 +91,15 @@ def aiod(user)
     DATE: #{json["date"]}'\n
     OVERVIEW: \n\n #{json["explanation"]}\n
   "
-  new_article = Article.create(title: json["title"], date: json["date"], overview: json["explanation"], curated: false)
-  user.article_id = new_article.id
+
+  artExist = Article.find_by(title: json["title"])
+
+  if !artExist
+    new_article = Article.create(title: json["title"], date: json["date"], overview: json["explanation"], curated: false)
+    user.article_id = new_article.id
+    puts "\n"
+  end
+  user.article_id = artExist.id
   puts "\n"
 end
 
@@ -208,18 +215,30 @@ def choose_by_number(article_arr, user)
 
   user_input = gets.chomp
   user_num = user_input.to_i
+  len = article_arr.size
 
-  if user_num.is_a? Integer
-    num = user_num - 1
-    article = article_arr[num]
-    user.article_id = article.id
-    puts "\n"
-    puts article.title.upcase
-    puts "\n"
-    puts article.overview
-    puts "\n\n"
-    puts "-- Press Enter For Main Menu --"
-  else
-    puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
+  loop do
+    if user_num.is_a? Integer
+      if user_num <= len && user_num > 0
+        num = user_num - 1
+        article = article_arr[num]
+        user.article_id = article.id
+        puts "\n"
+        puts article.title.upcase
+        puts "\n"
+        puts article.overview
+        puts "\n\n"
+        puts "Press Enter For Main Menu"
+        break if article
+      else
+        puts "\n\nEnter Value Between 1 and #{len}"
+        user_input = gets.chomp
+        user_num = user_input.to_i
+      end
+    else
+      puts "-- !!!Please enter a valid command or alternatively use the 'help' keyword for all options. --"
+      user_input = gets.chomp
+      user_num = user_input.to_i
+    end
   end
 end
