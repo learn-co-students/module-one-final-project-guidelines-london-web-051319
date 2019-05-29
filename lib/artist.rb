@@ -18,9 +18,23 @@ class Artist < ActiveRecord::Base
       Concert.all.select{|inst| inst.artist_id == self.id}
    end
 
+   def my_schedule_info
+      sched = {:gigs => []}
+      self.my_schedule.each do |inst|
+         # binding.pry
+         sched[:gigs] << {name: inst.name, date: inst.date, venue: Venue.all.find{|i| i.id == inst.venue_id}.name}
+      end
+      puts sched
+   end
+
    def tickets_sold_concert(concert_name)
       event = self.my_schedule.find{|inst| inst.name == concert_name}
       self.tickets_sold_total.select{|inst| inst.concert_id == event.id}
+      binding.pry
+   end
+
+   def number_tickets_sold_concert(concert_name)
+      tickets_sold_concert(concert_name).count
    end
 
    def tickets_sold_total
