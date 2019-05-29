@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
       User.all.find{|inst| inst.name == user_name}
    end
 
-   def self.find_user_by_email(email_address)
+   def self.find_user_by_email(email_address) #this method is used to check the email address for sign in in cli.rb
       self.where(["email = ?", email_address]).first
    end
 

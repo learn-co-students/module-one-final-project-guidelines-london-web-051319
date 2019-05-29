@@ -21,6 +21,10 @@ class Concert < ActiveRecord::Base
       ticket
    end
 
+   def self.find_venue_by_email(email_address) #this method is used to check the email address for sign in in cli.rb
+      self.where(["email = ?", email_address]).first
+   end
+
    # INSTANCE *******************
 
    def ticket_price
