@@ -97,11 +97,13 @@ def aiod(user)
   puts "
     TITLE: #{json["title"].upcase!}'\n
     DATE: #{json["date"]}'\n
-    OVERVIEW\n#{json["explanation"]}
+    OVERVIEW: \n\n #{json["explanation"]}\n
   "
+  
   new_article = Article.create(title: json["title"], date: json["date"], overview: json["explanation"], curated: false)
 
   user.article_id = new_article.id
+  puts "\n"
 end
 
 def add_to_fav(user)
