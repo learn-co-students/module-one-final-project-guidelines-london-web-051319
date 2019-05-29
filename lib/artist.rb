@@ -27,37 +27,47 @@ class Artist < ActiveRecord::Base
       puts sched
    end
 
-   def tickets_sold_concert(concert_name)
-      event = self.my_schedule.find{|inst| inst.name == concert_name}
-      self.tickets_sold_total.select{|inst| inst.concert_id == event.id}
-      binding.pry
+   def tickets_sold_concert(concert)
+      event = self.my_schedule.find{|inst| inst.name == concert}
+      self.all_tickets_sold.select{|inst| inst.concert_id == event.id}
    end
 
-   def number_tickets_sold_concert(concert_name)
-      tickets_sold_concert(concert_name).count
+   def number_tickets_sold_concert(concert) 
+      puts tickets_sold_concert(concert).count
    end
 
-   def tickets_sold_total
+   def all_tickets_sold
       events = self.my_schedule.map{|inst| inst.id}.uniq
       Ticket.all.select{|inst| events.include?(inst.concert_id)}
    end
 
-   def number_tickets_sold
-      self.tickets_sold_total.count
+   def total_number_tickets_sold
+      puts self.all_tickets_sold.count
    end
    
    def where_am_i_playing
       venues = self.my_schedule.map{|inst| inst.venue_id}
-      Venue.all.select{|inst| venues.include?(inst.id)}
+      objects = Venue.all.select{|inst| venues.include?(inst.id)}
+      list = objects.map(&:name)
+      puts list
    end
    
    def my_ticket_prices(concert_name)
-      self.my_schedule.select{|inst| inst.name == concert_name}.map{|inst| inst.price}.first
+      self.my_schedule.find{|inst| inst.name == concert_name}.price
+   end
+
+   def list_my_ticket_prices(concert_name)
+      puts my_ticket_prices(concert_name)
    end
 
    def my_earnings_concert(concert_name)
       # assume 25% for artists 
       self.my_ticket_prices(concert_name)*self.tickets_sold_concert(concert_name).count*0.25
+   end
+
+   def my_earnings_concert_gbp(concert_name)
+      # assume 25% for artists 
+      puts "£#{my_earnings_concert(concert_name)}"
    end
 
 end

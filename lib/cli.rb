@@ -117,23 +117,23 @@ class Cli
       user = Artist.all.find{|inst| inst.email == email_add}
       # binding.pry
       prompt = TTY::Prompt.new
-      choices = ["My schedule", "Concert tickets sold", "All tickets", "Total tickets sold", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
+      choices = ["My schedule", "Concert tickets sold", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "My schedule"
          user.my_schedule_info
       elsif response == "Concert tickets sold"
          concert = prompt.ask("Please specify a concert")
          user.number_tickets_sold_concert(concert)
-      elsif response == "All tickets"
-         user.number_tickets_sold
+      elsif response == "Total ticket sales"
+         user.total_number_tickets_sold
       elsif response == "Where am I playing"
          user.where_am_i_playing
       elsif response == "My ticket prices"
          concert = prompt.ask("Please specify a concert")
-         user.my_ticket_prices(concert)
+         user.list_my_ticket_prices(concert)
       elsif response == "My earnings (concert)"
          concert = prompt.ask("Please specify a concert")
-         user.my_earnings_concert(concert)
+         user.my_earnings_concert_gbp(concert)
       elsif response == "Log out"
          exit
       end
