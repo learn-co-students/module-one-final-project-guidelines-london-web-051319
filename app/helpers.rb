@@ -41,6 +41,7 @@ def print_longest_article_heading
 end
 
 def print_article(article)
+  puts "\n"
   puts article.title.upcase
   puts "\n"
   puts article.overview.gsub("\n","")
@@ -71,7 +72,7 @@ end
 def print_most_liked_heading
   puts "\n"
   puts "-- M O S T  L I K E D  A R T I C L E --"
-  puts "=======================================\n\n"
+  puts "======================================="
   puts "\n"
 end
 
@@ -79,7 +80,8 @@ end
 def print_aiod_heading
   puts "\n"
   puts "-- A S T R O N O M Y  I N F O  O F  T H E  D A Y --"
-  puts "===================================================\n\n"
+  puts "==================================================="
+  puts "\n"
 end
 
 def print_aiod_article(title, date, overview)
@@ -110,7 +112,6 @@ def print_add_to_favourites
   puts "\n"
   puts "-- Added to your favourites --"
   puts "\n"
-  puts "\n\n"
   print_press_enter
 end
 
