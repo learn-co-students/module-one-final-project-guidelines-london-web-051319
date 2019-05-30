@@ -77,9 +77,9 @@ class Cli
       if response == "Customer"
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
-            key(:email).ask('Please enter your email:')
+            key(:email).ask('Please enter your email:'){|q| q.validate :email}
             key(:password).ask('Please enter a new password:')
-            key(:dob).ask('Please enter your date of birth (yyyy-mm-dd):')
+            key(:dob).ask('Please enter your date of birth (yyyy-mm-dd):', convert: :date)
          end
 
          #we need to check if email already exists and divert to log in if appropriate
@@ -95,7 +95,7 @@ class Cli
       elsif response == "Artist"
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
-            key(:email).ask('Please enter your email address:')
+            key(:email).ask('Please enter your email address:'){|q| q.validate :email}
             key(:password).ask('Please enter a new password:')
          end
 
@@ -112,7 +112,7 @@ class Cli
       elsif response == "Venue Manager"
          result = prompt.collect do
             key(:name).ask('Please enter the name of your venue:')
-            key(:email).ask('Please enter a valid email address:')
+            key(:email).ask('Please enter a valid email address:'){|q| q.validate :email}
             key(:password).ask('Please enter a new password:')
             key(:location).ask('Please enter the city and country in which your venue is located:')
             key(:facilites).key('Please provide details of the facilities available at your venue:')
@@ -143,57 +143,7 @@ class Cli
    
 # CUSTOMER
 
-   def customer_manage_payment_info(user)
-      prompt = TTY::Prompt.new
-      choices = ["Add card", "Update card details", "Remove card", "Go back"]
-      manage_info = prompt.select("Please choose an option:", choices)
-      if manage_info == "Add card"
-         check_cards(user)
-      elsif manage_info == "Update card details"
-         cards = [user.card_1_number, user.card_2_number, user.card_3_number, "Cancel"]
-         sel_card = prompt.select("Please select a card:", cards) # the card to be updated
-         if sel_card == "Cancel"
-            customer_manage_payment_info(user)
-         else
-            new_card = prompt.ask("Please enter new card number:")
-            user.update_card_details(new_card, sel_card)
-            customer_manage_payment_info(user)
-         end
-      elsif manage_info == "Remove card"
-         cards = [user.card_1_number, user.card_2_number, user.card_3_number, "Cancel"]
-         sel_card = prompt.select("Please select a card:", cards)
-         if sel_card == "Cancel"
-            customer_manage_payment_info(user)
-         else
-            options = ["Yes", "No"]
-            check = prompt.select("Are you sure you want to delete your current card?", options)
-            if check == "Yes"
-               user.remove_card(sel_card)
-            end
-         end
-         customer_manage_payment_info(user)
-      elsif manage_info =="Go back"
-         customer_portal(user)
-      end   
-   end
 
-   def check_cards(user)
-      prompt = TTY::Prompt.new
-      nums = []
-      nums << user.card_1_number 
-      nums << user.card_2_number 
-      nums << user.card_3_number
-      
-      if !nums.include?(nil)
-         puts "You have too many cards saved. Please remove or upate and existing card."
-         customer_manage_payment_info(user)
-      else
-         i = nums.find_index{|inst| inst == nil}
-         card_no = prompt.ask("Please enter the card number")
-         user.add_card(card_no, i)
-      end
-      customer_manage_payment_info(user)
-   end
 
 # ARTIST
 
@@ -212,7 +162,7 @@ def update_artist_account(user) # will allow the user to update contact details
       user.update_name(new_name)
       update_artist_account(user)
    elsif response == "Update email"
-      new_email = prompt.ask("Please enter your email address:")
+      new_email = prompt.ask("Please enter your email address:"){|q| q.validate :email}
       user.update_email(new_email) # Activates method in user class
       update_artist_account(user)
    elsif response == "Update password" # allows to view and change password
@@ -241,6 +191,20 @@ def update_artist_account(user) # will allow the user to update contact details
    end
 end
 
+def new_gig(user)
+   prompt = TTY::Prompt.new
+   venues = Venue.all.map(&:name)
+   inputs = prompt.collect do
+      key(:name).ask("Please enter the concert's name:")
+      key(:date).ask("Please confirm the date of the concert:")
+      key(:venue).select("Please confirm the venue for the concert:", venues)
+      key(:price).ask("Please set a standard price for tickets:")
+   end
+   user.new_concert(inputs)
+   # binding.pry
+   artist_portal(user)
+end
+
 # VENUE
 
 def update_venue_account(user)
@@ -259,7 +223,7 @@ def update_venue_account(user)
       user.update_name(new_name)
       update_venue_account(user)
    elsif response == "Update email"
-      new_email = prompt.ask("Please enter a valid email address:")
+      new_email = prompt.ask("Please enter a valid email address:"){|q| q.validate :email}
       user.update_email(new_email) 
       update_venue_account(user)
    elsif response == "Update password" 
@@ -350,19 +314,17 @@ end
 
    def artist_portal(user)
       prompt = TTY::Prompt.new
-      choices = ["Review account information", "My schedule", "Concert Status", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
+      choices = ["Review account information", "My schedule", "Concert status", "Total ticket sales", "My ticket prices", "New concert", "My earnings (concert)", "Cancel concert", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "Review account information"
          update_artist_account(user)
       elsif response == "My schedule"
          user.my_schedule_info
-      elsif response == "Concert Status"
+      elsif response == "Concert status"
          concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name), "Go back")
          user.concert_status_from_name(concert)
       elsif response == "Total ticket sales"
          user.total_number_tickets_sold
-      elsif response == "Where am I playing"
-         user.where_am_i_playing
       elsif response == "My ticket prices"
          concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name)<<"Go back")
          unless concert == "Go back"
@@ -380,15 +342,21 @@ end
             user.my_earnings_concert_gbp(concert)
             artist_portal(user)
          end
+      elsif response == "New concert"
+         new_gig(user)
+      elsif response == "Cancel concert"
+         call_off = prompt.select("Please select concert to be cancelled:", user.my_schedule.map(&:name) << "Go back")
+         unless call_off == "Go back"
+            Concert.all.find{|inst| inst.name == call_off}.destroy
+         else
+            artist_portal(user)
+         end
       elsif response == "Log out"
          # exit
          sign_in_or_new
       end
       artist_portal(user)
    end
-
-# GLOBAL CLI METHODS
-
 
 
 #CUSTOMER METHODS
@@ -468,7 +436,7 @@ end
          user.update_dob(new_dob)
          update_account(user)
       elsif response == "Update email"
-         new_email = prompt.ask("Please enter your email address:")
+         new_email = prompt.ask("Please enter your email address:"){|q| q.validate :email}
          user.update_email(new_email) # Activates method in user class
          update_account(user)
       elsif response == "Update password" # allows to view and change password
@@ -488,3 +456,57 @@ end
          customer_portal(user)
       end
    end
+
+   def customer_manage_payment_info(user)
+      prompt = TTY::Prompt.new
+      choices = ["Add card", "Update card details", "Remove card", "Go back"]
+      manage_info = prompt.select("Please choose an option:", choices)
+      if manage_info == "Add card"
+         check_cards(user)
+      elsif manage_info == "Update card details"
+         cards = [user.card_1_number, user.card_2_number, user.card_3_number, "Cancel"]
+         sel_card = prompt.select("Please select a card:", cards) # the card to be updated
+         if sel_card == "Cancel"
+            customer_manage_payment_info(user)
+         else
+            new_card = prompt.ask("Please enter new card number:")
+            user.update_card_details(new_card, sel_card)
+            customer_manage_payment_info(user)
+         end
+      elsif manage_info == "Remove card"
+         cards = [user.card_1_number, user.card_2_number, user.card_3_number, "Cancel"]
+         sel_card = prompt.select("Please select a card:", cards)
+         if sel_card == "Cancel"
+            customer_manage_payment_info(user)
+         else
+            options = ["Yes", "No"]
+            check = prompt.select("Are you sure you want to delete your current card?", options)
+            if check == "Yes"
+               user.remove_card(sel_card)
+            end
+         end
+         customer_manage_payment_info(user)
+      elsif manage_info =="Go back"
+         customer_portal(user)
+      end   
+   end
+
+   def check_cards(user)
+      prompt = TTY::Prompt.new
+      nums = []
+      nums << user.card_1_number 
+      nums << user.card_2_number 
+      nums << user.card_3_number
+      
+      if !nums.include?(nil)
+         puts "You have too many cards saved. Please remove or upate and existing card."
+         customer_manage_payment_info(user)
+      else
+         i = nums.find_index{|inst| inst == nil}
+         card_no = prompt.ask("Please enter the card number")
+         user.add_card(card_no, i)
+      end
+      customer_manage_payment_info(user)
+   end
+
+end
