@@ -43,5 +43,4 @@ class Venue < ActiveRecord::Base
       list = artists.map(&:name)
       puts list
    end
-
 end
