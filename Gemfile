@@ -7,6 +7,7 @@ gem "rake"
 gem "database_cleaner"
 gem "require_all"
 gem 'tty-font'
+gem 'tty-prompt'
 # gem 'pastel'
 gem 'tty'
 gem 'faker'

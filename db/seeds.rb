@@ -6,6 +6,13 @@ Concert.delete_all
 User.delete_all
 Ticket.delete_all
 
+# random20 = rand(20)
+# random100 = rand(100)
+# random1000 = rand(1000)
+# random90000 = rand(90000)
+# randomcc = rand(1...10000000000000000)
+
+
 muse = Artist.create(name: "Muse", genre: "rock", website_url: "https://www.muse.mu", email: "muse@muse.mu", password: "we_rock!")
 aerosmith = Artist.create(name: "Aerosmith", genre: "rock", website_url: "https://www.aerosmith.com/welcome", email: "smitty@aerosmith.com", password: "sdr&R")
 lso = Artist.create(name: "London Symphony Orchestra", genre: "classical", website_url: "https://lso.co.uk", email: "classical@lso.co.uk", password: "we'reClassical")
@@ -16,6 +23,9 @@ lenny = Artist.create(name: "Lenny Kravitz", genre: "rock", website_url: "http:/
 spice = Artist.create(name: "Spice Girls", genre: "pop", website_url: "https://www.thespicegirls.com", email: "power@spiceworld.com", password: "spice up yer life")
 bill = Artist.create(name: "Bill Bailey", genre: "alternative", website_url: "https://billbailey.co.uk", email: "billy@bailey.com", password: "wonderfunk")
 
+91.times{Artist.create(name: Faker::Music.band, genre: Faker::Music.genre, website_url: Faker::Internet.url, email: Faker::Internet.email, password: Faker::Internet.password(8))}
+#100 artists total
+
 o2 = Venue.create(name: "O2 Arena", website_url: "https://www.theo2.co.uk", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "02@arenauk.com", password: "we're_big", capacity: 60000)
 nec = Venue.create(name: "NEC", website_url: "http://www.thenec.co.uk/whats-on/", location: "Birmingham, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "  ", password: "expo", capacity: 40000)
 symphony = Venue.create(name: "Symphony Hall", website_url: "https://www.thsh.co.uk", location: "Birmingham, UK", facilities: ["bathrooms", "disabled access", "art gallery", "cloakroom"], email: "symphony@classical.co.uk", password: "acoustics", capacity: 6500)
@@ -25,47 +35,44 @@ manchester = Venue.create(name: "Manchester Arena", website_url: "http://www.man
 o2_newc = Venue.create(name: "O2 Academy Newcastle", website_url: "https://academymusicgroup.com/o2academynewcastle/", location: "Newcastle, UK", facilities: ["bars", "bathrooms", "disabled access"], email: "02_newc@arenauk.com", password: "waiai*", capacity: 20500)
 rock = Venue.create(name: "Rock City", website_url: "https://www.rock-city.co.uk", location: "Nottingham, UK", facilities: ["bars", "bathrooms"], email: "notts@thecity.co.uk", password: "rockon", capacity: 40000)
 
-user1 = User.create(name: "Bobby Harrisson", card_1_number: rand(1...100000000000000000), email: "bob@fmail.com", password: "asjhdli@")
-user2 = User.create(name: "Claire Redbridge", card_1_number: rand(1...100000000000000000), email: "claire@atlook.com", password: "WJAs7d8")
-user3 = User.create(name: "Asim Qurashee", card_1_number: rand(1...100000000000000000), email: "qshi@wahoo.co.uk", password: "cueball")
-user4 = User.create(name: "Sophia Mensheviska", card_1_number: rand(1...100000000000000000), email: "soph67@fmail.com", password: "rooter")
-user5 = User.create(name: "Lena Orgolova", card_1_number: rand(1...100000000000000000), email: "lena@rumail.com", password: "A&S(d7h")
-user6 = User.create(name: "Sam Gamgee", card_1_number: rand(1...100000000000000000), email: "mrfrodo@middleearth.net", password: "precious")
-user7 = User.create(name: "Alex Ramsay", card_1_number: rand(1...100000000000000000), email: "ramsaaay@fmail.com", password: "SKDHJoa7")
-user8 = User.create(name: "Mo Farrar", card_1_number: rand(1...100000000000000000), email: "mozy@fmail.com", password: "sdlhasD#")
+12.times{Venue.create(name: Faker::WorldCup.stadium, website_url: Faker::Internet.url,location: Faker::WorldCup.city, facilities: [Faker::Appliance.equipment, Faker::Appliance.equipment, Faker::Appliance.equipment], email: Faker::Internet.email, password: Faker::Internet.password(8), capacity: rand(90000))}
+#20 venues total
 
-concert1 = Concert.create(name: "Fractured Future Tour: London", price: 60.00, website_url: "TBC", artist_id: muse.id, venue_id: o2.id)
-concert2 = Concert.create(name: "Lovin' it up 2019", price: 75.00, website_url: "TBC", artist_id: aerosmith.id, venue_id: wembley.id)
-concert3 = Concert.create(name: "Summer Nights", price: 40.00, website_url: "TBC", artist_id: lso.id, venue_id: albert.id)
-concert4 = Concert.create(name: "Despacito", price: 35.00, website_url: "TBC", artist_id: fonsi.id, venue_id: manchester.id)
-concert5 = Concert.create(name: "Green Grass Tour: Birmingham", price: 65.00, website_url: "TBC", artist_id: jones.id, venue_id: nec.id)
-concert6 = Concert.create(name: "Metallicats", price: 60.00, website_url: "TBC", artist_id: metallica.id, venue_id: o2.id)
-concert7 = Concert.create(name: "Raise Vibrations", price: 50.00, website_url: "TBC", artist_id: lenny.id, venue_id: o2_newc.id)
-concert8 = Concert.create(name: "Spice It Up!", price: 120.00, website_url: "TBC", artist_id: spice.id, venue_id: nec.id)
-concert9 = Concert.create(name: "Mindgoogling: London", price: 70.00, website_url: "TBC", artist_id: bill.id, venue_id: albert.id)
-concert10 = Concert.create(name: "Fractured Future Tour: Newcastle", price: 60.00, website_url: "TBC", artist_id: muse.id, venue_id: o2_newc.id)
-concert11 = Concert.create(name: "Fractured Future Tour: Manchester", price: 60.00, website_url: "TBC", artist_id: muse.id, venue_id: manchester.id)
-concert12 = Concert.create(name: "Fractured Future Tour: Nottingham", price: 60.00, website_url: "TBC", artist_id: muse.id, venue_id: rock.id)
-concert13 = Concert.create(name: "Fractured Future Tour: Wembley", price: 90.00, website_url: "TBC", artist_id: muse.id, venue_id: wembley.id)
-concert14 = Concert.create(name: "Green Grass Tour: Manchester", price: 65, website_url: "TBC", artist_id: jones.id, venue_id: manchester.id)
-concert15 = Concert.create(name: "Green Grass Tour: London", price: 100, website_url: "TBC", artist_id: jones.id, venue_id: wembley.id)
-concert16 = Concert.create(name: "Oh no!", price: 40, website_url: "TBC", artist_id: fonsi.id, venue_id: nec.id)
-concert17 = Concert.create(name: "Mindgoogling: Newcastle", price: 70, website_url: "TBC", artist_id: bill.id, venue_id: o2_newc.id)
-concert18 = Concert.create(name: "Spice Up Your Life: Manchester", price: 90, website_url: "TBC", artist_id: spice.id, venue_id: manchester.id)
-concert19 = Concert.create(name: "Spice Up Your Life: Newcastle", price: 90, website_url: "TBC", artist_id: spice.id, venue_id: o2_newc.id)
-concert20 = Concert.create(name: "Good Vibrations", price: 60, website_url: "TBC", artist_id: lenny.id, venue_id: o2.id)
+user1 = User.create(name: "Bobby Harrisson", dob: "1977-08-28", card_1_number: rand(1...10000000000000000), email: "bob@fmail.com", password: "asjhdli@")
+user2 = User.create(name: "Claire Redbridge", dob: "1995-01-31", card_1_number: rand(1...10000000000000000), email: "claire@atlook.com", password: "WJAs7d8")
+user3 = User.create(name: "Asim Qurashee", dob: "1999-05-14", card_1_number: rand(1...10000000000000000), email: "qshi@wahoo.co.uk", password: "cueball")
+user4 = User.create(name: "Sophia Mensheviska", dob: "1988-10-07", card_1_number: rand(1...10000000000000000), email: "soph67@fmail.com", password: "rooter")
+user5 = User.create(name: "Lena Orgolova", dob: "1986-11-11", card_1_number: rand(1...10000000000000000), email: "lena@rumail.com", password: "A&S(d7h")
+user6 = User.create(name: "Sam Gamgee", dob: "1992-05-27", card_1_number: rand(1...10000000000000000), email: "mrfrodo@middleearth.net", password: "precious")
+user7 = User.create(name: "Alex Ramsay", dob: "1994-08-27", card_1_number: rand(1...10000000000000000), email: "ramsaaay@fmail.com", password: "SKDHJoa7")
+user8 = User.create(name: "Mo Farrar", dob: "2000-09-30", card_1_number: rand(1...10000000000000000), email: "mozy@fmail.com", password: "sdlhasD#")
 
+992.times{User.create(name: Faker::Name.name, dob: Faker::Date.between(80.years.ago, 18.years.ago), card_1_number: rand(1...10000000000000000), email: Faker::Internet.email, password: Faker::Internet.password(8))}
+#1000 customers
 
+concert1 = Concert.create(name: "Fractured Future Tour: London", price: 60.00, date: "2019-06-04", website_url: "TBC", artist_id: muse.id, venue_id: o2.id)
+concert2 = Concert.create(name: "Lovin' it up 2019", price: 75.00, date: "2019-10-02", website_url: "TBC", artist_id: aerosmith.id, venue_id: wembley.id)
+concert3 = Concert.create(name: "Summer Nights", price: 40.00, date: "2020-01-16", website_url: "TBC", artist_id: lso.id, venue_id: albert.id)
+concert4 = Concert.create(name: "Despacito", price: 35.00, date: "2019-07-01", website_url: "TBC", artist_id: fonsi.id, venue_id: manchester.id)
+concert5 = Concert.create(name: "Green Grass Tour: Birmingham", price: 65.00, date: "2021-01-04", website_url: "TBC", artist_id: jones.id, venue_id: nec.id)
+concert6 = Concert.create(name: "Metallicats", price: 60.00, date: "2021-05-30", website_url: "TBC", artist_id: metallica.id, venue_id: o2.id)
+concert7 = Concert.create(name: "Raise Vibrations", price: 50.00, date: "2019-11-04", website_url: "TBC", artist_id: lenny.id, venue_id: o2_newc.id)
+concert8 = Concert.create(name: "Spice It Up!", price: 120.00, date: "2019-12-20", website_url: "TBC", artist_id: spice.id, venue_id: nec.id)
+concert9 = Concert.create(name: "Mindgoogling: London", price: 70.00, date: "2019-07-14", website_url: "TBC", artist_id: bill.id, venue_id: albert.id)
+concert10 = Concert.create(name: "Fractured Future Tour: Newcastle", price: 60.00, date: "2019-10-04", website_url: "TBC", artist_id: muse.id, venue_id: o2_newc.id)
+concert11 = Concert.create(name: "Fractured Future Tour: Manchester", price: 60.00, date: "2019-06-15", website_url: "TBC", artist_id: muse.id, venue_id: manchester.id)
+concert12 = Concert.create(name: "Fractured Future Tour: Nottingham", price: 60.00, date: "2019-11-01", website_url: "TBC", artist_id: muse.id, venue_id: rock.id)
+concert13 = Concert.create(name: "Fractured Future Tour: Wembley", price: 90.00, date: "2019-10-30", website_url: "TBC", artist_id: muse.id, venue_id: wembley.id)
+concert14 = Concert.create(name: "Green Grass Tour: Manchester", price: 65, date: "2019-10-20", website_url: "TBC", artist_id: jones.id, venue_id: manchester.id)
+concert15 = Concert.create(name: "Green Grass Tour: London", price: 100, date: "2019-10-16", website_url: "TBC", artist_id: jones.id, venue_id: wembley.id)
+concert16 = Concert.create(name: "Oh no!", price: 40, date: "2019-12-13", website_url: "TBC", artist_id: fonsi.id, venue_id: nec.id)
+concert17 = Concert.create(name: "Mindgoogling: Newcastle", price: 70, date: "2020-11-07", website_url: "TBC", artist_id: bill.id, venue_id: o2_newc.id)
+concert18 = Concert.create(name: "Spice Up Your Life: Manchester", price: 90, date: "2019-07-31", website_url: "TBC", artist_id: spice.id, venue_id: manchester.id)
+concert19 = Concert.create(name: "Spice Up Your Life: Newcastle", price: 90, date: "2019-12-01", website_url: "TBC", artist_id: spice.id, venue_id: o2_newc.id)
+concert20 = Concert.create(name: "Good Vibrations", price: 60, date: "2019-11-13", website_url: "TBC", artist_id: lenny.id, venue_id: o2.id)
 
-# concert1 = Concert.create(name: "Fractured Future Tour", price: 60, date: 19-06-04, start_time: 19:00, end_time: 23:30, website_url: "TBC", artist_id: 1, venue_id: 1)
-# concert2 = Concert.create(name: "Lovin' it up 2019", price: 75, date: 19-06-29, start_time: 19:30, end_time: 23:45, website_url: "TBC", artist_id: 2, venue_id: 5)
-# concert3 = Concert.create(name: "Summer Nights", price: 40, date: 19-07-05, start_time: 17:30, end_time: 20:30, website_url: "TBC", artist_id: 3, venue_id: 4)
-# concert4 = Concert.create(name: "Despacito", price: 35, date: 19-07-15, start_time: 20:00, end_time: 23:50, website_url: "TBC", artist_id: 4, venue_id: 6)
-# concert5 = Concert.create(name: "Green Grass Tour", price: 65, date: 19-08-01, start_time: 19:00, end_time: 23:00, website_url: "TBC", artist_id: 5, venue_id: 2)
-# concert6 = Concert.create(name: "Metallicats", price: 60, date: 19-08-17, start_time: 19:20, end_time: 23:30, website_url: "TBC", artist_id: 6, venue_id: 1)
-# concert7 = Concert.create(name: "Raise Vibrations", price: 50, date: 19-08-31, start_time: 19:30, end_time: 23:30, website_url: "TBC", artist_id: 7, venue_id: 7)
-# concert8 = Concert.create(name: "Spice It Up!", price: 120, date: 19-09-03, start_time: 19:00, end_time: 23:00, website_url: "TBC", artist_id: 8, venue_id: 2)
-# concert9 = Concert.create(name: "Mindgoogling", price: 70, date: 19-09-20, start_time: 19:00, end_time: 23:00, website_url: "TBC", artist_id: 9, venue_id: 4)
+#20 concerts
+# 5.times{Concert.create(name: Faker::Verb.ing_form+" "+Faker::Verb.past_participle+" "+Faker::Verb.base, price: Faker::Commerce.price, website_url: Faker::Internet.url, artist_id: random100, venue_id: random20)}
 
 ticket1 = Ticket.create(user_id: user1.id, concert_id: concert1.id)
 ticket2 = Ticket.create(user_id: user2.id, concert_id: concert5.id)
@@ -91,3 +98,6 @@ ticket21 = Ticket.create(user_id: user5.id, concert_id: concert16.id)
 ticket22 = Ticket.create(user_id: user6.id, concert_id: concert15.id)
 ticket23 = Ticket.create(user_id: user7.id, concert_id: concert6.id)
 ticket24 = Ticket.create(user_id: user8.id, concert_id: concert9.id)
+
+10000.times{Ticket.create(user_id: rand(1000), concert_id: rand(20))}
+
