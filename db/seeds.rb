@@ -1,3 +1,5 @@
+require 'faker'
+
 Artist.delete_all
 Venue.delete_all
 Concert.delete_all
