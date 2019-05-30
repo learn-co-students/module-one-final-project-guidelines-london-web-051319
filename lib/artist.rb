@@ -18,12 +18,24 @@ class Artist < ActiveRecord::Base
 
    # INSTANCE *******************
 
+   def update_name(new_name)
+      self.update(name: new_name)
+   end
+   
    def update_email(new_email)
       self.update(email: new_email)
    end
 
    def update_password(new_password)
       self.update(password: new_password)
+   end
+
+   def update_genre(new_genre)
+      self.update(genre: new_genre)
+   end
+
+   def update_website(new_url)
+      self.update(website_url: new_url)
    end
 
    def my_schedule
@@ -40,7 +52,11 @@ class Artist < ActiveRecord::Base
 
    def my_schedule_info
       list = self.my_schedule.map{|inst| "#{inst.name} | #{inst.date} | #{inst.venue.name}"}
-      puts list
+      unless list.length == 0
+         puts list
+      else
+         puts "You currently have no scheduled concerts."
+      end
    end
 
    def tickets_sold_concert(concert)
@@ -49,7 +65,12 @@ class Artist < ActiveRecord::Base
    end
 
    def number_tickets_sold_concert(concert) 
-      puts tickets_sold_concert(concert).count
+      number = tickets_sold_concert(concert).count
+      if number > 0
+         puts number
+      elsif number == 0
+         puts "You currently have no scheduled concerts."
+      end
    end
 
    def all_tickets_sold
@@ -65,7 +86,11 @@ class Artist < ActiveRecord::Base
       venues = self.my_schedule.map{|inst| inst.venue_id}
       objects = Venue.all.select{|inst| venues.include?(inst.id)}
       list = objects.map{|inst| "#{inst.name} - #{inst.location}"}
-      puts list
+      unless list.length == 0
+         puts list
+      else
+         puts "You currently have no scheduled concerts."
+      end
    end
    
    def my_ticket_prices(concert_name)
