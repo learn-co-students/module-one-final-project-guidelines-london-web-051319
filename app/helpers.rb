@@ -187,7 +187,7 @@ def print_press_enter
   puts "\n"
   puts "-- Press Enter For Main Menu --"
   puts "\n"
-end   
+end
 
 def greeting
   puts "\n"
