@@ -14,14 +14,14 @@ lenny = Artist.create(name: "Lenny Kravitz", genre: "rock", website_url: "http:/
 spice = Artist.create(name: "Spice Girls", genre: "pop", website_url: "https://www.thespicegirls.com", email: "power@spiceworld.com", password: "spice up yer life")
 bill = Artist.create(name: "Bill Bailey", genre: "alternative", website_url: "https://billbailey.co.uk", email: "billy@bailey.com", password: "wonderfunk")
 
-o2 = Venue.create(name: "O2 Arena", website_url: "https://www.theo2.co.uk", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "02@arenauk.com", password: "we're_big")
-nec = Venue.create(name: "NEC", website_url: "http://www.thenec.co.uk/whats-on/", location: "Birmingham, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "  ", password: "expo")
-symphony = Venue.create(name: "Symphony Hall", website_url: "https://www.thsh.co.uk", location: "Birmingham, UK", facilities: ["bathrooms", "disabled access", "art gallery", "cloakroom"], email: "symphony@classical.co.uk", password: "acoustics")
-albert = Venue.create(name: "Royal Albert Hall", website_url: "https://www.royalalberthall.com", location: "London, UK", facilities: ["bathrooms", "disabled access"], email: "alby@royalalbert.com", password: "princealbert")
-wembley = Venue.create(name: "Wembley Stadium", website_url: "http://www.wembleystadium.com", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "wembley@statdiumsuk.co.uk", password: "national_pride_apparently")
-manchester = Venue.create(name: "Manchester Arena", website_url: "http://www.manchester-arena.com", location: "Manchester, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "manc@arenasuk.co.uk", password: "always_raining")
-o2_newc = Venue.create(name: "O2 Academy Newcastle", website_url: "https://academymusicgroup.com/o2academynewcastle/", location: "Newcastle, UK", facilities: ["bars", "bathrooms", "disabled access"], email: "02_newc@arenauk.com", password: "waiai*")
-rock = Venue.create(name: "Rock City", website_url: "https://www.rock-city.co.uk", location: "Nottingham, UK", facilities: ["bars", "bathrooms"], email: "notts@thecity.co.uk", password: "rockon")
+o2 = Venue.create(name: "O2 Arena", website_url: "https://www.theo2.co.uk", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "02@arenauk.com", password: "we're_big", capacity: 60000)
+nec = Venue.create(name: "NEC", website_url: "http://www.thenec.co.uk/whats-on/", location: "Birmingham, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "  ", password: "expo", capacity: 40000)
+symphony = Venue.create(name: "Symphony Hall", website_url: "https://www.thsh.co.uk", location: "Birmingham, UK", facilities: ["bathrooms", "disabled access", "art gallery", "cloakroom"], email: "symphony@classical.co.uk", password: "acoustics", capacity: 6500)
+albert = Venue.create(name: "Royal Albert Hall", website_url: "https://www.royalalberthall.com", location: "London, UK", facilities: ["bathrooms", "disabled access"], email: "alby@royalalbert.com", password: "princealbert", capacity: 5000)
+wembley = Venue.create(name: "Wembley Stadium", website_url: "http://www.wembleystadium.com", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "wembley@statdiumsuk.co.uk", password: "national_pride_apparently", capacity: 90000)
+manchester = Venue.create(name: "Manchester Arena", website_url: "http://www.manchester-arena.com", location: "Manchester, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "manc@arenasuk.co.uk", password: "always_raining", capacity: 35000)
+o2_newc = Venue.create(name: "O2 Academy Newcastle", website_url: "https://academymusicgroup.com/o2academynewcastle/", location: "Newcastle, UK", facilities: ["bars", "bathrooms", "disabled access"], email: "02_newc@arenauk.com", password: "waiai*", capacity: 20500)
+rock = Venue.create(name: "Rock City", website_url: "https://www.rock-city.co.uk", location: "Nottingham, UK", facilities: ["bars", "bathrooms"], email: "notts@thecity.co.uk", password: "rockon", capacity: 40000)
 
 user1 = User.create(name: "Bobby Harrisson", dob: "1977-08-28", card_1_number: rand(1...10000000000000000), email: "bob@fmail.com", password: "asjhdli@")
 user2 = User.create(name: "Claire Redbridge", dob: "1995-01-31", card_1_number: rand(1...10000000000000000), email: "claire@atlook.com", password: "WJAs7d8")
@@ -52,18 +52,6 @@ concert17 = Concert.create(name: "Mindgoogling: Newcastle", price: 70, date: "20
 concert18 = Concert.create(name: "Spice Up Your Life: Manchester", price: 90, date: "2019-07-31", website_url: "TBC", artist_id: spice.id, venue_id: manchester.id)
 concert19 = Concert.create(name: "Spice Up Your Life: Newcastle", price: 90, date: "2019-12-01", website_url: "TBC", artist_id: spice.id, venue_id: o2_newc.id)
 concert20 = Concert.create(name: "Good Vibrations", price: 60, date: "2019-11-13", website_url: "TBC", artist_id: lenny.id, venue_id: o2.id)
-
-
-
-# concert1 = Concert.create(name: "Fractured Future Tour", price: 60, date: 19-06-04, start_time: 19:00, end_time: 23:30, website_url: "TBC", artist_id: 1, venue_id: 1)
-# concert2 = Concert.create(name: "Lovin' it up 2019", price: 75, date: 19-06-29, start_time: 19:30, end_time: 23:45, website_url: "TBC", artist_id: 2, venue_id: 5)
-# concert3 = Concert.create(name: "Summer Nights", price: 40, date: 19-07-05, start_time: 17:30, end_time: 20:30, website_url: "TBC", artist_id: 3, venue_id: 4)
-# concert4 = Concert.create(name: "Despacito", price: 35, date: 19-07-15, start_time: 20:00, end_time: 23:50, website_url: "TBC", artist_id: 4, venue_id: 6)
-# concert5 = Concert.create(name: "Green Grass Tour", price: 65, date: 19-08-01, start_time: 19:00, end_time: 23:00, website_url: "TBC", artist_id: 5, venue_id: 2)
-# concert6 = Concert.create(name: "Metallicats", price: 60, date: 19-08-17, start_time: 19:20, end_time: 23:30, website_url: "TBC", artist_id: 6, venue_id: 1)
-# concert7 = Concert.create(name: "Raise Vibrations", price: 50, date: 19-08-31, start_time: 19:30, end_time: 23:30, website_url: "TBC", artist_id: 7, venue_id: 7)
-# concert8 = Concert.create(name: "Spice It Up!", price: 120, date: 19-09-03, start_time: 19:00, end_time: 23:00, website_url: "TBC", artist_id: 8, venue_id: 2)
-# concert9 = Concert.create(name: "Mindgoogling", price: 70, date: 19-09-20, start_time: 19:00, end_time: 23:00, website_url: "TBC", artist_id: 9, venue_id: 4)
 
 ticket1 = Ticket.create(user_id: user1.id, concert_id: concert1.id)
 ticket2 = Ticket.create(user_id: user2.id, concert_id: concert5.id)

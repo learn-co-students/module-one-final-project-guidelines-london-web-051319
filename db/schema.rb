@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2019_05_30_102709) do
     t.string "facilities"
     t.string "email"
     t.string "password"
+    t.integer "capacity"
   end
 
 end

@@ -6,14 +6,14 @@ class Cli
 		sign_in_or_new
 	end
 
-	def welcome_message # outputs big mus.ic welcome screen.
+	def welcome_message # called by run. outputs big mus.ic welcome screen.
 		font = TTY::Font.new(:doom)
 		pastel = Pastel.new
 		puts pastel.red.on_yellow.bold(font.write("Mus.ic"))
 		
 	end
 
-	def sign_in_or_new 	# appears at startup, gives the user 3 initial choices that call the methods below.
+	def sign_in_or_new 	# called by run. appears at startup, gives the user 3 initial choices that call the methods below.
 		puts "Hello! Welcome to Mus.ic"
 		prompt = TTY::Prompt.new
 		choices = ["Sign In", "New User", "Exit"]
@@ -35,7 +35,7 @@ class Cli
       validate(email, password)
 	end
    
-   def validate(user_email, user_password) # Sorts user into class and validates email and password against database
+   def validate(user_email, user_password) # called by sign_in. Sorts user into class and validates email and password against database
       if User.all.map(&:email).include?(user_email) == true
          # binding.pry
          customer = User.all.find{|inst|inst.email == user_email}
@@ -77,12 +77,9 @@ class Cli
       if response == "Customer"
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
-            # key(:dob).ask('Please enter your date of birth ')
             key(:email).ask('Please enter your email:')
             key(:password).ask('Please enter a new password:')
             key(:dob).ask('Please enter your date of birth (yyyy-mm-dd):')
-            # key(:card_1_number).ask('Please enter your card number:', convert: :int) 
-            #crashes if you add text
          end
 
          #we need to check if email already exists and divert to log in if appropriate
@@ -98,7 +95,6 @@ class Cli
       elsif response == "Artist"
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
-            # key(:genre).ask('Please enter your associated genre:')
             key(:email).ask('Please enter your email address:')
             key(:password).ask('Please enter a new password:')
          end
@@ -120,7 +116,7 @@ class Cli
             key(:password).ask('Please enter a new password:')
             key(:location).ask('Please enter the city and country in which your venue is located:')
             key(:facilites).key('Please provide details of the facilities available at your venue:')
-            key(:facilities).key('Please enter a valid website address for your venue')
+            key(:website).key('Please enter a valid website address for your venue')
          end
 
          if User.all.map(&:email).include?(result[:email])
@@ -143,8 +139,6 @@ class Cli
 	end
 
   # GLOBAL
-
-  
 
    
 # CUSTOMER
@@ -199,98 +193,6 @@ class Cli
          user.add_card(card_no, i)
       end
       customer_manage_payment_info(user)
-   end
-
-   def search(category) # This will allow users to search by artist, venue and concert and then book tickets according to what's available.
-      prompt = TTY::Prompt.new
-      search_term = prompt.ask("Search for:")
-      if search_term == nil
-         Concert.all
-      else
-         if category == "Artist"
-            list = []
-            Artist.all.each do |inst|
-               if inst.name.downcase.include? search_term
-                  list << inst
-               end
-            end
-            list.map{|inst| inst.my_schedule}.flatten
-         elsif category == "Concert"
-            list = []
-            Concert.all.each do |inst|
-               if inst.name.downcase.include? search_term
-                  list << inst
-               end
-            end
-            list
-         elsif category == "Venue"
-            list = []
-            Venue.all.each do |inst|
-               if inst.name.downcase.include? search_term
-                  list << inst
-               end
-            end
-            list.map{|inst| inst.my_concerts}.flatten
-         end
-      end
-   end
-
-   def buy_tickets(user)
-      prompt = TTY::Prompt.new
-      category = prompt.select("Search by:", ["Artist", "Concert", "Venue", "Go back"])
-      if category == "Go back"
-         customer_portal(user)
-      else
-         events = search(category)
-         results = []
-         events.each{|inst| results << "#{inst.name} | #{inst.artist.name} | #{inst.date} | £#{inst.price}"}
-         buy = prompt.select("Please confirm which event you would like to purchase tickets for?", results<<"Cancel")
-         if buy == "Cancel"
-            buy_tickets(user)
-         else
-         user.buy_ticket(buy.split(" | ").first)
-         buy_tickets(user)
-         end
-      end
-   end
-
-   def update_account(user) # will allow the user to update contact details
-      prompt = TTY::Prompt.new
-      response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update DOB", "Update email", "Update password", "Delete account", "Go back"]) # prompt allows user to select contact details to edit
-      if response == "View my account information"
-         puts "Name => #{user.name}"
-         puts "DOB => #{user.dob}"
-         puts "Email => #{user.email}"
-         puts "Password => #{user.password}"
-         update_account(user)
-      elsif response == "Update name"
-         new_name = prompt.ask("Please enter your name")
-         user.update_name(new_name)
-         update_account(user)
-      elsif response == "Update DOB"
-         new_dob = prompt.ask("Please enter your DOB")
-         user.update_dob(new_dob)
-         update_account(user)
-      elsif response == "Update email"
-         new_email = prompt.ask("Please enter your email address:")
-         user.update_email(new_email) # Activates method in user class
-         update_account(user)
-      elsif response == "Update password" # allows to view and change password
-         new_pass = prompt.ask("Please provide a new password:")
-         user.update_password(new_pass)
-         update_account(user)
-      elsif response == "Delete account"
-         delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
-         if delete == "Yes"
-            user.destroy
-            puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
-            exit
-         elsif delete == "No"
-            update_account(user)
-         end
-      elsif response == "Go back"
-         customer_portal(user)
-      end
    end
 
 # ARTIST
@@ -448,17 +350,15 @@ end
 
    def artist_portal(user)
       prompt = TTY::Prompt.new
-      choices = ["Review account information", "My schedule", "Concert tickets sold", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
+      choices = ["Review account information", "My schedule", "Concert Status", "Total ticket sales", "Where am I playing", "My ticket prices", "My earnings (concert)", "Log out"]
       response = prompt.select("Please select an option:", choices)
       if response == "Review account information"
          update_artist_account(user)
-      elsif response == "Concert tickets sold"
-         concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name)<<"Go back")
-         unless concert == "Go back"
-            user.number_tickets_sold_concert(concert)
-         else
-            artist_portal(user)
-         end
+      elsif response == "My schedule"
+         user.my_schedule_info
+      elsif response == "Concert Status"
+         concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name), "Go back")
+         user.concert_status_from_name(concert)
       elsif response == "Total ticket sales"
          user.total_number_tickets_sold
       elsif response == "Where am I playing"
@@ -480,8 +380,6 @@ end
             user.my_earnings_concert_gbp(concert)
             artist_portal(user)
          end
-      elsif response == "My schedule"
-         user.my_schedule_info
       elsif response == "Log out"
          # exit
          sign_in_or_new
@@ -489,4 +387,104 @@ end
       artist_portal(user)
    end
 
-end
+# GLOBAL CLI METHODS
+
+
+
+#CUSTOMER METHODS
+   
+   def buy_tickets(user) #This is called by customer_portal(). user is a User (customer) object
+      prompt = TTY::Prompt.new
+      category = prompt.select("Search by:", ["Artist", "Concert", "Venue", "Cancel"])
+      if category == "Cancel"
+         customer_portal(user)
+      else
+         events = search(category)
+         #returns one concert
+         results = []
+         events.each{|concert| results << "#{concert.name} | #{concert.artist.name} | #{concert.date} | tickets available: #{concert.tickets_available} | £#{concert.price}"}
+         #added concert.tickets available to results
+         buy = prompt.select("Please confirm which event you would like to purchase tickets for?", results<<"Cancel")
+         if buy == "Cancel"
+            buy_tickets(user)
+         else
+            user.buy_ticket(buy.split(" | ").first)
+            buy_tickets(user)
+         end
+      end
+   end
+
+   def search(category) # This is called by buy_tickets(). This will allow users to search by artist, venue and concert and then book tickets according to what's available.
+      prompt = TTY::Prompt.new
+      search_term = prompt.ask("Search (leave blank for all options):")
+      if search_term == nil
+         Concert.all
+      else
+         if category == "Artist"
+            list = []
+            Artist.all.each do |inst|
+               if inst.name.downcase.include? search_term
+                  list << inst
+               end
+            end
+            list.map{|inst| inst.my_schedule}.flatten
+            #calls the my_schedule method from the artist class
+            #returns all gigs for the search term for that artist
+         elsif category == "Concert"
+            list = []
+            Concert.all.each do |inst|
+               if inst.name.downcase.include? search_term
+                  list << inst
+               end
+            end
+            list
+         elsif category == "Venue"
+            list = []
+            Venue.all.each do |inst|
+               if inst.name.downcase.include? search_term
+                  list << inst
+               end
+            end
+            list.map{|inst| inst.my_concerts}.flatten
+         end
+      end
+   end
+
+   def update_account(user) # will allow the user to update contact details
+      prompt = TTY::Prompt.new
+      response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update DOB", "Update email", "Update password", "Delete account", "Go back"]) # prompt allows user to select contact details to edit
+      if response == "View my account information"
+         puts "Name => #{user.name}"
+         puts "DOB => #{user.dob}"
+         puts "Email => #{user.email}"
+         puts "Password => #{user.password}"
+         update_account(user)
+      elsif response == "Update name"
+         new_name = prompt.ask("Please enter your name")
+         user.update_name(new_name)
+         update_account(user)
+      elsif response == "Update DOB"
+         new_dob = prompt.ask("Please enter your DOB")
+         user.update_dob(new_dob)
+         update_account(user)
+      elsif response == "Update email"
+         new_email = prompt.ask("Please enter your email address:")
+         user.update_email(new_email) # Activates method in user class
+         update_account(user)
+      elsif response == "Update password" # allows to view and change password
+         new_pass = prompt.ask("Please provide a new password:")
+         user.update_password(new_pass)
+         update_account(user)
+      elsif response == "Delete account"
+         delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
+         if delete == "Yes"
+            user.destroy
+            puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
+            exit
+         elsif delete == "No"
+            update_account(user)
+         end
+      elsif response == "Go back"
+         customer_portal(user)
+      end
+   end
