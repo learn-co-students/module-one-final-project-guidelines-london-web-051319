@@ -6,13 +6,6 @@ Concert.delete_all
 User.delete_all
 Ticket.delete_all
 
-# random20 = rand(20)
-# random100 = rand(100)
-# random1000 = rand(1000)
-# random90000 = rand(90000)
-# randomcc = rand(1...10000000000000000)
-
-
 muse = Artist.create(name: "Muse", genre: "rock", website_url: "https://www.muse.mu", email: "muse@muse.mu", password: "we_rock!")
 aerosmith = Artist.create(name: "Aerosmith", genre: "rock", website_url: "https://www.aerosmith.com/welcome", email: "smitty@aerosmith.com", password: "sdr&R")
 lso = Artist.create(name: "London Symphony Orchestra", genre: "classical", website_url: "https://lso.co.uk", email: "classical@lso.co.uk", password: "we'reClassical")
