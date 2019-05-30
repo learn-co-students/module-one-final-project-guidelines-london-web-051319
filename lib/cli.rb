@@ -129,6 +129,7 @@ class Cli
          else
             @current_user = Venue.create(result)
             puts "Thank you for creating a venue account for #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+            venue_portal(@current_user)
          end
          # Venue.create(new_text)
       elsif response == "Log out"
@@ -308,10 +309,6 @@ def update_artist_account(user) # will allow the user to update contact details
       new_name = prompt.ask("Please enter your name")
       user.update_name(new_name)
       update_artist_account(user)
-   # elsif response == "Update DOB"
-   #    new_dob = prompt.ask("Please enter your DOB")
-   #    user.update_dob(new_dob)
-   #    update_account(user)
    elsif response == "Update email"
       new_email = prompt.ask("Please enter your email address:")
       user.update_email(new_email) # Activates method in user class
@@ -341,6 +338,58 @@ def update_artist_account(user) # will allow the user to update contact details
       artist_portal(user)
    end
 end
+
+# VENUE
+
+def update_venue_account(user)
+   prompt = TTY::Prompt.new
+   response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update email", "Update password", "Update location", "Update website URL", "Update facilities", "Delete account", "Go back"]) 
+   if response == "View my account information"
+      puts "Name => #{user.name}"
+      puts "Email => #{user.email}"
+      puts "Password => #{user.password}"
+      puts "location => #{user.location}"
+      puts "Website => #{user.website_url}"
+      puts "Facilities => #{user.facilities}"
+      update_venue_account(user)
+   elsif response == "Update name"
+      new_name = prompt.ask("Please enter the venue's name")
+      user.update_name(new_name)
+      update_venue_account(user)
+   elsif response == "Update email"
+      new_email = prompt.ask("Please enter a valid email address:")
+      user.update_email(new_email) 
+      update_venue_account(user)
+   elsif response == "Update password" 
+      new_pass = prompt.ask("Please provide a new password:")
+      user.update_password(new_pass)
+      update_venue_account(user)
+   elsif response == "Update location"
+      new_genre = prompt.ask("Please enter the venue's location:")
+      user.update_location(new_genre) 
+      update_venue_account(user)
+   elsif response == "Update website URL"
+      new_site = prompt.ask("Please enter a valid URL:")
+      user.update_website(new_site)
+      update_venue_account(user)
+   elsif response == "Update facilities"
+      new_facilities = prompt.ask('Please specify the available facilities at the venue:')
+      user.update_facilities(new_facilities)
+      update_venue_account(user)
+   elsif response == "Delete account"
+      delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
+      if delete == "Yes"
+         user.destroy
+         puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
+         exit
+      elsif delete == "No"
+         update_venue_account(user)
+      end
+   elsif response == "Go back"
+   venue_portal(user)
+   end
+end
+
 
  # PORTALS
 
@@ -382,14 +431,14 @@ end
 
    def venue_portal(user)
       prompt = TTY::Prompt.new
-      choices = ["View my concerts", "View all artists", "Review account information", "Log out"]
+      choices = ["Review account information", "View my concerts", "View all artists", "Log out"]
       response = prompt.select("Please select an option:", choices)
-      if response == "View my concerts"
+      if response == "Review account information"
+         update_venue_account(user)
+      elsif response == "View my concerts"
          user.my_concerts_list
       elsif response == "View all artists"
          user.my_artists_list
-      elsif response == "Review account information"
-         update_account(user)
       elsif response == "Log out"
          # exit
          sign_in_or_new
