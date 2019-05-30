@@ -14,7 +14,7 @@ def input(user)
     when '8'
       list_curated_articles
       print_curated_article_overview(user)
-    when '1'
+    when '1'  
       search(user)
     when '6'
       id = most_liked_id(most_liked_num)
