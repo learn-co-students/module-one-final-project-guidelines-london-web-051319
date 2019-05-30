@@ -488,3 +488,4 @@ end
          customer_portal(user)
       end
    end
+end
