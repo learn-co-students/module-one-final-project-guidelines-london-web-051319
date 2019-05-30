@@ -86,9 +86,14 @@ class Cli
          end
 
          #we need to check if email already exists and divert to log in if appropriate
-         @current_user = User.create(result)
-         puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
-         customer_portal(@current_user)
+         if User.all.map(&:email).include?(result[:email])
+            puts "An account already exists for this email address, please login."
+            sign_in_or_new
+         else
+            @current_user = User.create(result)
+            puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+            customer_portal(@current_user)
+         end
          
       elsif response == "Artist"
          result = prompt.collect do
@@ -98,9 +103,14 @@ class Cli
             key(:password).ask('Please enter a new password:')
          end
 
-         @current_user = Artist.create(result)
-         puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
-         artist_portal(@current_user)
+         if Artist.all.map(&:email).include?(result[:email])
+            puts "An account already exists for this email address, please login."
+            sign_in_or_new
+         else
+            @current_user = Artist.create(result)
+            puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+            artist_portal(@current_user)
+         end
 
          # Artist.create(new_text)
       elsif response == "Venue Manager"
@@ -113,8 +123,13 @@ class Cli
             key(:facilities).key('Please enter a valid website address for your venue')
          end
 
-         @current_user = Venue.create(result)
-         puts "Thank you for creating a venue account for #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+         if User.all.map(&:email).include?(result[:email])
+            puts "An account already exists for this email address, please login."
+            sign_in_or_new
+         else
+            @current_user = Venue.create(result)
+            puts "Thank you for creating a venue account for #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+         end
          # Venue.create(new_text)
       elsif response == "Log out"
          sign_in_or_new
@@ -267,7 +282,7 @@ class Cli
          delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
          if delete == "Yes"
             user.destroy
-            puts "Your account has been deleted."
+            puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
             exit
          elsif delete == "No"
             update_account(user)
@@ -317,7 +332,7 @@ def update_artist_account(user) # will allow the user to update contact details
       delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
       if delete == "Yes"
          user.destroy
-         puts "Your account has been deleted."
+         puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
          exit
       elsif delete == "No"
          update_artist_account(user)
@@ -407,9 +422,11 @@ end
             artist_portal(user)
          end
       elsif response == "My earnings (concert)"
-         concert = prompt.select("Please select an option:", (user.my_schedule.map(&:name) << "All"))
+         concert = prompt.select("Please select an option:", (user.my_schedule.map(&:name).push("All", "Go back")))
          if concert == "All"
             user.my_total_earnings
+         elsif concert == "Go back"
+            artist_portal(user)
          else
             user.my_earnings_concert_gbp(concert)
             artist_portal(user)
@@ -422,6 +439,5 @@ end
       end
       artist_portal(user)
    end
-
 
 end
