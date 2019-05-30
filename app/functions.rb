@@ -1,26 +1,16 @@
 # CURATED
-
 def update_user(user)
   puts "-- Enter new title to change your name --"
   inp = gets.chomp
+
   loop do
     userExist = User.find_by(username: inp)
     if userExist
-      puts "\n"
-      puts "-- This name is taken. Please choose another name. --"
-      puts "\n"
-      puts "-- Press Enter For Main Menu --"
-      puts "\n"
+      print_user_taken
       inp = gets.chomp
     else
-      current_user = User.find_by(id: user.user_id)
-      current_user.username = inp
-      current_user.save
-      puts "\n"
-      puts "-- Your new name is #{inp} --"
-      puts "\n"
-      puts "-- Press Enter For Main Menu --"
-      puts "\n"
+      save_user(user, inp)
+      print_user_saved(inp)
       break
     end
   end
@@ -39,14 +29,7 @@ def list_curated_articles
   curated_titles = []
   articles.each_with_index {|article, index| curated_titles << "#{index+1}. #{article.title}"}
 
-  puts "\n"
-  puts "-- C U R A T E D  A R T I C L E S --"
-  puts "====================================\n\n"
-
-  curated_titles.each do |title|
-    ind = curated_titles.index(title)
-    print "#{title}\n\n"
-  end
+  print_curated_heading_and_titles(curated_titles)
 end
 
 
@@ -58,83 +41,32 @@ def longest_article(user)
   article = Article.all.find {|article| article.overview.length == largest}
 
   user.article_id = article.id
-
-  puts "\n"
-  puts "-- L O N G E S T  A R T I C L E --"
-  puts "==================================\n\n"
-
-  puts article.title.upcase
-  puts "\n"
-  puts article.overview.gsub("\n","")
-  puts "\n"
-  puts "Press Enter For Main Menu"
-  puts "\n"
+  print_longest_article_heading
+  print_article(article)
 end
 
 
 # MOST LIKED
-def most_liked_num
-  nums = []
-  Article.all.each do |article|
-    len = Favourite.where(article_id: article.id).size
-    nums << len
-  end
-  nums.sort.last
-end
-
-def most_liked_id(most_liked_num)
-  Article.all.each do |article|
-    len = Favourite.where(article_id: article.id).size
-    if len == most_liked_num
-      return article.id
-    end
-  end
-end
-
 def most_liked_article(most_liked_id, user)
   article = Article.find_by(id: most_liked_id)
   print_most_liked_overview(article, user)
 end
 
 def print_most_liked_overview(article, user)
-  puts "\n"
-  puts "-- M O S T  L I K E D  A R T I C L E --"
-  puts "=======================================\n\n"
-  puts "\n"
-  puts article.title.upcase
-  puts "\n"
-  puts article.overview.gsub("\n", "")
-  puts "\n"
-  puts "Press Enter For Main Menu"
-  puts "\n"
-
+  print_most_liked_heading
+  print_article(article)
   user.article_id = article.id
 end
 
 # Astronomy Info of the Day
 def aiod(user)
-  url = "https://api.nasa.gov/planetary/apod?api_key=giSxdlW48Uaffgw7kHUbUnUOkmwUpZijYQhGe5ep"
-  uri = URI.parse(url)
-  data = Net::HTTP.get(uri)
-  json = JSON.parse(data)
-  puts "\n"
-  puts "-- A S T R O N O M Y  I N F O  O F  T H E  D A Y --"
-  puts "===================================================\n\n"
-  puts "
-    TITLE: #{json["title"].upcase!}'\n
-    DATE: #{json["date"]}'\n
-    OVERVIEW: \n\n #{json["explanation"]}\n
-  "
-
+  json = parse_aiod_url
+  print_aiod_heading
+  print_aiod_article(json["title"], json["date"], json["explanation"])
   artExist = Article.find_by(title: json["title"])
 
-  if !artExist
-    new_article = Article.create(title: json["title"], date: json["date"], overview: json["explanation"], curated: false)
-    user.article_id = new_article.id
-    puts "\n"
-  end
+  aiod_check_add_to_db(artExist, json, user)
   user.article_id = artExist.id
-  puts "\n"
 end
 
 def add_to_fav(user)
@@ -209,7 +141,6 @@ def search(user)
       puts "-- ERROR 404! No articles found with this search term --"
       puts "\n"
   end
-
 end
 
 
@@ -238,7 +169,7 @@ def help
   puts "\n"
   puts "|'5' - pulls an article from NASA's Astronomy Photo of the Day website about the featured photo"
   puts "\n"
-  puts "|'6' - prints out the article with the most entries in all users' favourites lists"
+  puts "|'6' - prints the article that has the most favourites"
   puts "\n"
   puts "|'7' - prints out the article with the longest description"
   puts "\n"
