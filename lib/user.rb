@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
       self.where(["email = ?", email_address]).first
    end
 
+   # def self.delete_user(user)
+   #    user.destroy
+   # end
+
    # INSTANCE ****************
 
    

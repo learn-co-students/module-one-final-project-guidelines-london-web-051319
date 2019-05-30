@@ -226,7 +226,7 @@ class Cli
 
    def update_account(user) # will allow the user to update contact details
       prompt = TTY::Prompt.new
-      response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update DOB", "Update email", "Update password", "Go back"]) # prompt allows user to select contact details to edit
+      response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update DOB", "Update email", "Update password", "Delete account", "Go back"]) # prompt allows user to select contact details to edit
       if response == "View my account information"
          puts "Name => #{user.name}"
          puts "DOB => #{user.dob}"
@@ -249,6 +249,15 @@ class Cli
          new_pass = prompt.ask("Please provide a new password:")
          user.update_password(new_pass)
          update_account(user)
+      elsif response == "Delete account"
+         delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
+         if delete == "Yes"
+            user.destroy
+            puts "Your account has been deleted."
+            exit
+         elsif delete == "No"
+            update_account(user)
+         end
       elsif response == "Go back"
          customer_portal(user)
       end
