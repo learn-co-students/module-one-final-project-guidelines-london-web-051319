@@ -43,7 +43,11 @@ class Artist < ActiveRecord::Base
    #concert status method:
    def concert_status_from_name(concert_name)
       a_concert = self.my_schedule.find{|concert| concert.name == concert_name}
-      a_concert.status
+      if a_concert
+         a_concert.status
+      else
+         puts "there is no concert!"
+      end
    end
 
    #1.

@@ -35,38 +35,55 @@ class Cli
       validate(email, password)
 	end
 
-   def new_user_sign_up
+   def new_user_sign_up #asks the user which type of account they would like to create, requests set up info, sends new user to correct portal.
       prompt = TTY::Prompt.new
       choices = ["Customer", "Artist", "Venue Manager", "Log out"]
       response = prompt.select("Welcome to Mus.ic! Please let us know which account you would like to create:", choices)
-
-      if response == "Customer"
+      if response == "Customer" #takes new customer information, creates a new user and launches the customer portal.
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
             # key(:dob).ask('Please enter your date of birth ')
             key(:email).ask('Please enter your email:')
-            key(:card_1_number).ask('Please enter your card number:', convert: :int) 
+            key(:card_number).ask('Please enter your card number:', convert: :int) 
             #crashes if you add text
             key(:password).ask('Please enter a new password:')
-         end
 
+         end
          #we need to check if email already exists and divert to log in if appropriate
          @current_user = User.create(result)
-         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!")
          customer_portal(@current_user)
          
       elsif response == "Artist"
          result = prompt.collect do
             key(:name).ask('Please enter your name:')
+            key(:genre).ask('Please enter your music\'s genre:')
+            key(:website_url).ask('Please enter your website:')
+            key(:email).ask('Please enter your email address:')
+            key(:password).ask('Please enter a new password:')
          end
-
          @current_user = Artist.create(result)
-         puts "Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!"
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!")
          artist_portal(@current_user)
 
-         # Artist.create(new_text)
       elsif response == "Venue Manager"
-         # Venue.create(new_text)
+         result = prompt.collect do
+            key(:name).ask('Please enter your name:')
+            key(:website_url).ask('Please enter your website:')
+            key(:email).ask('Please enter your email address:')
+            key(:password).ask('Please enter a new password:')
+            key(:location).ask('Please enter your Venue location')
+            key(:facilities).ask('Please enter your Venue facilities')
+            #facilities expects an array? ["bars", "restaurants", "bathrooms", "disabled access"]
+            #we could select from a list of options with multi-select ppy
+            #...or we could just remove it because it isn't that interesting.
+         end
+         @current_user = Venue.create(result)
+         pastel = Pastel.new 
+         puts pastel.blue.on_yellow.bold("Thank you, #{@current_user.name}. Your account is now created! Welcome to Mus.ic!")
+         venue_portal(@current_user)
       elsif response == "Log out"
          sign_in_or_new
       end
@@ -178,7 +195,7 @@ class Cli
       if response == "My schedule"
          user.my_schedule_info
       elsif response == "Concert Status"
-         concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name))
+         concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name), "Go back")
          user.concert_status_from_name(concert)
          #chris changed this to concert status (used to be concert ticket sales)
       elsif response == "Total ticket sales"
