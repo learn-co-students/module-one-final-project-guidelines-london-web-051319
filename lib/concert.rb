@@ -72,21 +72,21 @@ class Concert < ActiveRecord::Base
    #    venue.capacity
    # end
 
-   def artists
+   def artists #all artists for a concert
       Artist.all.select { |an_artist| an_artist.id == self.artist_id }
    end
 
-   def artists_names
+   def artists_names #all artist names for a concert
       artists.map { |artist| artist.name }
    end
 
-   def status
+   def status #status for a concert, track ticket sales
       puts "Venue: #{venue_name}"
       # venue_capacity
       puts "Tickets sold: #{tickets_sold}"
       # "Tickets available: #{venue_capacity - tickets_sold}"
       puts "Artist(s) appearing: #{artists_names}"
    end
-end
+
 
 end

@@ -57,10 +57,10 @@ class Artist < ActiveRecord::Base
       puts self.all_tickets_sold.count
    end
    
-   def where_am_i_playing
+   def where_am_i_playing #method to show an artist where their concert names, locations and capacities
       venues = self.my_schedule.map{|inst| inst.venue_id}
       objects = Venue.all.select{|inst| venues.include?(inst.id)}
-      list = objects.map{|inst| "#{inst.name} - #{inst.location}"}
+      list = objects.map{|inst| "#{inst.name} - #{inst.location} - #{inst.capacity}"}
       puts list
    end
    
