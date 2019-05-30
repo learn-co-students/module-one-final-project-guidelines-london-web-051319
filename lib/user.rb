@@ -19,7 +19,6 @@ class User < ActiveRecord::Base
       self.where(["email = ?", email_address]).first
    end
 
-
    # INSTANCE ****************
 
    def add_card(new_number, card_slot)
@@ -30,26 +29,29 @@ class User < ActiveRecord::Base
       elsif card_slot == 2
          self.update(card_3_number: new_number)
       end
+      puts "Your new card has been added."
    end
 
    def update_name(new_name)
       self.update(name: new_name)
       self
-      puts "Record updated"
+      puts "Your username has been changed."
    end
 
    def update_dob(value)
       self.update(dob: value)
       self
-      puts "Record updated"
+      puts "Your DOB has been changed."
    end
 
    def update_email(new_email)
       self.update(email: new_email)
+      puts "Your email has been updated."
    end
 
    def update_password(new_password)
       self.update(password: new_password)
+      puts "Your password has been updated."
    end
 
    def update_card_details(new_card_no, card_to_update)
@@ -60,7 +62,7 @@ class User < ActiveRecord::Base
       elsif card_3_number == card_to_update
          self.update(card_3_number: new_card_no)
       end
-      puts "Record updated"
+      puts "Your card details have been updated."
    end
 
    def remove_card(card_number)
@@ -71,7 +73,7 @@ class User < ActiveRecord::Base
       elsif card_3_number == card_number
          self.update(card_3_number: nil)
       end
-      puts "Record updated"
+      puts "Your card has been removed."
    end
 
    def my_concerts_list

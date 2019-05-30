@@ -47,36 +47,5 @@ class Concert < ActiveRecord::Base
    def venue
       Venue.all.find{|inst| inst.id == self.venue_id}
    end
-  
-   def all_tickets #returns all tickets for a concert
-      Ticket.all.select{|ticket|ticket.concert_id == self.id}
-   end
 
-   def tickets_sold #returns a numerical count of all tickets assigned to a concert
-      all_tickets.count
-   end
-
-   def venue_name #returns the name of the venue for a concert
-      venue.name
-   end
-
-   # def venue_capacity
-   #    venue.capacity
-   # end
-
-   def artists
-      Artist.all.select { |an_artist| an_artist.id == self.artist_id }
-   end
-
-   def artists_names
-      artists.map { |artist| artist.name }
-   end
-
-   def status
-      puts "Venue: #{venue_name}"
-      # venue_capacity
-      puts "Tickets sold: #{tickets_sold}"
-      # "Tickets available: #{venue_capacity - tickets_sold}"
-      puts "Artist(s) appearing: #{artists_names}"
-   end
 end
