@@ -21,48 +21,67 @@ class User < ActiveRecord::Base
 
    # INSTANCE ****************
 
-   def add_card(new_number, card_slot)
-      if card_slot == 0
-         self.update(card_1_number: new_number)
-      elsif card_slot == 1
-         self.update(card_2_number: new_number)
-      elsif card_slot == 2
-         self.update(card_3_number: new_number)
-      end
-      puts "Your new card has been added."
-   end
-
+   
    def update_name(new_name)
       self.update(name: new_name)
       self
       puts "Your username has been updated."
    end
-
+   
    def update_dob(value)
       self.update(dob: value)
       self
       puts "Your DOB has been updated."
    end
-
+   
    def update_email(new_email)
       self.update(email: new_email)
       puts "Your email has been updated."
    end
-
+   
    def update_password(new_password)
       self.update(password: new_password)
       puts "Your password has been updated."
    end
-
-   def update_card_details(new_card_no, card_to_update)
-      if card_1_number == card_to_update
-         self.update(card_1_number: new_card_no)
-      elsif card_2_number == card_to_update
-         self.update(card_2_number: new_card_no)
-      elsif card_3_number == card_to_update
-         self.update(card_3_number: new_card_no)
+   
+   def validate_card_number(number)
+      if number.to_i.class == Integer && number.to_i.to_s.length == 16
+         number
+      else
+         nil
       end
-      puts "Your card details have been updated."
+   end
+   
+   def add_card(new_number, card_slot)
+      self.validate_card_number(new_number).to_i
+      unless self.validate_card_number(new_number) == nil
+         if card_slot == 0
+            self.update(card_1_number: new_number)
+         elsif card_slot == 1
+            self.update(card_2_number: new_number)
+         elsif card_slot == 2
+            self.update(card_3_number: new_number)
+         end
+         puts "Your new card has been added."
+      else
+         puts "The specified card number is invalid."
+      end
+   end
+
+   def update_card_details(new_number, card_to_update)
+      self.validate_card_number(new_number).to_i
+      unless self.validate_card_number(new_number) == nil
+         if card_1_number == card_to_update
+            self.update(card_1_number: new_number)
+         elsif card_2_number == card_to_update
+            self.update(card_2_number: new_number)
+         elsif card_3_number == card_to_update
+            self.update(card_3_number: new_number)
+         end
+         puts "Your card details have been updated."
+      else
+         puts "The specified card number is invalid."
+      end
    end
 
    def remove_card(card_number)
