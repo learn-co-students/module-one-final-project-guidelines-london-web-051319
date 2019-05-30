@@ -179,7 +179,7 @@ class Cli
          user.my_schedule_info
       elsif response == "Concert Status"
          concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name))
-         user.concert_object_from_name(concert)
+         user.concert_status_from_name(concert)
          #chris changed this to concert status (used to be concert ticket sales)
       elsif response == "Total ticket sales"
          user.total_number_tickets_sold

@@ -41,7 +41,7 @@ class Artist < ActiveRecord::Base
    end
 
    #concert status method:
-   def concert_object_from_name(concert_name)
+   def concert_status_from_name(concert_name)
       a_concert = self.my_schedule.find{|concert| concert.name == concert_name}
       a_concert.status
    end
