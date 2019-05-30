@@ -4,7 +4,7 @@ def print_user_taken
   puts "\n"
   puts "-- This name is taken. Please choose another name. --"
   puts "\n"
-  puts "-- Press Enter For Main Menu --"
+  print_press_enter
   puts "\n"
 end
 
@@ -12,7 +12,7 @@ def print_user_saved(inp)
   puts "\n"
   puts "-- Your new name is #{inp} --"
   puts "\n"
-  puts "-- Press Enter For Main Menu --"
+  print_press_enter
   puts "\n"
 end
 
@@ -111,19 +111,19 @@ def print_add_to_favourites
   puts "-- Added to your favourites --"
   puts "\n"
   puts "\n\n"
-  puts "-- Press Enter For Main Menu --"
+  print_press_enter
 end
 
 def print_article_error
   puts "-- Cannot Add This Article --"
-  puts "-- Press Enter For Main Menu --"
+  print_press_enter
 end
 
 def print_article_exist
   puts "\n"
   puts "-- This is already in your collections of favourites --"
   puts "\n\n"
-  puts "-- Press Enter For Main Menu --"
+  print_press_enter
   puts "\n"
 end
 
@@ -178,6 +178,12 @@ end
 
 def choose_by_number_error
   puts "-- No Articles in here :( Add some plox!!! --"
+  print_press_enter
+  puts "\n"
+end
+
+def print_press_enter
+  puts "\n"
   puts "-- Press Enter For Main Menu --"
   puts "\n"
 end

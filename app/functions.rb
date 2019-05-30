@@ -100,8 +100,8 @@ def remove_fav(user)
     print_enter_valid_command
     user_input = gets.chomp
   end
-  puts "-- Press Enter For Main Menu --"
-  puts "\n"
+  print_press_enter
+
 end
 
 def search(user)
@@ -112,13 +112,25 @@ def search(user)
   article_arr = Article.all.select {|article| article.title.downcase.index(searched_name) }
   puts "\n"
 
-  if !article_arr.empty?
-    article_arr.each_with_index do |article, index|
-      puts "#{index+1}. #{article.title.upcase}\n\n"
-    end
-    choose_by_number(article_arr, user)
+  #binding.pry
+  loop do
+    if searched_name != "" && searched_name != "back"
+      if !article_arr.empty?
+        article_arr.each_with_index do |article, index|
+          puts "#{index+1}. #{article.title.upcase}\n\n"
+        end
+        choose_by_number(article_arr, user)
+        break
+        else
+          print_search_error
+      end
+    elsif searched_name == "back"
+      print_press_enter
+      break
     else
-      print_search_error
+      puts "Invalid search term -- try again or type back for main menu"
+      searched_name = gets.chomp
+    end
   end
 end
 
