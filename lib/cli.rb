@@ -222,33 +222,6 @@ class Cli
       end
    end
 
-   # def update_account(user) # will allow the user to update contact details
-   #    prompt = TTY::Prompt.new
-   #    response = prompt.select("Please select an option:", ["Email", "Password", "Go back"]) # prompt allows user to select contact details to edit
-   #    if response == "Email"
-   #       puts user.email
-   #       manage = prompt.select("Please select an option:", ["Change email", "Go back"])
-   #       # binding.pry
-   #       if manage == "Change email" # allows to change email
-   #          new_email = prompt.ask("Please provide new email address:")
-   #          user.update_email(new_email) # Activates method in user class
-   #          update_account(user)
-   #       elsif manage == "Go back"
-   #          update_account(user)
-   #       end
-   #    elsif response == "Password" # allows to view and change password
-   #       manage = prompt.select("Please select an option:", ["View password", "Change password", "Go back"])
-   #       if manage == "View password"
-   #          puts "#{user.password}"
-   #          update_account(user)
-   #       elsif manage == "Change password"
-   #          new_pass = prompt.ask("Please provide a new password:")
-   #          user.update_password(new_pass)
-   #          update_account(user)
-   #       end
-   #    end
-   # end
-
    def update_account(user) # will allow the user to update contact details
       prompt = TTY::Prompt.new
       response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update DOB", "Update email", "Update password", "Go back"]) # prompt allows user to select contact details to edit

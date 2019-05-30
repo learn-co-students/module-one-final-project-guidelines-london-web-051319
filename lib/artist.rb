@@ -30,13 +30,17 @@ class Artist < ActiveRecord::Base
       Concert.all.select{|inst| inst.artist_id == self.id}
    end
 
+   def my_venues
+      Venue.all.select{|inst| my_schedule.map(&:venue_id).include?(inst.id)}
+   end
+
+   def concert_venue(concert)
+      Venue.all.find{|inst| inst.id == concert.id}
+   end
+
    def my_schedule_info
-      sched = {:gigs => []}
-      self.my_schedule.each do |inst|
-         # binding.pry
-         sched[:gigs] << {name: inst.name, date: inst.date, venue: Venue.all.find{|i| i.id == inst.venue_id}.name}
-      end
-      puts sched
+      list = self.my_schedule.map{|inst| "#{inst.name} | #{inst.date} | #{inst.venue.name}"}
+      puts list
    end
 
    def tickets_sold_concert(concert)
