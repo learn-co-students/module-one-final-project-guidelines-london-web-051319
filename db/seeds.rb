@@ -1,3 +1,5 @@
+require 'faker'
+
 Artist.delete_all
 Venue.delete_all
 Concert.delete_all
@@ -14,6 +16,9 @@ lenny = Artist.create(name: "Lenny Kravitz", genre: "rock", website_url: "http:/
 spice = Artist.create(name: "Spice Girls", genre: "pop", website_url: "https://www.thespicegirls.com", email: "power@spiceworld.com", password: "spice up yer life")
 bill = Artist.create(name: "Bill Bailey", genre: "alternative", website_url: "https://billbailey.co.uk", email: "billy@bailey.com", password: "wonderfunk")
 
+91.times{Artist.create(name: Faker::Music.band, genre: Faker::Music.genre, website_url: Faker::Internet.url, email: Faker::Internet.email, password: Faker::Internet.password(8))}
+#100 artists total
+
 o2 = Venue.create(name: "O2 Arena", website_url: "https://www.theo2.co.uk", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "02@arenauk.com", password: "we're_big", capacity: 60000)
 nec = Venue.create(name: "NEC", website_url: "http://www.thenec.co.uk/whats-on/", location: "Birmingham, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "  ", password: "expo", capacity: 40000)
 symphony = Venue.create(name: "Symphony Hall", website_url: "https://www.thsh.co.uk", location: "Birmingham, UK", facilities: ["bathrooms", "disabled access", "art gallery", "cloakroom"], email: "symphony@classical.co.uk", password: "acoustics", capacity: 6500)
@@ -23,6 +28,9 @@ manchester = Venue.create(name: "Manchester Arena", website_url: "http://www.man
 o2_newc = Venue.create(name: "O2 Academy Newcastle", website_url: "https://academymusicgroup.com/o2academynewcastle/", location: "Newcastle, UK", facilities: ["bars", "bathrooms", "disabled access"], email: "02_newc@arenauk.com", password: "waiai*", capacity: 20500)
 rock = Venue.create(name: "Rock City", website_url: "https://www.rock-city.co.uk", location: "Nottingham, UK", facilities: ["bars", "bathrooms"], email: "notts@thecity.co.uk", password: "rockon", capacity: 40000)
 
+12.times{Venue.create(name: Faker::WorldCup.stadium, website_url: Faker::Internet.url,location: Faker::WorldCup.city, facilities: [Faker::Appliance.equipment, Faker::Appliance.equipment, Faker::Appliance.equipment], email: Faker::Internet.email, password: Faker::Internet.password(8), capacity: rand(90000))}
+#20 venues total
+
 user1 = User.create(name: "Bobby Harrisson", dob: "1977-08-28", card_1_number: rand(1...10000000000000000), email: "bob@fmail.com", password: "asjhdli@")
 user2 = User.create(name: "Claire Redbridge", dob: "1995-01-31", card_1_number: rand(1...10000000000000000), email: "claire@atlook.com", password: "WJAs7d8")
 user3 = User.create(name: "Asim Qurashee", dob: "1999-05-14", card_1_number: rand(1...10000000000000000), email: "qshi@wahoo.co.uk", password: "cueball")
@@ -31,6 +39,9 @@ user5 = User.create(name: "Lena Orgolova", dob: "1986-11-11", card_1_number: ran
 user6 = User.create(name: "Sam Gamgee", dob: "1992-05-27", card_1_number: rand(1...10000000000000000), email: "mrfrodo@middleearth.net", password: "precious")
 user7 = User.create(name: "Alex Ramsay", dob: "1994-08-27", card_1_number: rand(1...10000000000000000), email: "ramsaaay@fmail.com", password: "SKDHJoa7")
 user8 = User.create(name: "Mo Farrar", dob: "2000-09-30", card_1_number: rand(1...10000000000000000), email: "mozy@fmail.com", password: "sdlhasD#")
+
+992.times{User.create(name: Faker::Name.name, dob: Faker::Date.between(80.years.ago, 18.years.ago), card_1_number: rand(1...10000000000000000), email: Faker::Internet.email, password: Faker::Internet.password(8))}
+#1000 customers
 
 concert1 = Concert.create(name: "Fractured Future Tour: London", price: 60.00, date: "2019-06-04", website_url: "TBC", artist_id: muse.id, venue_id: o2.id)
 concert2 = Concert.create(name: "Lovin' it up 2019", price: 75.00, date: "2019-10-02", website_url: "TBC", artist_id: aerosmith.id, venue_id: wembley.id)
@@ -52,6 +63,9 @@ concert17 = Concert.create(name: "Mindgoogling: Newcastle", price: 70, date: "20
 concert18 = Concert.create(name: "Spice Up Your Life: Manchester", price: 90, date: "2019-07-31", website_url: "TBC", artist_id: spice.id, venue_id: manchester.id)
 concert19 = Concert.create(name: "Spice Up Your Life: Newcastle", price: 90, date: "2019-12-01", website_url: "TBC", artist_id: spice.id, venue_id: o2_newc.id)
 concert20 = Concert.create(name: "Good Vibrations", price: 60, date: "2019-11-13", website_url: "TBC", artist_id: lenny.id, venue_id: o2.id)
+
+#20 concerts
+# 5.times{Concert.create(name: Faker::Verb.ing_form+" "+Faker::Verb.past_participle+" "+Faker::Verb.base, price: Faker::Commerce.price, website_url: Faker::Internet.url, artist_id: random100, venue_id: random20)}
 
 ticket1 = Ticket.create(user_id: user1.id, concert_id: concert1.id)
 ticket2 = Ticket.create(user_id: user2.id, concert_id: concert5.id)
@@ -77,3 +91,6 @@ ticket21 = Ticket.create(user_id: user5.id, concert_id: concert16.id)
 ticket22 = Ticket.create(user_id: user6.id, concert_id: concert15.id)
 ticket23 = Ticket.create(user_id: user7.id, concert_id: concert6.id)
 ticket24 = Ticket.create(user_id: user8.id, concert_id: concert9.id)
+
+10000.times{Ticket.create(user_id: rand(1000), concert_id: rand(20))}
+
