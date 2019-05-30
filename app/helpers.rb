@@ -105,4 +105,79 @@ def aiod_check_add_to_db(article, json, user)
   end
 end
 
-#
+# ADD TO Favourite
+def print_add_to_favourites
+  puts "\n"
+  puts "-- Added to your favourites --"
+  puts "\n"
+  puts "\n\n"
+  puts "-- Press Enter For Main Menu --"
+end
+
+def print_article_error
+  puts "-- Cannot Add This Article --"
+  puts "-- Press Enter For Main Menu --"
+end
+
+def print_article_exist
+  puts "\n"
+  puts "-- This is already in your collections of favourites --"
+  puts "\n\n"
+  puts "-- Press Enter For Main Menu --"
+  puts "\n"
+end
+
+# REMOVE FROM Favourite
+
+def print_are_you_sure
+  puts "\n"
+  puts "-- Are you sure you want to REMOVE this article from your favourites? (y/n) --"
+  puts "\n"
+end
+
+def print_article_removed
+  puts "\n"
+  puts "-- Article removed from favourites --"
+  puts "\n"
+end
+
+def print_article_not_removed
+  puts "\n"
+  puts "-- Article not removed from favourites --"
+  puts "\n"
+end
+
+def print_enter_valid_command
+  puts "\n"
+  puts "-- Enter valid command or type 0 to close --"
+  puts "\n"
+end
+
+
+# SEARCHs
+def print_search_intro
+  puts "\n"
+  puts "-- Please enter the name of the object you would like to read about. --"
+  puts "\n"
+end
+
+def print_search_error
+  puts "\n"
+  puts "-- ERROR 404! No articles found with this search term --"
+  puts "\n"
+end
+
+# favourites
+def print_fav_heading
+  puts "\n"
+  puts "-- F A V O U R I T E  A R T I C L E S --"
+  puts "========================================\n\n"
+end
+
+# choose by number
+
+def choose_by_number_error
+  puts "-- No Articles in here :( Add some plox!!! --"
+  puts "-- Press Enter For Main Menu --"
+  puts "\n"
+end

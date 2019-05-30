@@ -76,46 +76,28 @@ def add_to_fav(user)
   user_liked = Favourite.all.find {|fav| fav.article_id == article_id && fav.user_id == user_id}
   if !user_liked && article_id
     Favourite.create(article_id: user.article_id, user_id: user.user_id)
-    puts "\n"
-    puts "-- Added to your favourites --"
-    puts "\n"
-    puts "\n\n"
-    puts "-- Press Enter For Main Menu --"
+    print_add_to_favourites
   elsif !article_id
-    puts "-- Cannot Add This Article --"
-    puts "-- Press Enter For Main Menu --"
+    print_article_error
   else
-    puts "\n"
-    puts "-- This is already in your collections of favourites --"
-    puts "\n\n"
-    puts "-- Press Enter For Main Menu --"
-    puts "\n"
+    print_article_exist
   end
 end
 
 def remove_fav(user)
-  article_id = user.article_id
-  user_id = user.user_id
-  puts "\n"
-  puts "-- Are you sure you want to REMOVE this article from your favourites? (y/n) --"
-  puts "\n"
+  print_are_you_sure
   user_input = gets.chomp
+
   if user_input == "y"
-    fav = Favourite.find_by(article_id: article_id, user_id: user_id)
+    fav = Favourite.find_by(article_id: user.article_id, user_id: user.user_id)
     fav.destroy
-    puts "\n"
-    puts "-- Article removed from favourites --"
-    puts "\n"
+    print_article_removed
   elsif user_input == "n"
-    puts "\n"
-    puts "-- Article not removed from favourites --"
-    puts "\n"
+    print_article_not_removed
   elsif user_input == "0"
     exit
   else
-    puts "\n"
-    puts "-- Enter valid command or type exit to close --"
-    puts "\n"
+    print_enter_valid_command
     user_input = gets.chomp
   end
   puts "-- Press Enter For Main Menu --"
@@ -123,23 +105,20 @@ def remove_fav(user)
 end
 
 def search(user)
-  puts "\n"
-  puts "-- Please enter the name of the object you would like to read about. --"
-  puts "\n"
+  print_search_intro
   searched_name = gets.chomp
   puts "\n"
   searched_name.downcase!
   article_arr = Article.all.select {|article| article.title.downcase.index(searched_name) }
   puts "\n"
+
   if !article_arr.empty?
     article_arr.each_with_index do |article, index|
       puts "#{index+1}. #{article.title.upcase}\n\n"
     end
     choose_by_number(article_arr, user)
     else
-      puts "\n"
-      puts "-- ERROR 404! No articles found with this search term --"
-      puts "\n"
+      print_search_error
   end
 end
 
@@ -148,9 +127,8 @@ def favourites(user)
   user_id = user.user_id
   list = Favourite.all.select {|fav| fav.user_id == user_id}
   article_arr = list.map {|fav| Article.find_by(id: fav.article_id)}
-  puts "\n"
-  puts "-- F A V O U R I T E  A R T I C L E S --"
-  puts "========================================\n\n"
+  print_fav_heading
+
   article_arr.each_with_index {|article, index| puts "#{index+1}. #{article.title}\n\n"}
   choose_by_number(article_arr, user)
 end
@@ -192,18 +170,10 @@ def choose_by_number(article_arr, user)
         num = user_num - 1
         article = article_arr[num]
         user.article_id = article.id
-        puts "\n"
-        puts article.title.upcase
-        puts "\n"
-        puts article.overview
-        puts "\n\n"
-        puts "-- Press Enter For Main Menu --"
-        puts "\n"
+        print_article(article)
         break if article
       elsif len == 0
-        puts "-- No Articles in here :( Add some plox!!! --"
-        puts "-- Press Enter For Main Menu --"
-        puts "\n"
+        choose_by_number_error
         break
       else
         puts "\n\n-- Enter Value Between 1 and #{len} --"
