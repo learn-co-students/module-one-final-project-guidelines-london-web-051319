@@ -26,7 +26,7 @@ class Artist < ActiveRecord::Base
       self.update(password: new_password)
    end
 
-   def my_schedule
+   def my_schedule #all concerts for artist
       Concert.all.select{|inst| inst.artist_id == self.id}
    end
 
@@ -34,21 +34,37 @@ class Artist < ActiveRecord::Base
       sched = {:gigs => []}
       self.my_schedule.each do |inst|
          # binding.pry
+         #what is inst?
          sched[:gigs] << {name: inst.name, date: inst.date, venue: Venue.all.find{|i| i.id == inst.venue_id}.name}
       end
       puts sched
    end
 
-   def tickets_sold_concert(concert)
-      event = self.my_schedule.find{|inst| inst.name == concert}
+   #concert status method:
+   def concert_status_from_name(concert_name)
+      a_concert = self.my_schedule.find{|concert| concert.name == concert_name}
+      if a_concert
+         a_concert.status
+      else
+         puts "there is no concert!"
+      end
+   end
+
+   #1.
+   def tickets_sold_concert(concert_name)#parameter is concert name
+      event = self.my_schedule.find{|concert| concert.name == concert_name}
+      # binding.pry
+      #my_schedule calls all concerts for artist
       self.all_tickets_sold.select{|inst| inst.concert_id == event.id}
    end
 
-   def number_tickets_sold_concert(concert) 
+   def number_tickets_sold_concert(concert) #from artist portal cli, called for ticket count
       puts tickets_sold_concert(concert).count
    end
 
-   def all_tickets_sold
+
+
+   def all_tickets_sold #called by 1.
       events = self.my_schedule.map{|inst| inst.id}.uniq
       Ticket.all.select{|inst| events.include?(inst.concert_id)}
    end
@@ -57,10 +73,10 @@ class Artist < ActiveRecord::Base
       puts self.all_tickets_sold.count
    end
    
-   def where_am_i_playing
+   def where_am_i_playing #method to show an artist where their concert names, locations and capacities
       venues = self.my_schedule.map{|inst| inst.venue_id}
       objects = Venue.all.select{|inst| venues.include?(inst.id)}
-      list = objects.map{|inst| "#{inst.name} - #{inst.location}"}
+      list = objects.map{|inst| "#{inst.name} - #{inst.location} - #{inst.capacity}"}
       puts list
    end
    

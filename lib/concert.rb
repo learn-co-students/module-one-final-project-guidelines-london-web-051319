@@ -48,4 +48,51 @@ class Concert < ActiveRecord::Base
       Venue.all.find{|inst| inst.id == self.venue_id}
    end
 
+   def ticket_price
+      Concert.all.find{|inst| inst.name == self.name}.price
+   end
+
+   def ticket_price_gbp 
+      "£#{self.ticket_price}"
+   end
+
+   def all_tickets #returns all tickets for a concert
+      Ticket.all.select{|ticket|ticket.concert_id == self.id}
+   end
+
+   def tickets_sold #returns a numerical count of all tickets assigned to a concert
+      all_tickets.count
+   end
+
+   def venue_name #returns the name of the venue for a concert
+      venue.name
+   end
+
+   def venue_capacity
+      venue.capacity
+   end
+
+   def artists #all artists for a concert
+      Artist.all.select { |an_artist| an_artist.id == self.artist_id }
+   end
+
+   def artists_names #all artist names for a concert
+      artists.map { |artist| artist.name }
+   end
+
+   def tickets_available
+      tick_avail = venue_capacity - tickets_sold
+      tick_avail < 0 ? tick_avail = 0 : tick_avail
+      tick_avail
+   end
+
+   def status #status for a concert, track ticket sales
+      puts "Venue: #{venue_name}"
+      puts "Venue capacity: #{venue_capacity}"
+      puts "Tickets sold: #{tickets_sold}"
+      puts "Tickets available: #{tickets_available}"
+      puts "Artist(s) appearing: #{artists_names}"
+   end
+
+
 end
