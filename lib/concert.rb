@@ -35,16 +35,25 @@ class Concert < ActiveRecord::Base
       "£#{self.ticket_price}"
    end
 
+   def artist
+      Artist.all.find{|inst|inst.id == self.artist_id}
+   end
+
+   def customers
+      tickets = Ticket.all.select{|inst|inst.concert_id == self.id}
+      User.all.select{|inst| tickets.map(&:user_id).include?(inst.id)}
+   end
+
+   def venue
+      Venue.all.find{|inst| inst.id == self.venue_id}
+   end
+  
    def all_tickets #returns all tickets for a concert
       Ticket.all.select{|ticket|ticket.concert_id == self.id}
    end
 
    def tickets_sold #returns a numerical count of all tickets assigned to a concert
       all_tickets.count
-   end
-
-   def venue #returns the venue instance which matches the venue.id of the concert 
-      Venue.all.select { |a_venue| a_venue.id == self.venue_id }.first
    end
 
    def venue_name #returns the name of the venue for a concert

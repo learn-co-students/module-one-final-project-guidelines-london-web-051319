@@ -28,7 +28,7 @@ class Venue < ActiveRecord::Base
 
    def my_concerts_list
       concerts = Concert.all.select{|inst| inst.venue_id == self.id}
-      list = concerts.map(&:name)
+      list = concerts.map{|inst| "#{inst.name} - #{inst.artist.name}"}
       puts list
    end
 
@@ -43,12 +43,4 @@ class Venue < ActiveRecord::Base
       list = artists.map(&:name)
       puts list
    end
-
-   #most important functionality (through venue portal i think) is to create a concert, assign an artist, assign tickets, assign a venue and view ticket sales for that concert.. 
-
-   #idea for a method, launch the location in google maps.
-   #pull venue info from an api to get the lat/longitude
-
-   #idea for a method, use faker to generate thousands of users/tickets and check sales vs stadium capacity
-
 end

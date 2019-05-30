@@ -60,7 +60,7 @@ class Artist < ActiveRecord::Base
    def where_am_i_playing
       venues = self.my_schedule.map{|inst| inst.venue_id}
       objects = Venue.all.select{|inst| venues.include?(inst.id)}
-      list = objects.map(&:name)
+      list = objects.map{|inst| "#{inst.name} - #{inst.location}"}
       puts list
    end
    
