@@ -44,4 +44,8 @@ class Concert < ActiveRecord::Base
       User.all.select{|inst| tickets.map(&:user_id).include?(inst.id)}
    end
 
+   def venue
+      Venue.all.find{|inst| inst.id == self.venue_id}
+   end
+
 end

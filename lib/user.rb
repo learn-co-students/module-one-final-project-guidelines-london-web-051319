@@ -32,16 +32,6 @@ class User < ActiveRecord::Base
       end
    end
 
-   # def add_card(card_number)
-   #    if self.card_number != nil
-   #       puts "Please change existing card details"
-   #       return
-   #    else
-   #       self.update(card_number: card_number)
-   #       self
-   #    end
-   # end
-
    def update_name(new_name)
       self.update(name: new_name)
       self
@@ -61,10 +51,6 @@ class User < ActiveRecord::Base
    def update_password(new_password)
       self.update(password: new_password)
    end
-
-   # def update_tel(new_tel)
-   #    self.update(tel: new_tel)
-   # end
 
    def update_card_details(new_card_no, card_to_update)
       if card_1_number == card_to_update
@@ -90,8 +76,12 @@ class User < ActiveRecord::Base
 
    def my_concerts_list
       concert_ids = Ticket.all.select{|inst| inst.user_id == self.id}.map{|inst| inst.concert_id}
-      list = Concert.all.select{|inst| concert_ids.include?(inst.id)}.map(&:name)
-      puts list # added in to work with the CLI
+      list = Concert.all.select{|inst| concert_ids.include?(inst.id)}.map{|inst| "#{inst.name} | #{inst.artist.name} | #{inst.date} | #{inst.venue.location}"}
+      if list.length == 0
+         puts "You currently have no saved concerts."
+      else
+         puts list # added in to work with the CLI
+      end
    end
 
    def my_concerts
@@ -109,7 +99,6 @@ class User < ActiveRecord::Base
       puts "You have purchased tickets for #{concert.name}"
       end
    end
-
 
    def cancel_ticket(concert_name) 
       concert = Concert.all.find{|inst| inst.name.downcase == concert_name.downcase}

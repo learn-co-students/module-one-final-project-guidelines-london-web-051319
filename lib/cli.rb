@@ -154,6 +154,7 @@ class Cli
          card_no = prompt.ask("Please enter the card number")
          user.add_card(card_no, i)
       end
+      customer_manage_payment_info(user)
    end
 
    def update_account(user) # will allow the user to update contact details
@@ -261,10 +262,11 @@ class Cli
          results = []
          events.each{|inst| results << "#{inst.name} | #{inst.artist.name} | #{inst.date} | £#{inst.price}"}
          buy = prompt.select("Please confirm which event you would like to purchase tickets for?", results<<"Cancel")
+         # binding.pry
          if buy == "Cancel"
             buy_tickets(user)
          else
-         user.buy_ticket(buy)
+         user.buy_ticket(buy.split(" | ").first)
          end
       end
    end

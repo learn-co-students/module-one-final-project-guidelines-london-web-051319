@@ -44,9 +44,4 @@ class Venue < ActiveRecord::Base
       puts list
    end
 
-   #idea for a method, launch the location in google maps.
-   #pull venue info from an api to get the lat/longitude
-
-   #idea for a method, use faker to generate thousands of users/tickets and check sales vs stadium capacity
-
 end
