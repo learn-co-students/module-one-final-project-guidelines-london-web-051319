@@ -35,13 +35,13 @@ class User < ActiveRecord::Base
    def update_name(new_name)
       self.update(name: new_name)
       self
-      puts "Your username has been changed."
+      puts "Your username has been updated."
    end
 
    def update_dob(value)
       self.update(dob: value)
       self
-      puts "Your DOB has been changed."
+      puts "Your DOB has been updated."
    end
 
    def update_email(new_email)
