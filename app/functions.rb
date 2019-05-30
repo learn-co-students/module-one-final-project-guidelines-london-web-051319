@@ -165,6 +165,8 @@ def help
   puts "\n"
   puts "|'8' - lists a number of curated articles"
   puts "\n"
+  puts "|'9' - to change your name"
+  puts "\n"
 end
 
 def choose_by_number(article_arr, user)
