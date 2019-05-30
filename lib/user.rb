@@ -126,4 +126,9 @@ class User < ActiveRecord::Base
       Ticket.all.find{|inst| inst.user_id == self.id && inst.concert_id == concert.id}.destroy
    end
 
+   def cancel_all_tickets
+      tickets = Ticket.all.select{|inst| inst.user_id == self.id}
+      tickets.each{|inst| inst.destroy}
+   end
+
 end

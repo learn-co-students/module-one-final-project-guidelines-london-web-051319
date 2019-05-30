@@ -79,9 +79,10 @@ class Cli
             key(:name).ask('Please enter your name:')
             # key(:dob).ask('Please enter your date of birth ')
             key(:email).ask('Please enter your email:')
-            key(:card_1_number).ask('Please enter your card number:', convert: :int) 
-            #crashes if you add text
             key(:password).ask('Please enter a new password:')
+            key(:dob).ask('Please enter your date of birth (yyyy-mm-dd):')
+            # key(:card_1_number).ask('Please enter your card number:', convert: :int) 
+            #crashes if you add text
          end
 
          #we need to check if email already exists and divert to log in if appropriate
@@ -206,8 +207,8 @@ class Cli
 
    def buy_tickets(user)
       prompt = TTY::Prompt.new
-      category = prompt.select("Search by:", ["Artist", "Concert", "Venue", "Cancel"])
-      if category == "Cancel"
+      category = prompt.select("Search by:", ["Artist", "Concert", "Venue", "Go back"])
+      if category == "Go back"
          customer_portal(user)
       else
          events = search(category)
@@ -218,6 +219,7 @@ class Cli
             buy_tickets(user)
          else
          user.buy_ticket(buy.split(" | ").first)
+         buy_tickets(user)
          end
       end
    end
@@ -267,14 +269,19 @@ class Cli
       elsif response == "Buy tickets"
          buy_tickets(user)
       elsif response == "Cancel tickets"
-         choices = user.my_concerts.map(&:name) << "Cancel"
+         choices = user.my_concerts.map(&:name) << "Cancel all"
+         choices << "Go back"
          cancel = prompt.select("Please confirm which ticket you would like to cancel:", choices)
-         if cancel == "Cancel"
+         if cancel == "Go back"
             customer_portal(user)
          else
             check = prompt.select("Are you sure you want to cancel your tickets?", %w(Yes No))
-               if check == "Yes"
-                  user.cancel_ticket(cancel) # can't get multi select to work
+               if check == "Yes" 
+                  if cancel == "Cancel all"
+                     user.cancel_all_tickets 
+                  else
+                     user.cancel_ticket(cancel) # can't get multi select to work
+                  end
                elsif check =="No"
                   customer_portal(user)
                end
