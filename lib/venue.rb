@@ -14,12 +14,28 @@ class Venue < ActiveRecord::Base
 
    # INSTANCE *****************
 
+   def update_name(new_name)
+      self.update(name: new_name)
+   end
+  
    def update_email(new_email)
       self.update(email: new_email)
    end
 
    def update_password(new_password)
       self.update(password: new_password)
+   end
+
+   def update_website(new_url)
+      self.update(website_url: new_url)
+   end
+
+   def update_location(new_location)
+      self.update(location: new_location)
+   end
+
+   def update_facilities(*new_facilities)
+      self.update(facilities: new_facilities)
    end
 
    def my_concerts

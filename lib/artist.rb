@@ -18,6 +18,10 @@ class Artist < ActiveRecord::Base
 
    # INSTANCE *******************
 
+   def update_name(new_name)
+      self.update(name: new_name)
+   end
+   
    def update_email(new_email)
       self.update(email: new_email)
    end
@@ -26,18 +30,33 @@ class Artist < ActiveRecord::Base
       self.update(password: new_password)
    end
 
+   def update_genre(new_genre)
+      self.update(genre: new_genre)
+   end
+
+   def update_website(new_url)
+      self.update(website_url: new_url)
+   end
+   
    def my_schedule #all concerts for artist
       Concert.all.select{|inst| inst.artist_id == self.id}
    end
 
+   def my_venues
+      Venue.all.select{|inst| my_schedule.map(&:venue_id).include?(inst.id)}
+   end
+
+   def concert_venue(concert)
+      Venue.all.find{|inst| inst.id == concert.id}
+   end
+
    def my_schedule_info
-      sched = {:gigs => []}
-      self.my_schedule.each do |inst|
-         # binding.pry
-         #what is inst?
-         sched[:gigs] << {name: inst.name, date: inst.date, venue: Venue.all.find{|i| i.id == inst.venue_id}.name}
+      list = self.my_schedule.map{|inst| "#{inst.name} | #{inst.date} | #{inst.venue.name}"}
+      unless list.length == 0
+         puts list
+      else
+         puts "You currently have no scheduled concerts."
       end
-      puts sched
    end
 
    #concert status method:
@@ -58,11 +77,14 @@ class Artist < ActiveRecord::Base
       self.all_tickets_sold.select{|inst| inst.concert_id == event.id}
    end
 
-   def number_tickets_sold_concert(concert) #from artist portal cli, called for ticket count
-      puts tickets_sold_concert(concert).count
+   def number_tickets_sold_concert(concert) 
+      number = tickets_sold_concert(concert).count
+      if number > 0
+         puts number
+      elsif number == 0
+         puts "You currently have no scheduled concerts."
+      end
    end
-
-
 
    def all_tickets_sold #called by 1.
       events = self.my_schedule.map{|inst| inst.id}.uniq
@@ -76,8 +98,12 @@ class Artist < ActiveRecord::Base
    def where_am_i_playing #method to show an artist where their concert names, locations and capacities
       venues = self.my_schedule.map{|inst| inst.venue_id}
       objects = Venue.all.select{|inst| venues.include?(inst.id)}
-      list = objects.map{|inst| "#{inst.name} - #{inst.location} - #{inst.capacity}"}
-      puts list
+      list = objects.map{|inst| "#{inst.name} - #{inst.location}"}
+      unless list.length == 0
+         puts list
+      else
+         puts "You currently have no scheduled concerts."
+      end
    end
    
    def my_ticket_prices(concert_name)
