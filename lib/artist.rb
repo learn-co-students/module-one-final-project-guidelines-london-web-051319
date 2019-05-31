@@ -129,4 +129,12 @@ class Artist < ActiveRecord::Base
       puts "£#{a}"
    end
 
+   def new_concert(inputs)
+      name = inputs[:name]
+      date = inputs[:date]
+      venue_id = Venue.all.find{|inst| inst.name == inputs[:venue]}.id
+      price = inputs[:price]
+      Concert.create(name: name, price: price, date: date, artist_id: self.id, venue_id: venue_id)
+   end
+
 end

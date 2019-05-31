@@ -4,7 +4,7 @@ Artist.delete_all
 Venue.delete_all
 Concert.delete_all
 User.delete_all
-Ticket.delete_all
+Ticket.delete_all 
 
 muse = Artist.create(name: "Muse", genre: "rock", website_url: "https://www.muse.mu", email: "muse@muse.mu", password: "we_rock!")
 aerosmith = Artist.create(name: "Aerosmith", genre: "rock", website_url: "https://www.aerosmith.com/welcome", email: "smitty@aerosmith.com", password: "sdr&R")
@@ -20,7 +20,7 @@ bill = Artist.create(name: "Bill Bailey", genre: "alternative", website_url: "ht
 #100 artists total
 
 o2 = Venue.create(name: "O2 Arena", website_url: "https://www.theo2.co.uk", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "02@arenauk.com", password: "we're_big", capacity: 60000)
-nec = Venue.create(name: "NEC", website_url: "http://www.thenec.co.uk/whats-on/", location: "Birmingham, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "  ", password: "expo", capacity: 40000)
+nec = Venue.create(name: "NEC", website_url: "http://www.thenec.co.uk/whats-on/", location: "Birmingham, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "nec@midlands.co.uk", password: "expo", capacity: 40000)
 symphony = Venue.create(name: "Symphony Hall", website_url: "https://www.thsh.co.uk", location: "Birmingham, UK", facilities: ["bathrooms", "disabled access", "art gallery", "cloakroom"], email: "symphony@classical.co.uk", password: "acoustics", capacity: 6500)
 albert = Venue.create(name: "Royal Albert Hall", website_url: "https://www.royalalberthall.com", location: "London, UK", facilities: ["bathrooms", "disabled access"], email: "alby@royalalbert.com", password: "princealbert", capacity: 5000)
 wembley = Venue.create(name: "Wembley Stadium", website_url: "http://www.wembleystadium.com", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "wembley@statdiumsuk.co.uk", password: "national_pride_apparently", capacity: 90000)

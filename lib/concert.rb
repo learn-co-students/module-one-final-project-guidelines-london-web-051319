@@ -77,7 +77,7 @@ class Concert < ActiveRecord::Base
    end
 
    def artists_names #all artist names for a concert
-      artists.map { |artist| artist.name }
+      artists.map { |artist| artist.name}
    end
 
    def tickets_available
