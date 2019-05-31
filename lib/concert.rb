@@ -32,7 +32,7 @@ class Concert < ActiveRecord::Base
    end
 
    def ticket_price_gbp 
-      "£#{self.ticket_price}"
+      "£#{self.ticket_price}".colorize(:cyan)
    end
 
    def artist
@@ -53,7 +53,7 @@ class Concert < ActiveRecord::Base
    end
 
    def ticket_price_gbp 
-      "£#{self.ticket_price}"
+      "£#{self.ticket_price}".colorize(:cyan)
    end
 
    def all_tickets #returns all tickets for a concert
@@ -87,11 +87,11 @@ class Concert < ActiveRecord::Base
    end
 
    def status #status for a concert, track ticket sales
-      puts "Venue: #{venue_name}"
-      puts "Venue capacity: #{venue_capacity}"
-      puts "Tickets sold: #{tickets_sold}"
-      puts "Tickets available: #{tickets_available}"
-      puts "Artist(s) appearing: #{artists_names}"
+      puts "Venue: #{venue_name}".colorize(:cyan)
+      puts "Venue capacity: #{venue_capacity}".colorize(:cyan)
+      puts "Tickets sold: #{tickets_sold}".colorize(:cyan)
+      puts "Tickets available: #{tickets_available}".colorize(:cyan)
+      puts "Artist(s) appearing: #{artists_names}".colorize(:cyan)
    end
 
 

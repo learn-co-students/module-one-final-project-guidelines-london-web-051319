@@ -53,9 +53,9 @@ class Artist < ActiveRecord::Base
    def my_schedule_info
       list = self.my_schedule.map{|inst| "#{inst.name} | #{inst.date} | #{inst.venue.name}"}
       unless list.length == 0
-         puts list
+         puts list.collect{|inst| inst.colorize(:cyan)}
       else
-         puts "You currently have no scheduled concerts."
+         puts "You currently have no scheduled concerts.".colorize(:red)
       end
    end
 
@@ -65,7 +65,7 @@ class Artist < ActiveRecord::Base
       if a_concert
          a_concert.status
       else
-         puts "there is no concert!"
+         puts "there is no concert!".colorize(:red)
       end
    end
 
@@ -80,9 +80,9 @@ class Artist < ActiveRecord::Base
    def number_tickets_sold_concert(concert) 
       number = tickets_sold_concert(concert).count
       if number > 0
-         puts number
+         puts number.colorize(:cyan)
       elsif number == 0
-         puts "You currently have no scheduled concerts."
+         puts "You currently have no scheduled concerts.".colorize(:cyan)
       end
    end
 
@@ -92,7 +92,7 @@ class Artist < ActiveRecord::Base
    end
 
    def total_number_tickets_sold
-      puts self.all_tickets_sold.count
+      puts self.all_tickets_sold.count.to_s.colorize(:cyan)
    end
    
    def where_am_i_playing #method to show an artist where their concert names, locations and capacities
@@ -100,9 +100,9 @@ class Artist < ActiveRecord::Base
       objects = Venue.all.select{|inst| venues.include?(inst.id)}
       list = objects.map{|inst| "#{inst.name} - #{inst.location}"}
       unless list.length == 0
-         puts list
+         puts list.collect{|inst| inst.colorize(:cyan)}
       else
-         puts "You currently have no scheduled concerts."
+         puts "You currently have no scheduled concerts.".colorize(:cyan)
       end
    end
    
@@ -111,7 +111,7 @@ class Artist < ActiveRecord::Base
    end
 
    def list_my_ticket_prices(concert_name)
-      puts "£#{my_ticket_prices(concert_name)}"
+      puts "£#{my_ticket_prices(concert_name)}".colorize(:cyan)
    end
 
    def my_earnings_concert(concert_name)
@@ -121,12 +121,12 @@ class Artist < ActiveRecord::Base
 
    def my_earnings_concert_gbp(concert_name)
       # assume 25% for artists 
-      puts "£#{my_earnings_concert(concert_name)}"
+      puts "£#{my_earnings_concert(concert_name)}".colorize(:cyan)
    end
 
    def my_total_earnings
       a = self.my_schedule.map(&:name).collect{|inst| my_earnings_concert(inst)}.inject(0){|sum, x| sum+x}
-      puts "£#{a}"
+      puts "£#{a}".colorize(:cyan)
    end
 
    def new_concert(inputs)
