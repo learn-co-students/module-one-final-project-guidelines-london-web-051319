@@ -3,6 +3,8 @@ require_all 'lib'
 require 'pry'
 require 'tty-prompt'
 require 'colorize'
+require 'colorized_string'
+
 
 
 

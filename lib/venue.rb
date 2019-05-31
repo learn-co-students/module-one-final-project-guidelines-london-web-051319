@@ -45,7 +45,7 @@ class Venue < ActiveRecord::Base
    def my_concerts_list
       concerts = Concert.all.select{|inst| inst.venue_id == self.id}
       list = concerts.map{|inst| "#{inst.name} - #{inst.artist.name}"}
-      puts list
+      puts list.collect{|inst| inst.colorize(:cyan)}
    end
 
    def my_artists
@@ -57,7 +57,7 @@ class Venue < ActiveRecord::Base
       bands = self.my_concerts.map{|inst| inst.artist_id}
       artists = Artist.all.select{|inst| bands.include?(inst.id)} 
       list = artists.map(&:name)
-      puts list
+      puts list.collect{|inst| inst.colorize(:cyan)}
    end
 
 end

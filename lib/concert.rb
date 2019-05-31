@@ -49,7 +49,7 @@ class Concert < ActiveRecord::Base
    end
 
    def ticket_price_gbp 
-      "£#{self.ticket_price}".colorize(:magenta)
+      "£#{self.ticket_price}".colorize(:cyan)
    end
 
    def all_tickets #returns all tickets for a concert
