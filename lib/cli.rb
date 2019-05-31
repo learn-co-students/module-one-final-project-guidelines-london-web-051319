@@ -9,15 +9,15 @@ class Cli
 	def welcome_message # called by run. outputs big mus.ic welcome screen.
 		font = TTY::Font.new(:doom)
 		pastel = Pastel.new
-		puts pastel.red.on_yellow.bold(font.write("Mus.ic"))
+		puts pastel.magenta.on_white.bold(font.write("Mus.ic"))
 		
 	end
 
 	def sign_in_or_new 	# called by run. appears at startup, gives the user 3 initial choices that call the methods below.
-		puts "Hello! Welcome to Mus.ic"
+      puts "Hello! Welcome to Mus.ic".colorize(:magenta)
 		prompt = TTY::Prompt.new
 		choices = ["Sign In", "New User", "Exit"]
-		response = prompt.select("Please select an option:", choices)
+		response = prompt.select("Please select an option:".colorize(:magenta), choices)
 			if response == "Sign In"
 				sign_in
 			elsif response == "New User"
@@ -28,10 +28,11 @@ class Cli
 	end
 
 	def sign_in #asks for email, checks against 3 tables for a record. Returns the record as @current_user and launches the correct portal.
-		puts "Mus.ic sign in"
+		
+      puts "Mus.ic sign in".colorize(:cyan)
 		prompt = TTY::Prompt.new
-      email = prompt.ask('Please enter the email address you signed up with', default: ENV['yourname@gmail.com'])
-      password = prompt.mask("Please enter your password:") # requst password and obscure entry
+      email = prompt.ask('Please enter the email address you signed up with'.colorize(:magenta), default: ENV['yourname@gmail.com'])
+      password = prompt.mask("Please enter your password:".colorize(:magenta)) # requst password and obscure entry
       validate(email, password)
 	end
    
@@ -65,66 +66,66 @@ class Cli
 
    def failed_sign_in
       prompt  = TTY::Prompt.new
-      puts "The username and/or password provided are incorrect. Please try again."
+      puts "The username and/or password provided are incorrect. Please try again.".colorize(:red)
       sign_in_or_new
    end
 
 	def new_user_sign_up
       prompt = TTY::Prompt.new
       choices = ["Customer", "Artist", "Venue Manager", "Log out"]
-      response = prompt.select("Welcome to Mus.ic! Please let us know which account you would like to create:", choices)
+      response = prompt.select("Welcome to Mus.ic! Please let us know which account you would like to create:".colorize(:magenta), choices)
 
       if response == "Customer"
          result = prompt.collect do
-            key(:name).ask('Please enter your name:')
-            key(:email).ask('Please enter your email:'){|q| q.validate :email}
-            key(:password).ask('Please enter a new password:')
-            key(:dob).ask('Please enter your date of birth (yyyy-mm-dd):', convert: :date)
+            key(:name).ask('Please enter your name:'.colorize(:cyan))
+            key(:email).ask('Please enter your email:'.colorize(:cyan)){|q| q.validate :email}
+            key(:password).ask('Please enter a new password:'.colorize(:cyan))
+            key(:dob).ask('Please enter your date of birth (yyyy-mm-dd):'.colorize(:cyan), convert: :date)
          end
 
          #we need to check if email already exists and divert to log in if appropriate
          if User.all.map(&:email).include?(result[:email])
-            puts "An account already exists for this email address, please login."
+            puts "An account already exists for this email address, please login.".colorize(:red)
             sign_in_or_new
          else
             @current_user = User.create(result)
-            puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+            puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!".colorize(:green)
             customer_portal(@current_user)
          end
          
       elsif response == "Artist"
          result = prompt.collect do
-            key(:name).ask('Please enter your name:')
-            key(:email).ask('Please enter your email address:'){|q| q.validate :email}
-            key(:password).ask('Please enter a new password:')
+            key(:name).ask('Please enter your name:'.colorize(:cyan))
+            key(:email).ask('Please enter your email address:'.colorize(:cyan)){|q| q.validate :email}
+            key(:password).ask('Please enter a new password:'.colorize(:cyan))
          end
 
          if Artist.all.map(&:email).include?(result[:email])
-            puts "An account already exists for this email address, please login."
+            puts "An account already exists for this email address, please login.".colorize(:red)
             sign_in_or_new
          else
             @current_user = Artist.create(result)
-            puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+            puts "Thank you, #{@current_user.name}. Your account is now live! Welcome to Mus.ic!".colorize(:green)
             artist_portal(@current_user)
          end
 
          # Artist.create(new_text)
       elsif response == "Venue Manager"
          result = prompt.collect do
-            key(:name).ask('Please enter the name of your venue:')
-            key(:email).ask('Please enter a valid email address:'){|q| q.validate :email}
-            key(:password).ask('Please enter a new password:')
-            key(:location).ask('Please enter the city and country in which your venue is located:')
-            key(:facilites).key('Please provide details of the facilities available at your venue:')
-            key(:website).key('Please enter a valid website address for your venue')
+            key(:name).ask('Please enter the name of your venue:'.colorize(:magenta))
+            key(:email).ask('Please enter a valid email address:'.colorize(:magenta)){|q| q.validate :email}
+            key(:password).ask('Please enter a new password:'.colorize(:magenta))
+            key(:location).ask('Please enter the city and country in which your venue is located:'.colorize(:magenta))
+            key(:facilites).key('Please provide details of the facilities available at your venue:'.colorize(:magenta))
+            key(:website).key('Please enter a valid website address for your venue'.colorize(:magenta))
          end
 
          if User.all.map(&:email).include?(result[:email])
-            puts "An account already exists for this email address, please login."
+            puts "An account already exists for this email address, please login.".colorize(:red)
             sign_in_or_new
          else
             @current_user = Venue.create(result)
-            puts "Thank you for creating a venue account for #{@current_user.name}. Your account is now live! Welcome to Mus.ic!"
+            puts "Thank you for creating a venue account for #{@current_user.name}. Your account is now live! Welcome to Mus.ic!".colorize(:green)
             venue_portal(@current_user)
          end
          # Venue.create(new_text)
@@ -134,15 +135,11 @@ class Cli
 	end
 	
 	def exit_menu
-		puts "Thank you for using mus.ic, Goodbye."
+		puts "Thank you for using mus.ic, Goodbye.".colorize(:magenta)
 		exit
 	end
 
   # GLOBAL
-
-   
-# CUSTOMER
-
 
 
 # ARTIST
@@ -151,37 +148,37 @@ def update_artist_account(user) # will allow the user to update contact details
    prompt = TTY::Prompt.new
    response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update email", "Update password", "Update genre", "Update website URL", "Delete account", "Go back"]) # prompt allows user to select contact details to edit
    if response == "View my account information"
-      puts "Name => #{user.name}"
-      puts "Email => #{user.email}"
-      puts "Password => #{user.password}"
-      puts "Genre => #{user.genre}"
-      puts "Website => #{user.website_url}"
+      puts "Name => #{user.name}".colorize(:cyan)
+      puts "Email => #{user.email}".colorize(:cyan)
+      puts "Password => #{user.password}".colorize(:cyan)
+      puts "Genre => #{user.genre}".colorize(:cyan)
+      puts "Website => #{user.website_url}".colorize(:cyan)
       update_artist_account(user)
    elsif response == "Update name"
-      new_name = prompt.ask("Please enter your name")
+      new_name = prompt.ask("Please enter your name".colorize(:magenta))
       user.update_name(new_name)
       update_artist_account(user)
    elsif response == "Update email"
-      new_email = prompt.ask("Please enter your email address:"){|q| q.validate :email}
+      new_email = prompt.ask("Please enter your email address:".colorize(:magenta)){|q| q.validate :email}
       user.update_email(new_email) # Activates method in user class
       update_artist_account(user)
    elsif response == "Update password" # allows to view and change password
-      new_pass = prompt.ask("Please provide a new password:")
+      new_pass = prompt.ask("Please provide a new password:".colorize(:magenta))
       user.update_password(new_pass)
       update_artist_account(user)
    elsif response == "Update genre"
-      new_genre = prompt.ask("Please enter a new genre:")
+      new_genre = prompt.ask("Please enter a new genre:".colorize(:magenta))
       user.update_genre(new_genre) # Activates method in user class
       update_artist_account(user)
    elsif response == "Update website URL"
-      new_site = prompt.ask("Please enter a valid URL:")
+      new_site = prompt.ask("Please enter a valid URL:".colorize(:magenta))
       user.update_website(new_site)
       update_artist_account(user)
    elsif response == "Delete account"
-      delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
+      delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)".colorize(:yellow), %w[Yes No])
       if delete == "Yes"
          user.destroy
-         puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
+         puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!".colorize(:green)
          exit
       elsif delete == "No"
          update_artist_account(user)
@@ -195,10 +192,10 @@ def new_gig(user)
    prompt = TTY::Prompt.new
    venues = Venue.all.map(&:name)
    inputs = prompt.collect do
-      key(:name).ask("Please enter the concert's name:")
-      key(:date).ask("Please confirm the date of the concert:")
-      key(:venue).select("Please confirm the venue for the concert:", venues)
-      key(:price).ask("Please set a standard price for tickets:")
+      key(:name).ask("Please enter the concert's name:".colorize(:magenta))
+      key(:date).ask("Please confirm the date of the concert:".colorize(:magenta))
+      key(:venue).select("Please confirm the venue for the concert:".colorize(:magenta), venues)
+      key(:price).ask("Please set a standard price for tickets:".colorize(:magenta))
    end
    user.new_concert(inputs)
    # binding.pry
@@ -211,42 +208,42 @@ def update_venue_account(user)
    prompt = TTY::Prompt.new
    response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update email", "Update password", "Update location", "Update website URL", "Update facilities", "Delete account", "Go back"]) 
    if response == "View my account information"
-      puts "Name => #{user.name}"
-      puts "Email => #{user.email}"
-      puts "Password => #{user.password}"
-      puts "location => #{user.location}"
-      puts "Website => #{user.website_url}"
-      puts "Facilities => #{user.facilities}"
+      puts "Name => #{user.name}".colorize(:magenta)
+      puts "Email => #{user.email}".colorize(:magenta)
+      puts "Password => #{user.password}".colorize(:magenta)
+      puts "location => #{user.location}".colorize(:magenta)
+      puts "Website => #{user.website_url}".colorize(:magenta)
+      puts "Facilities => #{user.facilities}".colorize(:magenta)
       update_venue_account(user)
    elsif response == "Update name"
-      new_name = prompt.ask("Please enter the venue's name")
+      new_name = prompt.ask("Please enter the venue's name".colorize(:cyan))
       user.update_name(new_name)
       update_venue_account(user)
    elsif response == "Update email"
-      new_email = prompt.ask("Please enter a valid email address:"){|q| q.validate :email}
+      new_email = prompt.ask("Please enter a valid email address:".colorize(:cyan)){|q| q.validate :email}
       user.update_email(new_email) 
       update_venue_account(user)
    elsif response == "Update password" 
-      new_pass = prompt.ask("Please provide a new password:")
+      new_pass = prompt.ask("Please provide a new password:".colorize(:cyan))
       user.update_password(new_pass)
       update_venue_account(user)
    elsif response == "Update location"
-      new_genre = prompt.ask("Please enter the venue's location:")
+      new_genre = prompt.ask("Please enter the venue's location:".colorize(:cyan))
       user.update_location(new_genre) 
       update_venue_account(user)
    elsif response == "Update website URL"
-      new_site = prompt.ask("Please enter a valid URL:")
+      new_site = prompt.ask("Please enter a valid URL:".colorize(:cyan))
       user.update_website(new_site)
       update_venue_account(user)
    elsif response == "Update facilities"
-      new_facilities = prompt.ask('Please specify the available facilities at the venue:')
+      new_facilities = prompt.ask('Please specify the available facilities at the venue:'.colorize(:cyan))
       user.update_facilities(new_facilities)
       update_venue_account(user)
    elsif response == "Delete account"
-      delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
+      delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)".colorize(:yellow), %w[Yes No])
       if delete == "Yes"
          user.destroy
-         puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
+         puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!".colorize(:green)
          exit
       elsif delete == "No"
          update_venue_account(user)
@@ -274,11 +271,11 @@ end
       elsif response == "Cancel tickets"
          choices = user.my_concerts.map(&:name) << "Cancel all"
          choices << "Go back"
-         cancel = prompt.select("Please confirm which ticket you would like to cancel:", choices)
+         cancel = prompt.select("Please confirm which ticket you would like to cancel:".colorize(:cyan), choices)
          if cancel == "Go back"
             customer_portal(user)
          else
-            check = prompt.select("Are you sure you want to cancel your tickets?", %w(Yes No))
+            check = prompt.select("Are you sure you want to cancel your tickets?".colorize(:yellow), %w(Yes No))
                if check == "Yes" 
                   if cancel == "Cancel all"
                      user.cancel_all_tickets 
@@ -321,19 +318,19 @@ end
       elsif response == "My schedule"
          user.my_schedule_info
       elsif response == "Concert status"
-         concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name), "Go back")
+         concert = prompt.select("Please select a concert:".colorize(:magenta), user.my_schedule.map(&:name), "Go back")
          user.concert_status_from_name(concert)
       elsif response == "Total ticket sales"
          user.total_number_tickets_sold
       elsif response == "My ticket prices"
-         concert = prompt.select("Please select a concert:", user.my_schedule.map(&:name)<<"Go back")
+         concert = prompt.select("Please select a concert:".colorize(:magenta), user.my_schedule.map(&:name)<<"Go back")
          unless concert == "Go back"
             user.list_my_ticket_prices(concert)
          else
             artist_portal(user)
          end
       elsif response == "My earnings (concert)"
-         concert = prompt.select("Please select an option:", (user.my_schedule.map(&:name).push("All", "Go back")))
+         concert = prompt.select("Please select an option:".colorize(:magenta), (user.my_schedule.map(&:name).push("All", "Go back")))
          if concert == "All"
             user.my_total_earnings
          elsif concert == "Go back"
@@ -345,7 +342,7 @@ end
       elsif response == "New concert"
          new_gig(user)
       elsif response == "Cancel concert"
-         call_off = prompt.select("Please select concert to be cancelled:", user.my_schedule.map(&:name) << "Go back")
+         call_off = prompt.select("Please select concert to be cancelled:".colorize(:yellow), user.my_schedule.map(&:name) << "Go back")
          unless call_off == "Go back"
             Concert.all.find{|inst| inst.name == call_off}.destroy
          else
@@ -372,7 +369,7 @@ end
          results = []
          events.each{|concert| results << "#{concert.name} | #{concert.artist.name} | #{concert.date} | tickets available: #{concert.tickets_available} | £#{concert.price}"}
          #added concert.tickets available to results
-         buy = prompt.select("Please confirm which event you would like to purchase tickets for?", results<<"Cancel")
+         buy = prompt.select("Please confirm which event you would like to purchase tickets for?".colorize(:magenta), results<<"Cancel")
          if buy == "Cancel"
             buy_tickets(user)
          else
@@ -384,7 +381,7 @@ end
 
    def search(category) # This is called by buy_tickets(). This will allow users to search by artist, venue and concert and then book tickets according to what's available.
       prompt = TTY::Prompt.new
-      search_term = prompt.ask("Search (leave blank for all options):")
+      search_term = prompt.ask("Search (leave blank for all options):".colorize(:cyan))
       if search_term == nil
          Concert.all
       else
@@ -420,7 +417,7 @@ end
 
    def update_account(user) # will allow the user to update contact details
       prompt = TTY::Prompt.new
-      response = prompt.select("Please select an option:", ["View my account information", "Update name", "Update DOB", "Update email", "Update password", "Delete account", "Go back"]) # prompt allows user to select contact details to edit
+      response = prompt.select("Please select an option:".colorize(:magenta), ["View my account information", "Update name", "Update DOB", "Update email", "Update password", "Delete account", "Go back"]) # prompt allows user to select contact details to edit
       if response == "View my account information"
          puts "Name => #{user.name}"
          puts "DOB => #{user.dob}"
@@ -428,26 +425,26 @@ end
          puts "Password => #{user.password}"
          update_account(user)
       elsif response == "Update name"
-         new_name = prompt.ask("Please enter your name")
+         new_name = prompt.ask("Please enter your name".colorize(:cyan))
          user.update_name(new_name)
          update_account(user)
       elsif response == "Update DOB"
-         new_dob = prompt.ask("Please enter your DOB")
+         new_dob = prompt.ask("Please enter your DOB".colorize(:cyan))
          user.update_dob(new_dob)
          update_account(user)
       elsif response == "Update email"
-         new_email = prompt.ask("Please enter your email address:"){|q| q.validate :email}
+         new_email = prompt.ask("Please enter your email address:".colorize(:cyan)){|q| q.validate :email}
          user.update_email(new_email) # Activates method in user class
          update_account(user)
       elsif response == "Update password" # allows to view and change password
-         new_pass = prompt.ask("Please provide a new password:")
+         new_pass = prompt.ask("Please provide a new password:".colorize(:cyan))
          user.update_password(new_pass)
          update_account(user)
       elsif response == "Delete account"
-         delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)", %w[Yes No])
+         delete = prompt.select("Are you sure you want to delete your accout? (This action cannot be undone)".colorize(:yellow), %w[Yes No])
          if delete == "Yes"
             user.destroy
-            puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!"
+            puts "Your account has been deleted. Thank you for using Mus.ic, we're sorry to see you go!".colorize(:green)
             exit
          elsif delete == "No"
             update_account(user)
@@ -460,27 +457,27 @@ end
    def customer_manage_payment_info(user)
       prompt = TTY::Prompt.new
       choices = ["Add card", "Update card details", "Remove card", "Go back"]
-      manage_info = prompt.select("Please choose an option:", choices)
+      manage_info = prompt.select("Please choose an option:".colorize(:cyan), choices)
       if manage_info == "Add card"
          check_cards(user)
       elsif manage_info == "Update card details"
          cards = [user.card_1_number, user.card_2_number, user.card_3_number, "Cancel"]
-         sel_card = prompt.select("Please select a card:", cards) # the card to be updated
+         sel_card = prompt.select("Please select a card:".colorize(:cyan), cards) # the card to be updated
          if sel_card == "Cancel"
             customer_manage_payment_info(user)
          else
-            new_card = prompt.ask("Please enter new card number:")
+            new_card = prompt.ask("Please enter new card number:".colorize(:cyan))
             user.update_card_details(new_card, sel_card)
             customer_manage_payment_info(user)
          end
       elsif manage_info == "Remove card"
          cards = [user.card_1_number, user.card_2_number, user.card_3_number, "Cancel"]
-         sel_card = prompt.select("Please select a card:", cards)
+         sel_card = prompt.select("Please select a card:".colorize(:cyan), cards)
          if sel_card == "Cancel"
             customer_manage_payment_info(user)
          else
             options = ["Yes", "No"]
-            check = prompt.select("Are you sure you want to delete your current card?", options)
+            check = prompt.select("Are you sure you want to delete your current card?".colorize(:yellow), options)
             if check == "Yes"
                user.remove_card(sel_card)
             end
@@ -499,11 +496,11 @@ end
       nums << user.card_3_number
       
       if !nums.include?(nil)
-         puts "You have too many cards saved. Please remove or upate and existing card."
+         puts "You have too many cards saved. Please remove or upate and existing card.".colorize(:red)
          customer_manage_payment_info(user)
       else
          i = nums.find_index{|inst| inst == nil}
-         card_no = prompt.ask("Please enter the card number")
+         card_no = prompt.ask("Please enter the card number".colorize(:cyan))
          user.add_card(card_no, i)
       end
       customer_manage_payment_info(user)
