@@ -16,7 +16,7 @@ lenny = Artist.create(name: "Lenny Kravitz", genre: "rock", website_url: "http:/
 spice = Artist.create(name: "Spice Girls", genre: "pop", website_url: "https://www.thespicegirls.com", email: "power@spiceworld.com", password: "spice up yer life")
 bill = Artist.create(name: "Bill Bailey", genre: "alternative", website_url: "https://billbailey.co.uk", email: "billy@bailey.com", password: "wonderfunk")
 
-91.times{Artist.create(name: Faker::Music.band, genre: Faker::Music.genre, website_url: Faker::Internet.url, email: Faker::Internet.email, password: Faker::Internet.password(8))}
+91.times{Artist.create(name: Faker::Music.band, genre: Faker::Music.genre, website_url: Faker::Internet.url, email: Faker::Internet.unique.email, password: Faker::Internet.password(8))}
 #100 artists total
 
 o2 = Venue.create(name: "O2 Arena", website_url: "https://www.theo2.co.uk", location: "London, UK", facilities: ["bars", "restaurants", "bathrooms", "disabled access"], email: "02@arenauk.com", password: "we're_big", capacity: 60000)
@@ -31,7 +31,7 @@ rock = Venue.create(name: "Rock City", website_url: "https://www.rock-city.co.uk
 12.times{Venue.create(name: Faker::WorldCup.stadium, website_url: Faker::Internet.url,location: Faker::WorldCup.city, facilities: [Faker::Appliance.equipment, Faker::Appliance.equipment, Faker::Appliance.equipment], email: Faker::Internet.email, password: Faker::Internet.password(8), capacity: rand(90000))}
 #20 venues total
 
-user1 = User.create(name: "Bobby Harrisson", dob: "1977-08-28", card_1_number: rand(1...10000000000000000), email: "bob@fmail.com", password: "asjhdli@")
+user1 = User.create(name: "Bobby Harrisson", dob: "1977-08-28", card_1_number: rand(1...10000000000000000), email: "bob@fmail.com", password: "bob")
 user2 = User.create(name: "Claire Redbridge", dob: "1995-01-31", card_1_number: rand(1...10000000000000000), email: "claire@atlook.com", password: "WJAs7d8")
 user3 = User.create(name: "Asim Qurashee", dob: "1999-05-14", card_1_number: rand(1...10000000000000000), email: "qshi@wahoo.co.uk", password: "cueball")
 user4 = User.create(name: "Sophia Mensheviska", dob: "1988-10-07", card_1_number: rand(1...10000000000000000), email: "soph67@fmail.com", password: "rooter")
@@ -40,7 +40,7 @@ user6 = User.create(name: "Sam Gamgee", dob: "1992-05-27", card_1_number: rand(1
 user7 = User.create(name: "Alex Ramsay", dob: "1994-08-27", card_1_number: rand(1...10000000000000000), email: "ramsaaay@fmail.com", password: "SKDHJoa7")
 user8 = User.create(name: "Mo Farrar", dob: "2000-09-30", card_1_number: rand(1...10000000000000000), email: "mozy@fmail.com", password: "sdlhasD#")
 
-992.times{User.create(name: Faker::Name.name, dob: Faker::Date.between(80.years.ago, 18.years.ago), card_1_number: rand(1...10000000000000000), email: Faker::Internet.email, password: Faker::Internet.password(8))}
+992.times{User.create(name: Faker::Name.name, dob: Faker::Date.between(80.years.ago, 18.years.ago), card_1_number: rand(1...10000000000000000), email: Faker::Internet.unique.email, password: Faker::Internet.password(8))}
 #1000 customers
 
 concert1 = Concert.create(name: "Fractured Future Tour: London", price: 60.00, date: "2019-06-04", website_url: "TBC", artist_id: muse.id, venue_id: o2.id)
@@ -65,7 +65,13 @@ concert19 = Concert.create(name: "Spice Up Your Life: Newcastle", price: 90, dat
 concert20 = Concert.create(name: "Good Vibrations", price: 60, date: "2019-11-13", website_url: "TBC", artist_id: lenny.id, venue_id: o2.id)
 
 #20 concerts
-# 5.times{Concert.create(name: Faker::Verb.ing_form+" "+Faker::Verb.past_participle+" "+Faker::Verb.base, price: Faker::Commerce.price, website_url: Faker::Internet.url, artist_id: random100, venue_id: random20)}
+a = Artist.all.first.id
+z = Artist.all.last.id
+
+aa = Venue.all.first.id
+zz = Venue.all.last.id
+
+30.times{Concert.create(name: Faker::Verb.ing_form+" "+Faker::Verb.past_participle+" "+Faker::Verb.base, price: Faker::Commerce.price, date: Faker::Date.unique.between(Date.today, 2.years.from_now), website_url: Faker::Internet.url, artist_id: rand(a..z), venue_id: rand(aa..zz))}
 
 ticket1 = Ticket.create(user_id: user1.id, concert_id: concert1.id)
 ticket2 = Ticket.create(user_id: user2.id, concert_id: concert5.id)
