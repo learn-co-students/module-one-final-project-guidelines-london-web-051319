@@ -1,5 +1,13 @@
 require_relative '../config/environment'
+require_all 'lib'
+require 'pry'
+require 'tty-prompt'
+require 'colorize'
+require 'colorized_string'
 
 
 
-puts "HELLO WORLD"
+
+new_session = Cli.new
+new_session.run
+# puts "HELLO WORLD"
